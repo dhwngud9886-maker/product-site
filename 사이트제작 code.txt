@@ -1,0 +1,1157 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>제품 소개</title>
+
+  <style>
+    :root{
+      --bg:#f7fbff;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:#e5e7eb;
+
+      --blue:#2563eb;
+      --sky:#38bdf8;
+      --sky-soft:#e0f2fe;
+
+      --radius:16px;
+      --shadow-sm: 0 8px 18px rgba(15,23,42,.08);
+      --shadow: 0 14px 32px rgba(15,23,42,.12);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    a{color:inherit}
+
+    .container{max-width:1200px;margin:0 auto;padding:0 18px}
+
+    /* ===== Header (logo + search + icons) ===== */
+    header{
+      background:#ffffff;
+      border-bottom:1px solid var(--border);
+      position:sticky; top:0; z-index:50;
+    }
+    .header-main{
+      display:flex; align-items:center; gap:18px;
+      padding:16px 0;
+    }
+    .logo{
+      display:flex; align-items:center; gap:10px;
+      font-weight:1000; letter-spacing:.2px;
+      white-space:nowrap;
+    }
+    .logo-mark{
+      width:34px; height:34px; border-radius:12px;
+      background: linear-gradient(135deg, var(--blue), var(--sky));
+      box-shadow: 0 10px 18px rgba(37,99,235,.25);
+    }
+    .logo span.small{font-weight:900; color:var(--muted); font-size:12px; display:block; margin-top:2px}
+
+    .search{
+      flex:1;
+      display:flex;
+      align-items:center;
+      border:2px solid rgba(37,99,235,.75);
+      border-radius:999px;
+      padding:10px 12px;
+      gap:10px;
+      min-width:280px;
+    }
+    .search input{
+      border:0; outline:none; width:100%;
+      font-size:14px;
+    }
+    .search button{
+      border:0; cursor:pointer;
+      background:transparent;
+      width:36px; height:36px;
+      border-radius:999px;
+    }
+    .search button:hover{ background:rgba(37,99,235,.08) }
+
+    .icons{
+      display:flex; gap:14px; align-items:center;
+    }
+    .icon-btn{
+      display:flex; flex-direction:column; align-items:center; gap:6px;
+      text-decoration:none;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
+      padding:6px 6px;
+      border-radius:12px;
+    }
+    .icon-btn:hover{
+      color:var(--text);
+      background: rgba(2,132,199,.08);
+    }
+    .icon{
+      width:24px; height:24px; border-radius:8px;
+      border:1px solid var(--border);
+      display:grid; place-items:center;
+      color: var(--blue);
+      background:#fff;
+    }
+
+    /* ===== Category nav ===== */
+    .nav{
+      border-top:1px solid var(--border);
+      background:#ffffff;
+    }
+    .nav-row{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 0;
+      overflow:auto;
+    }
+    .allcat{
+      display:flex; align-items:center; gap:10px;
+      background: var(--blue);
+      color:#fff;
+      font-weight:1000;
+      border-radius:12px;
+      padding:10px 14px;
+      white-space:nowrap;
+      text-decoration:none;
+    }
+    .allcat:hover{ filter:brightness(.98) }
+    .nav a.item{
+      text-decoration:none;
+      font-weight:900;
+      color: var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      white-space:nowrap;
+      border:1px solid transparent;
+    }
+    .nav a.item:hover{
+      background: var(--sky-soft);
+      border-color: rgba(56,189,248,.35);
+    }
+    .nav a.item.active{
+      background: rgba(37,99,235,.08);
+      border-color: rgba(37,99,235,.25);
+      color: var(--blue);
+    }
+
+    /* ===== Banner slider ===== */
+    .banner-wrap{ padding:18px 0; }
+    .banner{
+      position:relative;
+      border-radius: 20px;
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      background:#0b1220;
+    }
+    .slides{ display:flex; transition: transform .45s ease; will-change: transform; }
+    .slide{
+      min-width:100%;
+      height: 360px;
+      position:relative;
+      color:#fff;
+      display:grid;
+      place-items:center;
+      background: radial-gradient(900px 400px at 20% 30%, rgba(56,189,248,.35), rgba(0,0,0,.85));
+    }
+    .slide .content{
+      width:100%;
+      height:100%;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      align-items:center;
+      gap:16px;
+      padding: 26px 28px;
+    }
+    .headline{ max-width:560px; }
+    .headline h2{
+      margin:0 0 10px;
+      font-size:40px;
+      line-height:1.1;
+      letter-spacing:-.5px;
+    }
+    .headline p{
+      margin:0 0 16px;
+      color: rgba(255,255,255,.82);
+      line-height:1.6;
+      font-size:14px;
+    }
+    .banner-cta{ display:flex; gap:10px; flex-wrap:wrap; }
+    .btn{
+      border:0; cursor:pointer;
+      padding:11px 14px;
+      border-radius:14px;
+      font-weight:1000;
+      background: var(--sky);
+      color:#00202e;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn:hover{ filter:brightness(.98) }
+    .btn.ghost{
+      background:transparent;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.25);
+    }
+
+    .hero-img{
+      width:100%;
+      height: 100%;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.02));
+      display:grid; place-items:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-img .tag{
+      position:absolute; left:14px; top:14px;
+      background: rgba(56,189,248,.22);
+      border: 1px solid rgba(56,189,248,.35);
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:12px;
+    }
+    .hero-img img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .hero-img .ph{ text-align:center; color: rgba(255,255,255,.75); font-weight:900; }
+
+    .nav-arrow{
+      position:absolute; top:50%;
+      transform:translateY(-50%);
+      width:44px; height:44px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.35);
+      color:#fff;
+      cursor:pointer;
+      display:grid; place-items:center;
+      z-index:2;
+    }
+    .nav-arrow:hover{ background: rgba(0,0,0,.5) }
+    .nav-arrow.prev{ left:14px }
+    .nav-arrow.next{ right:14px }
+
+    .dots{
+      position:absolute;
+      left:50%; bottom:14px;
+      transform:translateX(-50%);
+      display:flex; gap:8px;
+      z-index:2;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:999px;
+      background: rgba(255,255,255,.35);
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.25);
+    }
+    .dot.active{ background: rgba(56,189,248,.95) }
+
+    /* ===== Main ===== */
+    main{ padding:0 0 60px }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding:18px;
+    }
+    .title{
+      display:flex; justify-content:space-between; align-items:flex-end; gap:12px;
+      margin-bottom:12px;
+    }
+    .title h1{ margin:0; font-size:22px; letter-spacing:-.2px }
+    .title p{ margin:0; color:var(--muted); font-size:13px }
+
+    .toolbar{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin:14px 0 16px;
+    }
+    .input, .select{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:11px 12px;
+      outline:none;
+      color:var(--text);
+    }
+    .input{ flex:1; min-width:240px }
+    .input:focus, .select:focus{
+      border-color: rgba(56,189,248,.75);
+      box-shadow: 0 0 0 4px rgba(56,189,248,.18);
+    }
+    .btn2{
+      border:0; cursor:pointer;
+      padding:11px 12px;
+      border-radius:14px;
+      font-weight:1000;
+      background: var(--blue);
+      color:#fff;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+    .btn2.ghost{
+      background:#fff;
+      color:var(--blue);
+      border:1px solid rgba(37,99,235,.25);
+    }
+
+    /* Products grid */
+    .grid{
+      display:grid;
+      gap:14px;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+    }
+    .p-card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius: 16px;
+      overflow:hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+      display:flex; flex-direction:column;
+    }
+    .p-card:hover{
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+      border-color: rgba(56,189,248,.35);
+    }
+/* === 제품 목록 썸네일 (안 잘리고 전체 보이게) === */
+.p-thumb{
+  width: 100%;
+  height: 360px;                 /* 썸네일 세로 길이 */
+  background: #f8fafc;           /* 여백 생겨도 깔끔 */
+  border-bottom: 1px solid #e5e7eb;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+.p-thumb img{
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;           /* ⭐ 핵심: 안 잘리고 전체 보임 */
+}
+
+    .badge{
+      position:absolute; left:12px; top:12px;
+      background: var(--sky-soft);
+      border:1px solid rgba(56,189,248,.35);
+      color: #0369a1;
+      font-weight:1000;
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+    }
+    .p-body{ padding:12px }
+    .p-name{ font-weight:1000; margin:0 0 6px; font-size:14px }
+    .p-sub{ margin:0; color:var(--muted); font-size:12px; line-height:1.45 }
+    .chips{ display:flex; gap:6px; flex-wrap:wrap; margin-top:10px }
+    .chip{
+      font-size:11px;
+      font-weight:900;
+      background:#f1f5f9;
+      border:1px solid #e2e8f0;
+      padding:5px 9px;
+      border-radius:999px;
+    }
+    .p-bottom{
+      margin-top:12px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .price{ font-weight:1000; font-size:13px }
+    .detail-btn{
+      border:0; cursor:pointer;
+      padding:9px 10px;
+      border-radius:12px;
+      font-weight:1000;
+      background: var(--sky);
+      color:#00202e;
+    }
+
+    /* Detail */
+    .detail{
+      display:grid; gap:14px;
+      grid-template-columns: 1.35fr .65fr;
+      align-items:start;
+    }
+    .panel{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow-sm);
+      padding:16px;
+    }
+
+    /* 왼쪽: 메인 이미지 + 갤러리 */
+    .detail-img{
+      height: 520px;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      background: #f8fafc;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .detail-img img{ width:100%; height:100%; object-fit:contain; display:block }
+
+    .gallery-strip{
+      display:flex;
+      gap:10px;
+      margin-top:10px;
+      overflow:auto;
+      padding-bottom:4px;
+    }
+    .gthumb{
+      border:1px solid #e5e7eb;
+      background:#fff;
+      border-radius:12px;
+      padding:0;
+      cursor:pointer;
+      width:90px;
+      height:68px;
+      overflow:hidden;
+      flex:0 0 auto;
+    }
+    .gthumb img{ width:100%; height:100%; object-fit:cover; display:block }
+    .gthumb.active{
+      border-color: rgba(56,189,248,.85);
+      box-shadow: 0 0 0 4px rgba(56,189,248,.18);
+    }
+
+    /* 오른쪽 스펙 */
+    .specs{ list-style:none; padding:0; margin:10px 0 0 }
+    .specs li{
+      display:flex; justify-content:space-between; gap:12px;
+      padding:10px 0;
+      border-bottom:1px solid #eef2f7;
+      color: var(--muted);
+      font-size:13px;
+    }
+    .specs b{ color:var(--text) }
+
+    /* 상세 하단 긴 이미지 섹션 */
+    .detail-stack{
+      margin-top:14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .detail-shot{
+      border:1px solid var(--border);
+      border-radius:16px;
+      overflow:hidden;
+      background:#fff;
+      box-shadow: var(--shadow-sm);
+    }
+    .detail-shot img{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+
+    /* 스펙 표 이미지(선택) */
+    .spec-image{
+      margin-top:12px;
+      border:1px solid var(--border);
+      border-radius:16px;
+      overflow:hidden;
+      background:#fff;
+      box-shadow: var(--shadow-sm);
+    }
+    .spec-image img{ width:100%; height:auto; display:block; }
+
+    footer{
+      padding:18px 0;
+      border-top:1px solid var(--border);
+      color:#94a3b8;
+      font-size:12px;
+      background:#fff;
+      margin-top:36px;
+    }
+
+    /* Responsive */
+    @media (max-width:1100px){
+      .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .slide .content{ grid-template-columns: 1fr; }
+      .headline h2{ font-size:34px; }
+      .slide{ height: 380px; }
+      .detail{ grid-template-columns: 1fr; }
+      .detail-img{ height: 480px; }
+    }
+    @media (max-width:640px){
+      .icons{ display:none; }
+      .search{ min-width:0; }
+      .grid{ grid-template-columns: 1fr; }
+      .headline h2{ font-size:28px; }
+      .slide{ height: 360px; }
+      .nav-arrow{ display:none; }
+      .detail-img{ height: 420px; }
+      .gthumb{ width:78px; height:58px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-main">
+      <div class="logo">
+        <div class="logo-mark"></div>
+        <div>
+          <div style="font-size:18px">AIR / COOL</div>
+          <span class="small">에어컨 · 히터 · 제습기</span>
+        </div>
+      </div>
+
+      <div class="search">
+        <input id="globalSearch" placeholder="검색어 입력 (예: 이동형, 저소음, 인버터)" />
+        <button id="globalSearchBtn" aria-label="search">🔍</button>
+      </div>
+
+      <div class="icons">
+        <a class="icon-btn" href="#/cart"><div class="icon">🛒</div><div>장바구니</div></a>
+        <a class="icon-btn" href="#/wishlist"><div class="icon">♡</div><div>찜목록</div></a>
+        <a class="icon-btn" href="#/orders"><div class="icon">📦</div><div>주문조회</div></a>
+        <a class="icon-btn" href="#/contact"><div class="icon">💬</div><div>1:1문의</div></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="container">
+      <div class="nav-row" id="categoryNav">
+        <a class="allcat" href="#/">☰ 전체 카테고리</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="banner-wrap">
+  <div class="container">
+    <div class="banner" id="banner">
+      <div class="slides" id="slides"></div>
+      <button class="nav-arrow prev" id="prevBtn" aria-label="prev">‹</button>
+      <button class="nav-arrow next" id="nextBtn" aria-label="next">›</button>
+      <div class="dots" id="dots"></div>
+    </div>
+  </div>
+</section>
+
+<main class="container">
+  <div id="app"></div>
+
+  <footer>
+    © <span id="year"></span> Product Site. All rights reserved.
+  </footer>
+</main>
+
+<script>
+  // =========================
+  // 1) 제품 데이터
+  // - thumb: 목록 썸네일 1장
+  // - gallery: 상세 왼쪽(메인+썸네일)
+  // - detailImages: 상세 하단에 긴 이미지들(세로 긴 이미지 포함)
+  // - specImage: 스펙 표를 이미지로도 보여주고 싶을 때
+  // =========================
+  const PRODUCTS = [
+    {
+      id:"HSC-1170D",
+      category:"에어컨",
+      name:"HSC-1170D",
+      short:"10평형 · 28~32㎡ · 이동식 에어컨",
+      priceText:"상담문의",
+      thumb:"2026 상세페이지 NEW/HSC-1170D/썸네일.png",
+
+      gallery:[
+        "2026 상세페이지 NEW/HSC-1170D/썸네일.png",
+       
+      ],
+
+
+      // 상세 하단에 추가할 이미지들 (너가 올린 긴 이미지들을 여기 순서대로)
+      detailImages:[
+        "2026 상세페이지 NEW/HSC-1170D/1.png",
+        "2026 상세페이지 NEW/HSC-1170D/2.png",
+        "2026 상세페이지 NEW/HSC-1170D/3.png",
+        "2026 상세페이지 NEW/HSC-1170D/4.png",
+        "2026 상세페이지 NEW/HSC-1170D/5.png",
+        "2026 상세페이지 NEW/HSC-1170D/6.png",
+        "2026 상세페이지 NEW/HSC-1170D/7.png"
+      ],
+
+      tags:["10평형","1구에어컨","이동식"],
+      description:"저소음 · 부분/집중 냉방 (현장/야외 작업에 적합)",
+      specs:{
+        "냉방능력":"3,400 kcal/h",
+        "냉방면적":"28~32 ㎡",
+        "전원":"220Vac 60Hz 단상",
+        "크기(W×D×H)":"420×620×1,020 mm",
+        "제품중량":"57 kg"
+      }
+    },
+
+    // 나머지 제품들은 thumb만 채워도 목록에 정상 표시됨
+    {
+      id:"ac-220",
+      category:"에어컨",
+      name:"스탠드 에어컨 AC-220",
+      short:"대형 공간 · 강력 냉방 · 자동청정",
+      priceText:"상담문의",
+      thumb:"",
+      gallery:[],
+      detailImages:[],
+      tags:["강력냉방","자동청정","대형"],
+      description:"거실/매장 등 대형 공간을 빠르게 냉방. 자동청정 기능으로 관리가 편리.",
+      specs:{ "권장면적":"—", "냉방능력":"—", "설치":"스탠드" }
+    },
+    {
+      id:"ht-500",
+      category:"히터",
+      name:"전기 히터 HT-500",
+      short:"빠른 난방 · 안전장치 · 이동형",
+      priceText:"상담문의",
+      thumb:"",
+      gallery:[],
+      detailImages:[],
+      tags:["빠른난방","안전","이동형"],
+      description:"작업공간에 적합한 전기 히터. 과열방지 등 안전장치 포함.",
+      specs:{ "난방방식":"전기", "안전장치":"—", "설치":"이동형" }
+    },
+    {
+      id:"dh-900",
+      category:"제습기",
+      name:"산업용 제습기 DH-900",
+      short:"고용량 · 연속배수 · 창고/공장",
+      priceText:"상담문의",
+      thumb:"",
+      gallery:[],
+      detailImages:[],
+      tags:["고용량","연속배수","산업용"],
+      description:"창고/공장 등 습도 관리가 필요한 공간을 위한 고용량 제습기.",
+      specs:{ "제습능력":"—", "배수":"연속배수", "전원":"—" }
+    }
+  ];
+
+  // =========================
+  // 2) 배너 데이터
+  // =========================
+  const BANNERS = [
+    {
+      title:"여름 설치 예약 접수",
+      sub:"성수기 대비 에어컨 설치/교체 문의가 빠르게 늘고 있어요. 일정 선점 추천!",
+      tag:"에어컨",
+      ctaText:"에어컨 보기",
+      ctaHref:"#/?cat=에어컨",
+      bannerImage:""
+    },
+    {
+      title:"공장/작업장 냉난방 솔루션",
+      sub:"대형 공간 냉방/난방 제품 라인업 + 현장 환경 맞춤 상담 가능",
+      tag:"냉난방",
+      ctaText:"상담 문의",
+      ctaHref:"#/contact",
+      bannerImage:""
+    },
+    {
+      title:"습도 관리가 품질을 좌우합니다",
+      sub:"제습기/건조/보관 환경 개선으로 불량률 감소에 도움",
+      tag:"제습기",
+      ctaText:"제습기 보기",
+      ctaHref:"#/?cat=제습기",
+      bannerImage:""
+    }
+  ];
+
+  // =========================
+  // 연락처(너가 쓰던 값으로 세팅)
+  // =========================
+  const CONTACT = {
+    email: "gungo98@naver.com",
+    phoneText: "010-2257-0821",
+    phoneTel: "01022570821"
+  };
+
+  // =========================
+  // Utils
+  // =========================
+  const app = document.getElementById("app");
+  const slidesEl = document.getElementById("slides");
+  const dotsEl = document.getElementById("dots");
+  const categoryNav = document.getElementById("categoryNav");
+
+  function escapeHtml(str=""){
+    return String(str)
+      .replaceAll("&","&amp;").replaceAll("<","&lt;")
+      .replaceAll(">","&gt;").replaceAll('"',"&#34;")
+      .replaceAll("'","&#039;");
+  }
+  function qs(sel, root=document){ return root.querySelector(sel); }
+  function qsa(sel, root=document){ return [...root.querySelectorAll(sel)]; }
+
+  function parseRoute(){
+    const h = location.hash || "#/";
+    return h.replace("#","").split("/").filter(Boolean);
+  }
+  function parseHashQuery(){
+    const raw = location.hash || "#/";
+    const idx = raw.indexOf("?");
+    if(idx < 0) return {};
+    const qs = raw.slice(idx+1);
+    const out = {};
+    qs.split("&").forEach(pair=>{
+      const [k,v] = pair.split("=");
+      out[decodeURIComponent(k)] = decodeURIComponent(v || "");
+    });
+    return out;
+  }
+  function setHashQuery(basePath, queryObj){
+    const q = Object.entries(queryObj)
+      .filter(([,v])=>v !== "" && v != null)
+      .map(([k,v])=>`${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+      .join("&");
+    location.hash = q ? `${basePath}?${q}` : basePath;
+  }
+
+  // =========================
+  // Category nav
+  // =========================
+  function renderCategoryNav(activeCat=""){
+    qsa("a.item", categoryNav).forEach(el => el.remove());
+    const cats = [...new Set(PRODUCTS.map(p=>p.category))];
+
+    cats.forEach(cat=>{
+      const a = document.createElement("a");
+      a.className = "item" + (cat === activeCat ? " active" : "");
+      a.href = `#/?cat=${encodeURIComponent(cat)}`;
+      a.textContent = cat;
+      categoryNav.appendChild(a);
+    });
+  }
+
+  // =========================
+  // Banner slider
+  // =========================
+  let bannerIndex = 0;
+  let bannerTimer = null;
+
+  function slideTemplate(b){
+    const img = b.bannerImage
+      ? `<img src="${escapeHtml(b.bannerImage)}" alt="${escapeHtml(b.title)}">`
+      : `<div class="ph">
+          <div style="font-size:15px">배너 이미지</div>
+          <div style="margin-top:6px;font-size:12px;opacity:.8">bannerImage 넣으면 실사로 표시</div>
+        </div>`;
+
+    return `
+      <div class="slide">
+        <div class="content container">
+          <div class="headline">
+            <h2>${escapeHtml(b.title)}</h2>
+            <p>${escapeHtml(b.sub)}</p>
+            <div class="banner-cta">
+              <a class="btn" href="${escapeHtml(b.ctaHref)}">${escapeHtml(b.ctaText)}</a>
+              <a class="btn ghost" href="#/contact">1:1 문의</a>
+            </div>
+          </div>
+          <div class="hero-img">
+            <div class="tag">${escapeHtml(b.tag)}</div>
+            ${img}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderBanner(){
+    slidesEl.innerHTML = BANNERS.map(slideTemplate).join("");
+    dotsEl.innerHTML = BANNERS.map((_,i)=>`<div class="dot ${i===0?"active":""}" data-i="${i}"></div>`).join("");
+    goBanner(0, true);
+
+    qsa(".dot", dotsEl).forEach(d=>{
+      d.addEventListener("click", ()=>{
+        goBanner(Number(d.dataset.i));
+        restartBannerAuto();
+      });
+    });
+
+    qs("#prevBtn").addEventListener("click", ()=>{ prevBanner(); restartBannerAuto(); });
+    qs("#nextBtn").addEventListener("click", ()=>{ nextBanner(); restartBannerAuto(); });
+
+    restartBannerAuto();
+  }
+
+  function goBanner(i, immediate=false){
+    bannerIndex = (i + BANNERS.length) % BANNERS.length;
+    slidesEl.style.transition = immediate ? "none" : "transform .45s ease";
+    slidesEl.style.transform = `translateX(-${bannerIndex*100}%)`;
+    qsa(".dot", dotsEl).forEach((d,idx)=> d.classList.toggle("active", idx===bannerIndex));
+  }
+  function nextBanner(){ goBanner(bannerIndex+1); }
+  function prevBanner(){ goBanner(bannerIndex-1); }
+  function restartBannerAuto(){
+    if(bannerTimer) clearInterval(bannerTimer);
+    bannerTimer = setInterval(nextBanner, 5000);
+  }
+
+  // =========================
+  // List / Detail / Contact
+  // =========================
+  function renderList(){
+    const q = parseHashQuery();
+    const activeCat = q.cat || "";
+    const searchQ = (q.q || "").trim();
+
+    renderCategoryNav(activeCat);
+
+    app.innerHTML = `
+      <div class="card">
+        <div class="title">
+          <div>
+            <h1>제품 목록</h1>
+            <p>카테고리/검색으로 제품을 빠르게 찾아볼 수 있어요.</p>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <input class="input" id="search" placeholder="제품명/키워드 검색 (예: 저소음, 인버터, 이동형)"
+            value="${escapeHtml(searchQ)}" />
+          <select class="select" id="category">
+            <option value="">전체 카테고리</option>
+            ${[...new Set(PRODUCTS.map(p=>p.category))]
+              .map(c=>`<option value="${escapeHtml(c)}" ${c===activeCat?"selected":""}>${escapeHtml(c)}</option>`).join("")}
+          </select>
+          <button class="btn2 ghost" id="reset">초기화</button>
+        </div>
+
+        <div class="grid" id="grid"></div>
+      </div>
+    `;
+
+    const grid = qs("#grid");
+    const searchEl = qs("#search");
+    const catEl = qs("#category");
+    const resetEl = qs("#reset");
+
+    function thumbHtml(p){
+      // 목록 썸네일은 thumb만 사용 (원하는 “두번째 사진처럼 썸네일엔 지금 사진만”)
+      if(p.thumb){
+        return `<img src="${escapeHtml(p.thumb)}" alt="${escapeHtml(p.name)}"
+          onerror="this.style.display='none';">`;
+      }
+      return `<div style="text-align:center;color:#94a3b8;font-weight:900">
+                <div style="font-size:14px">제품 이미지</div>
+                <div style="margin-top:6px;font-size:12px;color:#cbd5e1">thumb 경로를 넣으면 표시</div>
+              </div>`;
+    }
+
+    function card(p){
+      return `
+        <article class="p-card">
+          <div class="p-thumb">
+            <span class="badge">${escapeHtml(p.category)}</span>
+            ${thumbHtml(p)}
+          </div>
+          <div class="p-body">
+            <h3 class="p-name">${escapeHtml(p.name)}</h3>
+            <p class="p-sub">${escapeHtml(p.short || "")}</p>
+
+            <div class="chips">
+              ${(p.tags||[]).slice(0,3).map(t=>`<span class="chip">${escapeHtml(t)}</span>`).join("")}
+            </div>
+
+            <div class="p-bottom">
+              <div class="price">${escapeHtml(p.priceText || "상담문의")}</div>
+              <button class="detail-btn" data-open="${escapeHtml(p.id)}">상세보기</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function apply(){
+      const qText = (searchEl.value||"").trim().toLowerCase();
+      const cat = catEl.value;
+
+      const filtered = PRODUCTS.filter(p=>{
+        const hay = `${p.name} ${p.short} ${p.description} ${(p.tags||[]).join(" ")} ${p.category}`.toLowerCase();
+        return (!qText || hay.includes(qText)) && (!cat || p.category === cat);
+      });
+
+      grid.innerHTML = filtered.map(card).join("") || `
+        <div class="panel" style="grid-column:1/-1">
+          <b>검색 결과가 없습니다.</b><br>
+          <span style="color:#94a3b8">검색어/카테고리를 변경해 보세요.</span>
+        </div>
+      `;
+
+      qsa("[data-open]", grid).forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const id = btn.getAttribute("data-open");
+          location.hash = `#/p/${encodeURIComponent(id)}`;
+        });
+      });
+    }
+
+    function syncHash(){
+      setHashQuery("#/", { cat: catEl.value, q: searchEl.value.trim() });
+    }
+
+    searchEl.addEventListener("input", ()=>{ apply(); syncHash(); });
+    catEl.addEventListener("change", ()=>{ apply(); syncHash(); });
+
+    resetEl.addEventListener("click", ()=>{
+      searchEl.value=""; catEl.value="";
+      apply(); setHashQuery("#/", {});
+    });
+
+    apply();
+  }
+
+  function renderDetail(id){
+    const p = PRODUCTS.find(x=>x.id === id);
+    if(!p){
+      app.innerHTML = `
+        <div class="card">
+          <h1 style="margin:0 0 8px">제품을 찾을 수 없습니다</h1>
+          <p style="margin:0;color:var(--muted)">목록으로 돌아가 다시 선택해 주세요.</p>
+          <div class="toolbar">
+            <button class="btn2" id="goList">제품 목록</button>
+          </div>
+        </div>
+      `;
+      qs("#goList").addEventListener("click", ()=> location.hash = "#/");
+      return;
+    }
+
+    // 갤러리: 없으면 thumb라도 사용
+    const gallery = (p.gallery && p.gallery.length) ? p.gallery : (p.thumb ? [p.thumb] : []);
+    const main = gallery[0] || "";
+
+    const specRows = Object.entries(p.specs||{}).map(([k,v])=>`
+      <li><span>${escapeHtml(k)}</span><b>${escapeHtml(v)}</b></li>
+    `).join("");
+
+    const galleryStrip = (gallery.length > 1) ? `
+      <div class="gallery-strip" id="galleryStrip">
+        ${gallery.map((src,i)=>`
+          <button class="gthumb ${i===0?'active':''}" data-src="${escapeHtml(src)}" aria-label="thumb">
+            <img src="${escapeHtml(src)}" alt="">
+          </button>
+        `).join("")}
+      </div>
+    ` : "";
+
+    const specImgHtml = p.specImage ? `
+      <div class="spec-image">
+        <img src="${escapeHtml(p.specImage)}" alt="제품 사양"
+          onerror="this.closest('.spec-image').style.display='none';">
+      </div>
+    ` : "";
+
+    const detailStackHtml = (p.detailImages && p.detailImages.length) ? `
+      <div class="detail-stack">
+        ${p.detailImages.map(src=>`
+          <div class="detail-shot">
+            <img src="${escapeHtml(src)}" alt="상세 이미지"
+              onerror="this.closest('.detail-shot').style.display='none';">
+          </div>
+        `).join("")}
+      </div>
+    ` : "";
+
+    app.innerHTML = `
+      <div class="card">
+        <div class="toolbar" style="justify-content:space-between">
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <button class="btn2 ghost" id="back">← 목록</button>
+            <span class="chip" style="background:var(--sky-soft);border-color:rgba(56,189,248,.35);color:#0369a1">
+              ${escapeHtml(p.category)}
+            </span>
+          </div>
+          <button class="btn2" id="copyLink">이 제품 링크 복사</button>
+        </div>
+
+        <div class="detail">
+          <!-- LEFT -->
+          <div class="panel">
+            <div class="detail-img">
+              ${
+                main
+                ? `<img id="mainImg" src="${escapeHtml(main)}" alt="${escapeHtml(p.name)}"
+                    onerror="this.style.display='none';">`
+                : `<div style="text-align:center;color:#94a3b8;font-weight:900">
+                     <div style="font-size:14px">제품 이미지</div>
+                     <div style="margin-top:6px;font-size:12px;color:#cbd5e1">gallery/ thumb 경로를 넣으면 표시</div>
+                   </div>`
+              }
+            </div>
+
+            ${galleryStrip}
+
+            <div style="margin-top:12px">
+              <h1 style="margin:0 0 8px;font-size:22px">${escapeHtml(p.name)}</h1>
+              <p style="margin:0;color:var(--muted)">${escapeHtml(p.description || "")}</p>
+
+              <div class="chips" style="margin-top:12px">
+                ${(p.tags||[]).map(t=>`<span class="chip">${escapeHtml(t)}</span>`).join("")}
+              </div>
+            </div>
+
+            <!-- 스펙 표 이미지(원하면) -->
+            ${specImgHtml}
+
+            <!-- 상세 하단 긴 이미지들 -->
+            ${detailStackHtml}
+          </div>
+
+          <!-- RIGHT -->
+          <div class="panel">
+            <div style="font-weight:1000;margin-bottom:8px">스펙</div>
+            <ul class="specs">${specRows || `<li><span>스펙</span><b>추가 필요</b></li>`}</ul>
+
+            <div style="margin-top:14px;font-weight:1000">가격/구매</div>
+            <div style="color:var(--muted);margin-top:6px">${escapeHtml(p.priceText || "상담문의")}</div>
+
+            <div class="toolbar" style="margin-top:12px">
+              <a class="btn2" href="mailto:${encodeURIComponent(CONTACT.email)}?subject=${encodeURIComponent("[제품문의] " + p.name)}">
+                ${escapeHtml(CONTACT.email)}
+              </a>
+              <a class="btn2 ghost" href="tel:${escapeHtml(CONTACT.phoneTel)}">
+                ${escapeHtml(CONTACT.phoneText)}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    qs("#back").addEventListener("click", ()=> location.hash = "#/");
+    qs("#copyLink").addEventListener("click", async ()=>{
+      try{ await navigator.clipboard.writeText(location.href); alert("링크가 복사되었습니다."); }
+      catch(e){ alert("복사 실패(브라우저 권한 확인)"); }
+    });
+
+    // 갤러리 클릭 -> 메인 이미지 변경
+    const strip = qs("#galleryStrip");
+    const mainImg = qs("#mainImg");
+    if(strip && mainImg){
+      qsa(".gthumb", strip).forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const src = btn.getAttribute("data-src");
+          mainImg.src = src;
+          qsa(".gthumb", strip).forEach(b=>b.classList.remove("active"));
+          btn.classList.add("active");
+        });
+      });
+    }
+  }
+
+  function renderContact(){
+    renderCategoryNav("");
+
+    app.innerHTML = `
+      <div class="card">
+        <div class="title">
+          <div>
+            <h1>문의</h1>
+            <p>전화/이메일 등 원하는 방식으로 연결 가능합니다.</p>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <a class="btn2" href="mailto:${encodeURIComponent(CONTACT.email)}?subject=제품문의">이메일 보내기</a>
+          <a class="btn2 ghost" href="tel:${escapeHtml(CONTACT.phoneTel)}">전화하기</a>
+        </div>
+
+        <div class="panel" style="margin-top:12px">
+          <div style="font-weight:1000;margin-bottom:6px">간단 문의 폼(예시)</div>
+          <div style="color:var(--muted);font-size:13px">
+            실제 전송은 구글폼/서버 연동이 필요해요. 원하면 연결 코드까지 붙여줄게요.
+          </div>
+
+          <div class="toolbar" style="margin-top:12px">
+            <input class="input" placeholder="이름" />
+            <input class="input" placeholder="연락처" />
+          </div>
+          <div class="toolbar">
+            <input class="input" placeholder="문의내용" />
+            <button class="btn2">보내기(예시)</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // =========================
+  // Global search
+  // =========================
+  function bindGlobalSearch(){
+    const input = qs("#globalSearch");
+    const btn = qs("#globalSearchBtn");
+    const run = ()=>{
+      const q = (input.value||"").trim();
+      setHashQuery("#/", { q });
+      render();
+      const listSearch = qs("#search");
+      if(listSearch) listSearch.focus();
+    };
+    btn.addEventListener("click", run);
+    input.addEventListener("keydown", (e)=>{ if(e.key==="Enter") run(); });
+  }
+
+  // =========================
+  // Router
+  // =========================
+  function render(){
+    const parts = parseRoute();
+
+    // 목록
+    if(parts.length === 0){
+      return renderList();
+    }
+    // 제품 상세
+    if(parts[0] === "p" && parts[1]){
+      return renderDetail(decodeURIComponent(parts[1]));
+    }
+    // 문의
+    if(parts[0] === "contact"){
+      return renderContact();
+    }
+    return renderList();
+  }
+
+  // =========================
+  // Init
+  // =========================
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  renderBanner();
+  bindGlobalSearch();
+  window.addEventListener("hashchange", render);
+  render();
+
+  window.addEventListener("hashchange", ()=>{
+    const q = parseHashQuery();
+    renderCategoryNav(q.cat || "");
+  });
+</script>
+
+</body>
+</html>
