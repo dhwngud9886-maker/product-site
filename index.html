@@ -328,27 +328,33 @@
       box-shadow: var(--shadow);
       border-color: rgba(56,189,248,.35);
     }
-    /* 태그 기본 숨김 */
-.p-card .chips{
+/* ===== 태그 기본 숨김 ===== */
+.p-card .p-body .chips{
   opacity: 0;
+  visibility: hidden;
   transform: translateY(6px);
   pointer-events: none;
-  transition: opacity .18s ease, transform .18s ease;
+  transition: all .18s ease;
 }
 
-/* 카드에 마우스 올리면 표시 */
-.p-card:hover .chips{
+/* ===== 카드 hover 시 태그 표시 ===== */
+.p-card:hover .p-body .chips{
   opacity: 1;
+  visibility: visible;
   transform: translateY(0);
   pointer-events: auto;
 }
+
+/* ===== 모바일에서는 항상 표시 ===== */
 @media (max-width: 640px){
-  .p-card .chips{
+  .p-card .p-body .chips{
     opacity: 1;
+    visibility: visible;
     transform: none;
     pointer-events: auto;
   }
 }
+
 
 /* === 제품 목록 썸네일 (안 잘리고 전체 보이게) === */
 .p-thumb{
@@ -1393,6 +1399,7 @@ if(prevBtn && nextBtn && gridEl){
 
 </body>
 </html>
+
 
 
 
