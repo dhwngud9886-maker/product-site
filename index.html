@@ -518,58 +518,70 @@
   object-fit: contain;
   border-radius: 12px;
 }
-/* =========================
-   헤더 한 줄 고정
-========================= */
-.header-main {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  gap: 20px;
+/* ===== 헤더 한 줄 강제 고정(클래스명 달라도 최대한 잡힘) ===== */
+header .container .header-main,
+header .header-main,
+.header-main{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  flex-wrap:nowrap !important;
+  gap:20px !important;
 }
 
-/* =========================
-   검색창 영역
-========================= */
-.search-wrap {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  max-width: 720px;
+/* 로고 영역(왼쪽) */
+header .logo{
+  display:flex !important;
+  align-items:center !important;
+  gap:12px !important;
+  white-space:nowrap !important;
+  text-decoration:none !important; /* 밑줄 제거 */
+  color:inherit !important;
 }
 
-.search-bar {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  border: 2px solid #4c7dff;
-  border-radius: 999px;
-  padding: 10px 16px;
+/* 검색 영역(가운데) */
+header .search-wrap,
+header .search,
+header .search-bar-wrap{
+  flex:1 !important;
+  display:flex !important;
+  align-items:center !important;
+  flex-wrap:nowrap !important;
+  min-width:260px !important;
+  max-width:720px !important;
 }
 
-/* input 줄바꿈 + 밑줄 제거 */
-.search-bar input {
-  width: 100%;
-  white-space: nowrap;
-  border: none;
-  outline: none;
-  box-shadow: none;
-  background: transparent;
+/* 검색바 */
+header .search-bar,
+header .searchbar,
+header .search-box{
+  width:100% !important;
+  display:flex !important;
+  align-items:center !important;
+  flex-wrap:nowrap !important;
 }
 
-/* =========================
-   오른쪽 아이콘 줄바꿈 방지
-========================= */
-.header-icons {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  white-space: nowrap;
+/* 검색 input */
+header input[type="search"],
+header input[type="text"]{
+  width:100% !important;
+  min-width:0 !important;           /* flex에서 줄바꿈 방지 핵심 */
+  white-space:nowrap !important;
+  border:none !important;
+  outline:none !important;
+  box-shadow:none !important;
 }
 
+/* 오른쪽 아이콘 영역 */
+header .header-icons,
+header .icons,
+header .util{
+  display:flex !important;
+  align-items:center !important;
+  gap:16px !important;
+  white-space:nowrap !important;
+  flex-wrap:nowrap !important;
+}
   </style>
 </head>
 
@@ -1228,6 +1240,7 @@ if (detailWrap && p.detailImages && p.detailImages.length) {
 
 </body>
 </html>
+
 
 
 
