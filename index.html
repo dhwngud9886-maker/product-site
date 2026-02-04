@@ -1050,18 +1050,30 @@
             ${thumbHtml(p)}
           </div>
           <div class="p-body">
-            <h3 class="p-name">${escapeHtml(p.name)}</h3>
-            <p class="p-sub">${escapeHtml(p.short || "")}</p>
+  <!-- 🔹 카테고리 뱃지 (1개, 색상 자동) -->
+  <span class="chip category
+    ${p.category === "에어컨" ? "aircon" :
+      p.category === "제습기" ? "dehumidifier" :
+      p.category === "히터" ? "heater" : ""}">
+    ${escapeHtml(p.category)}
+  </span>
 
-            <div class="chips">
-              ${(p.tags||[]).slice(0,3).map(t=>`<span class="chip">${escapeHtml(t)}</span>`).join("")}
-            </div>
+  <h3 class="p-name">${escapeHtml(p.name)}</h3>
+  <p class="p-sub">${escapeHtml(p.short || "")}</p>
 
-            <div class="p-bottom">
-              <div class="price">${escapeHtml(p.priceText || "상담문의")}</div>
-              <button class="detail-btn" data-open="${escapeHtml(p.id)}">상세보기</button>
-            </div>
-          </div>
+  <!-- 🔹 태그 뱃지들 -->
+  <div class="chips">
+    ${(p.tags||[]).slice(0,3).map(t =>
+      `<span class="chip tag">${escapeHtml(t)}</span>`
+    ).join("")}
+  </div>
+
+  <div class="p-bottom">
+    <div class="price">${escapeHtml(p.priceText || "상담문의")}</div>
+    <button class="detail-btn" data-open="${escapeHtml(p.id)}">상세보기</button>
+  </div>
+</div>
+
         </article>
       `;
     }
@@ -1359,6 +1371,7 @@ if(prevBtn && nextBtn && gridEl){
 
 </body>
 </html>
+
 
 
 
