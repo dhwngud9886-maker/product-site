@@ -518,6 +518,58 @@
   object-fit: contain;
   border-radius: 12px;
 }
+    /* =========================
+   헤더 한 줄 고정
+========================= */
+.header-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 20px;
+}
+
+/* =========================
+   검색창 영역
+========================= */
+.search-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  max-width: 720px;
+}
+
+.search-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  border: 2px solid #4c7dff;
+  border-radius: 999px;
+  padding: 10px 16px;
+}
+
+/* input 줄바꿈 + 밑줄 제거 */
+.search-bar input {
+  width: 100%;
+  white-space: nowrap;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+/* =========================
+   오른쪽 아이콘 줄바꿈 방지
+========================= */
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  white-space: nowrap;
+}
+
   </style>
 </head>
 
@@ -1176,6 +1228,7 @@ if (detailWrap && p.detailImages && p.detailImages.length) {
 
 </body>
 </html>
+
 
 
 
