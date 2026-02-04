@@ -494,16 +494,48 @@
       .detail{ grid-template-columns: 1fr; }
       .detail-img{ height: 480px; }
     }
-    @media (max-width:640px){
-      .icons{ display:none; }
-      .search{ min-width:0; }
-      .grid{ grid-template-columns: 1fr; }
-      .headline h2{ font-size:28px; }
-      .slide{ height: 360px; }
-      .nav-arrow{ display:none; }
-      .detail-img{ height: 420px; }
-      .gthumb{ width:78px; height:58px; }
-    }
+@media (max-width:640px){
+
+  /* ===== 기존 코드 유지 ===== */
+  .icons{ display:none; }
+  .search{ min-width:0; }
+  .grid{ grid-template-columns:1fr; }
+  .headline h2{ font-size:28px; }
+  .slide{ height:360px; }
+  .nav-arrow{ display:none; }
+  .detail-img{ height:420px; }
+  .gthumb{ width:78px; height:58px; }
+
+  /* ===== 여기부터 추가 ===== */
+
+  .header-main{
+    display:flex;
+    flex-wrap: nowrap;      /* 🔥 줄바꿈 금지 */
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo{
+    flex: 0 0 auto;
+    text-decoration:none;  /* 밑줄 제거 */
+  }
+
+  .logo .small{
+    display:none;           /* 모바일에서 보조 문구 숨김 */
+  }
+
+  .search{
+    flex: 1 1 auto;
+    max-width: 100%;
+  }
+
+  .search input{
+    width:100%;
+    font-size:13px;
+    white-space:nowrap;
+  }
+}
+
     .detail-images{
   margin-top: 20px;
   display: flex;
@@ -1236,6 +1268,7 @@ if (detailWrap && p.detailImages && p.detailImages.length) {
 
 </body>
 </html>
+
 
 
 
