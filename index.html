@@ -328,6 +328,32 @@
       box-shadow: var(--shadow);
       border-color: rgba(56,189,248,.35);
     }
+/* ===== 태그 기본 숨김 ===== */
+.p-card .p-body .chips{
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: all .18s ease;
+}
+
+/* ===== 카드 hover 시 태그 표시 ===== */
+.p-card:hover .p-body .chips{
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ===== 모바일에서는 항상 표시 ===== */
+@media (max-width: 640px){
+  .p-card .p-body .chips{
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+  }
+}
 
 
 /* === 제품 목록 썸네일 (안 잘리고 전체 보이게) === */
@@ -1061,8 +1087,14 @@
   </span>
 
   <h3 class="p-name">${escapeHtml(p.name)}</h3>
-  
+  <p class="p-sub">${escapeHtml(p.short || "")}</p>
 
+  <!-- 🔹 태그 뱃지들 -->
+  <div class="chips">
+    ${(p.tags||[]).slice(0,3).map(t =>
+      `<span class="chip tag">${escapeHtml(t)}</span>`
+    ).join("")}
+  </div>
 
   <div class="p-bottom">
     <div class="price">${escapeHtml(p.priceText || "상담문의")}</div>
@@ -1367,8 +1399,6 @@ if(prevBtn && nextBtn && gridEl){
 
 </body>
 </html>
-
-
 
 
 
