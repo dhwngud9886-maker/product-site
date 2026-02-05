@@ -571,6 +571,29 @@
     font-size:13px;
     white-space:nowrap;
   }
+    /* ===== 모바일에서는 슬라이더 완전 해제 ===== */
+  .grid.slider{
+    display: grid !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    scroll-snap-type: none !important;
+  }
+
+  .grid.slider .p-card{
+    flex: none !important;
+    min-width: 0 !important;
+  }
+
+  /* 슬라이더 화살표 숨김 */
+  .slide-arrow{
+    display:none !important;
+  }
+
+  /* 카드 썸네일 모바일 높이 조정 */
+  .p-thumb{
+    height: 260px;
+  }
+
 }
 
     .detail-images{
@@ -1329,7 +1352,8 @@
     const activeCat = q.cat || "";
     const searchQ = (q.q || "").trim();
     
-    const isHomeSlider = !activeCat && !searchQ;
+    const isHomeSlider = !activeCat && !searchQ && window.innerWidth > 640;
+
 
     renderCategoryNav(activeCat);
 
@@ -1839,6 +1863,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
 </body>
 </html>
+
 
 
 
