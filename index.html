@@ -1210,6 +1210,7 @@
   function qs(sel, root=document){ return root.querySelector(sel); }
   function qsa(sel, root=document){ return [...root.querySelectorAll(sel)]; }
 
+
   function parseRoute(){
     const h = location.hash || "#/";
     return h.replace("#","").split("/").filter(Boolean);
@@ -1625,6 +1626,46 @@ if (detailWrap && p.detailImages && p.detailImages.length) {
       });
     }
   }
+function renderContact(){
+  // 카테고리 nav는 유지(원하면 ""로 비우지 말고 유지)
+  renderCategoryNav("");
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="title">
+        <div>
+          <h1>1:1 문의</h1>
+          <p>아래 연락처로 편하게 문의 주세요.</p>
+        </div>
+        <div class="toolbar">
+          <a class="btn2 ghost" href="#/">홈</a>
+        </div>
+      </div>
+
+      <div class="panel" style="line-height:1.8;font-size:14px">
+        <div style="margin-bottom:10px">
+          <b>이메일</b><br>
+          <a class="btn2" style="margin-top:8px"
+             href="mailto:${encodeURIComponent(CONTACT.email)}?subject=${encodeURIComponent("문의합니다")}}">
+            ${escapeHtml(CONTACT.email)}
+          </a>
+        </div>
+
+        <div style="margin-top:16px">
+          <b>전화</b><br>
+          <a class="btn2 ghost" style="margin-top:8px"
+             href="tel:${escapeHtml(CONTACT.phoneTel)}">
+            ${escapeHtml(CONTACT.phoneText)}
+          </a>
+        </div>
+
+        <div style="margin-top:16px;color:var(--muted);font-size:13px">
+          (원하면 여기에 카카오/네이버톡톡/폼 링크도 붙일 수 있어요)
+        </div>
+      </div>
+    </div>
+  `;
+}
 
   // =========================
   function bindGlobalSearch(){
@@ -1812,6 +1853,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
 </body>
 </html>
+
 
 
 
