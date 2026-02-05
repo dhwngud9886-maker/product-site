@@ -650,6 +650,12 @@
   scroll-behavior: smooth;
   padding: 10px 40px;
 }
+@media (max-width: 1100px){
+  .grid.slider .p-card{ flex: 0 0 calc((100% - 20px) / 2); }
+}
+@media (max-width: 640px){
+  .grid.slider .p-card{ flex: 0 0 100%; }
+}
 
 /* 스크롤바 숨김 */
 .grid.slider::-webkit-scrollbar{
@@ -660,10 +666,22 @@
   scrollbar-width: none;
 }
 
-/* 카드 크기 고정 (중요) */
-.grid.slider .card{
-  flex: 0 0 300px; /* 카드 너비 */
+/* ✅ 한 화면에 4개 고정 */
+.grid.slider{
+  display:flex;
+  gap:20px;
+  overflow-x:auto;
+  scroll-behavior:smooth;
+  padding:10px 40px;
+  scroll-snap-type:x mandatory;   /* ✅ 스냅(딱딱 맞게 넘어가게) */
 }
+
+.grid.slider .p-card{
+  flex: 0 0 calc((100% - 20px*3) / 4);  /* ✅ 4개 */
+  min-width: calc((100% - 20px*3) / 4);
+  scroll-snap-align:start;
+}
+
 
 /* 화살표 */
 .slide-arrow{
@@ -1431,26 +1449,33 @@ if (detailWrap && p.detailImages && p.detailImages.length) {
     const q = parseHashQuery();
     renderCategoryNav(q.cat || "");
   });
-  const gridEl = document.getElementById("grid");
+const gridEl = document.getElementById("grid");
 const prevBtn = document.getElementById("slidePrev");
 const nextBtn = document.getElementById("slideNext");
 
-if(prevBtn && nextBtn && gridEl){
-  const scrollAmount = 320; // 카드 1칸
+function getStep(){
+  const card = gridEl?.querySelector(".p-card");
+  if(!card) return 0;
+  const gap = 20; // CSS gap이 20px이니까 동일하게
+  return card.getBoundingClientRect().width + gap;
+}
 
+if(prevBtn && nextBtn && gridEl){
   prevBtn.addEventListener("click", ()=>{
-    gridEl.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+    gridEl.scrollBy({ left: -getStep(), behavior: "smooth" });
   });
 
   nextBtn.addEventListener("click", ()=>{
-    gridEl.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    gridEl.scrollBy({ left: getStep(), behavior: "smooth" });
   });
 }
+
 
 </script>
 
 </body>
 </html>
+
 
 
 
