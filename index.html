@@ -3,160 +3,877 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>제품 / 공지 / 이벤트</title>
+  <title>제품 소개</title>
 
   <style>
     :root{
-      --bg:#f7fbff; --card:#fff; --text:#0f172a; --muted:#64748b; --border:#e5e7eb;
-      --blue:#2563eb;   /* 에어컨 */
-      --mint:#2dd4bf;   /* 제습기 */
-      --orange:#fb923c; /* 히터 */
-      --sky:#38bdf8; --sky-soft:#e0f2fe;
+      --bg:#f7fbff;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:#e5e7eb;
+
+      --blue:#2563eb;
+      --sky:#38bdf8;
+      --sky-soft:#e0f2fe;
+
       --radius:16px;
-      --shadow-sm:0 8px 18px rgba(15,23,42,.08);
-      --shadow:0 14px 32px rgba(15,23,42,.12);
+      --shadow-sm: 0 8px 18px rgba(15,23,42,.08);
+      --shadow: 0 14px 32px rgba(15,23,42,.12);
     }
+
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR",sans-serif;background:var(--bg);color:var(--text)}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
     a{color:inherit}
+
     .container{max-width:1200px;margin:0 auto;padding:0 18px}
 
-    header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
-    .header-main{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 0}
-    .logo{display:flex;align-items:center;gap:10px;font-weight:1000;white-space:nowrap;text-decoration:none}
-    .logo-mark{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--sky));box-shadow:0 10px 18px rgba(37,99,235,.25)}
-    .search{flex:1;display:flex;align-items:center;gap:10px;border:2px solid rgba(37,99,235,.75);border-radius:999px;padding:10px 12px;max-width:720px;min-width:240px}
-    .search input{flex:1;min-width:0;border:0;outline:none;font-size:14px;background:transparent}
-    .search button{border:0;cursor:pointer;background:transparent;width:36px;height:36px;border-radius:999px}
-    .search button:hover{background:rgba(37,99,235,.08)}
-    .icons{display:flex;gap:14px;align-items:center;white-space:nowrap}
-    .icon-btn{display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:var(--muted);font-size:12px;font-weight:800;padding:6px 6px;border-radius:12px}
-    .icon-btn:hover{color:var(--text);background:rgba(2,132,199,.08)}
-    .icon{width:24px;height:24px;border-radius:8px;border:1px solid var(--border);display:grid;place-items:center;color:var(--blue);background:#fff}
-
-    .nav{border-top:1px solid var(--border);background:#fff}
-    .nav-row{display:flex;align-items:center;gap:10px;padding:10px 0;overflow:auto}
-    .allcat{display:flex;align-items:center;gap:10px;background:var(--blue);color:#fff;font-weight:1000;border-radius:12px;padding:10px 14px;white-space:nowrap;text-decoration:none}
-    .allcat:hover{filter:brightness(.98)}
-    .nav a.item{text-decoration:none;font-weight:900;color:var(--text);padding:10px 12px;border-radius:12px;white-space:nowrap;border:1px solid transparent}
-    .nav a.item:hover{background:var(--sky-soft);border-color:rgba(56,189,248,.35)}
-    .nav a.item.active{background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.25);color:var(--blue)}
-
-    .banner-wrap{padding:18px 0}
-    .banner{position:relative;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);background:#0b1220}
-    .slides{display:flex;transition:transform .45s ease;will-change:transform}
-    .slide{min-width:100%;height:360px;position:relative;color:#fff;display:grid;place-items:center;
-      background:radial-gradient(900px 400px at 20% 30%, rgba(56,189,248,.35), rgba(0,0,0,.85))}
-    .slide .content{width:100%;height:100%;display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:16px;padding:26px 28px}
-    .headline{max-width:560px}
-    .headline h2{margin:0 0 10px;font-size:40px;line-height:1.1;letter-spacing:-.5px}
-    .headline p{margin:0 0 16px;color:rgba(255,255,255,.82);line-height:1.6;font-size:14px}
-    .banner-cta{display:flex;gap:10px;flex-wrap:wrap}
-    .btn{border:0;cursor:pointer;padding:11px 14px;border-radius:14px;font-weight:1000;background:var(--sky);color:#00202e;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-    .btn:hover{filter:brightness(.98)}
-    .btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.25)}
-    .hero-img{width:100%;height:100%;border-radius:18px;border:1px solid rgba(255,255,255,.14);
-      background:linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.02));
-      display:grid;place-items:center;position:relative;overflow:hidden}
-    .hero-img img{width:100%;height:100%;object-fit:cover;display:block}
-    .hero-img .ph{text-align:center;color:rgba(255,255,255,.75);font-weight:900}
-    .nav-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.35);color:#fff;cursor:pointer;display:grid;place-items:center;z-index:2}
-    .nav-arrow:hover{background:rgba(0,0,0,.5)}
-    .nav-arrow.prev{left:14px} .nav-arrow.next{right:14px}
-    .dots{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:8px;z-index:2}
-    .dot{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,.35);cursor:pointer;border:1px solid rgba(255,255,255,.25)}
-    .dot.active{background:rgba(56,189,248,.95)}
-
-    main{padding:0 0 60px}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:18px}
-    .title{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:12px}
-    .title h1{margin:0;font-size:22px;letter-spacing:-.2px}
-    .title p{margin:0;color:var(--muted);font-size:13px}
-    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0 16px}
-    .input{background:#fff;border:1px solid var(--border);border-radius:14px;padding:11px 12px;outline:none;color:var(--text);flex:1;min-width:240px}
-    .input:focus{border-color:rgba(56,189,248,.75);box-shadow:0 0 0 4px rgba(56,189,248,.18)}
-    .btn2{border:0;cursor:pointer;padding:11px 12px;border-radius:14px;font-weight:1000;background:var(--blue);color:#fff;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
-    .btn2.ghost{background:#fff;color:var(--blue);border:1px solid rgba(37,99,235,.25)}
-
-    /* 제품 가로 슬라이더 */
-    .product-slider{position:relative}
-    .grid.slider{display:flex;gap:20px;overflow-x:auto;scroll-behavior:smooth;padding:10px 40px;scroll-snap-type:x mandatory;-ms-overflow-style:none;scrollbar-width:none}
-    .grid.slider::-webkit-scrollbar{display:none}
-    .slide-arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;
-      border:none;background:#fff;box-shadow:0 4px 12px rgba(0,0,0,.15);cursor:pointer;font-size:22px;z-index:10}
-    .slide-arrow.left{left:0} .slide-arrow.right{right:0}
-    .slide-arrow:hover{background:#f0f6ff}
-
-    .p-card{position:relative;background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-sm);
-      transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;display:flex;flex-direction:column;scroll-snap-align:start;
-      flex:0 0 calc((100% - 20px*3)/4);min-width:calc((100% - 20px*3)/4)}
-    .p-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:rgba(56,189,248,.35)}
-    .p-thumb{width:100%;height:360px;background:#f8fafc;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden}
-    .p-thumb img{max-width:100%;max-height:100%;object-fit:contain;display:block}
-
-    .badge{position:absolute;left:12px;top:12px;font-weight:1000;font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid rgba(0,0,0,.06);background:#eef2ff}
-    .badge.aircon{background:rgba(37,99,235,.12);color:var(--blue);border-color:rgba(37,99,235,.18)}
-    .badge.dehumidifier{background:rgba(45,212,191,.16);color:#0f766e;border-color:rgba(45,212,191,.22)}
-    .badge.heater{background:rgba(251,146,60,.16);color:#c2410c;border-color:rgba(251,146,60,.22)}
-
-    .p-body{padding:12px;display:flex;flex-direction:column;flex:1}
-    .p-name{font-weight:1000;margin:0 0 6px;font-size:14px}
-    .p-sub{margin:0;color:var(--muted);font-size:12px;line-height:1.45}
-    .p-bottom{margin-top:auto;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-    .price{font-weight:1000;font-size:13px}
-    .detail-btn{border:0;cursor:pointer;padding:9px 10px;border-radius:12px;font-weight:1000;background:var(--sky);color:#00202e}
-
-    .detail{display:grid;gap:14px;grid-template-columns:1.35fr .65fr;align-items:start}
-    .panel{background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:16px}
-    .detail-img{height:520px;border-radius:16px;overflow:hidden;border:1px solid var(--border);background:#f8fafc;display:flex;align-items:center;justify-content:center}
-    .detail-img img{max-width:100%;max-height:100%;object-fit:contain}
-    .thumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .thumb{width:72px;height:72px;border-radius:14px;border:1px solid var(--border);overflow:hidden;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
-    .thumb img{max-width:100%;max-height:100%;object-fit:contain}
-    table{width:100%;border-collapse:collapse;font-size:13px}
-    td{padding:10px;border-bottom:1px solid #eef2f7}
-    td:first-child{color:var(--muted);width:42%}
-    .muted{color:var(--muted)}
-
-    footer{padding:26px 0;color:var(--muted);font-size:13px;text-align:center}
-    .quick-menu{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:10px;z-index:60}
-    .quick-item{background:#fff;border:1px solid var(--border);border-radius:999px;padding:10px 12px;display:flex;align-items:center;gap:8px;
-      box-shadow:var(--shadow-sm);cursor:pointer;text-decoration:none}
-    .quick-item .icon{width:22px;height:22px;border-radius:7px}
-    .quick-item.top{font-weight:1000}
-
-    @media (max-width: 980px){
-      .slide .content{grid-template-columns:1fr;gap:12px}
-      .detail{grid-template-columns:1fr}
-      .p-card{flex:0 0 calc((100% - 20px)/2);min-width:calc((100% - 20px)/2)}
-      .p-thumb{height:300px}
+    /* ===== Header (logo + search + icons) ===== */
+    header{
+      background:#ffffff;
+      border-bottom:1px solid var(--border);
+      position:sticky; top:0; z-index:50;
     }
-    @media (max-width: 560px){
-      .p-card{flex:0 0 90%;min-width:90%}
-      .p-thumb{height:280px}
+    .header-main{
+      display:flex; align-items:center; gap:18px;
+      padding:16px 0;
     }
+    .logo{
+      display:flex; align-items:center; gap:10px;
+      font-weight:1000; letter-spacing:.2px;
+      white-space:nowrap;
+    }
+    .logo-mark{
+      width:34px; height:34px; border-radius:12px;
+      background: linear-gradient(135deg, var(--blue), var(--sky));
+      box-shadow: 0 10px 18px rgba(37,99,235,.25);
+    }
+    .logo span.small{font-weight:900; color:var(--muted); font-size:12px; display:block; margin-top:2px}
+
+    .search{
+      flex:1;
+      display:flex;
+      align-items:center;
+      border:2px solid rgba(37,99,235,.75);
+      border-radius:999px;
+      padding:10px 12px;
+      gap:10px;
+      min-width:280px;
+    }
+    .search input{
+      border:0; outline:none; width:100%;
+      font-size:14px;
+    }
+    .search button{
+      border:0; cursor:pointer;
+      background:transparent;
+      width:36px; height:36px;
+      border-radius:999px;
+    }
+    .search button:hover{ background:rgba(37,99,235,.08) }
+
+    .icons{
+      display:flex; gap:14px; align-items:center;
+    }
+    .icon-btn{
+      display:flex; flex-direction:column; align-items:center; gap:6px;
+      text-decoration:none;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
+      padding:6px 6px;
+      border-radius:12px;
+    }
+    .icon-btn:hover{
+      color:var(--text);
+      background: rgba(2,132,199,.08);
+    }
+    .icon{
+      width:24px; height:24px; border-radius:8px;
+      border:1px solid var(--border);
+      display:grid; place-items:center;
+      color: var(--blue);
+      background:#fff;
+    }
+
+    /* ===== Category nav ===== */
+    .nav{
+      border-top:1px solid var(--border);
+      background:#ffffff;
+    }
+    .nav-row{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 0;
+      overflow:auto;
+    }
+    .allcat{
+      display:flex; align-items:center; gap:10px;
+      background: var(--blue);
+      color:#fff;
+      font-weight:1000;
+      border-radius:12px;
+      padding:10px 14px;
+      white-space:nowrap;
+      text-decoration:none;
+    }
+    .allcat:hover{ filter:brightness(.98) }
+    .nav a.item{
+      text-decoration:none;
+      font-weight:900;
+      color: var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      white-space:nowrap;
+      border:1px solid transparent;
+    }
+    .nav a.item:hover{
+      background: var(--sky-soft);
+      border-color: rgba(56,189,248,.35);
+    }
+    .nav a.item.active{
+      background: rgba(37,99,235,.08);
+      border-color: rgba(37,99,235,.25);
+      color: var(--blue);
+    }
+
+    /* ===== Banner slider ===== */
+    .banner-wrap{ padding:18px 0; }
+    .banner{
+      position:relative;
+      border-radius: 20px;
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      background:#0b1220;
+    }
+    .slides{ display:flex; transition: transform .45s ease; will-change: transform; }
+    .slide{
+      min-width:100%;
+      height: 360px;
+      position:relative;
+      color:#fff;
+      display:grid;
+      place-items:center;
+      background: radial-gradient(900px 400px at 20% 30%, rgba(56,189,248,.35), rgba(0,0,0,.85));
+    }
+    .slide .content{
+      width:100%;
+      height:100%;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      align-items:center;
+      gap:16px;
+      padding: 26px 28px;
+    }
+    .headline{ max-width:560px; }
+    .headline h2{
+      margin:0 0 10px;
+      font-size:40px;
+      line-height:1.1;
+      letter-spacing:-.5px;
+    }
+    .headline p{
+      margin:0 0 16px;
+      color: rgba(255,255,255,.82);
+      line-height:1.6;
+      font-size:14px;
+    }
+    .banner-cta{ display:flex; gap:10px; flex-wrap:wrap; }
+    .btn{
+      border:0; cursor:pointer;
+      padding:11px 14px;
+      border-radius:14px;
+      font-weight:1000;
+      background: var(--sky);
+      color:#00202e;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn:hover{ filter:brightness(.98) }
+    .btn.ghost{
+      background:transparent;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.25);
+    }
+
+    .hero-img{
+      width:100%;
+      height: 100%;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.02));
+      display:grid; place-items:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-img .tag{
+      position:absolute; left:14px; top:14px;
+      background: rgba(56,189,248,.22);
+      border: 1px solid rgba(56,189,248,.35);
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:12px;
+    }
+    .hero-img img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .hero-img .ph{ text-align:center; color: rgba(255,255,255,.75); font-weight:900; }
+
+    .nav-arrow{
+      position:absolute; top:50%;
+      transform:translateY(-50%);
+      width:44px; height:44px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.35);
+      color:#fff;
+      cursor:pointer;
+      display:grid; place-items:center;
+      z-index:2;
+    }
+    .nav-arrow:hover{ background: rgba(0,0,0,.5) }
+    .nav-arrow.prev{ left:14px }
+    .nav-arrow.next{ right:14px }
+
+    .dots{
+      position:absolute;
+      left:50%; bottom:14px;
+      transform:translateX(-50%);
+      display:flex; gap:8px;
+      z-index:2;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:999px;
+      background: rgba(255,255,255,.35);
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.25);
+    }
+    .dot.active{ background: rgba(56,189,248,.95) }
+
+    /* ===== Main ===== */
+    main{ padding:0 0 60px }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding:18px;
+    }
+    .title{
+      display:flex; justify-content:space-between; align-items:flex-end; gap:12px;
+      margin-bottom:12px;
+    }
+    .title h1{ margin:0; font-size:22px; letter-spacing:-.2px }
+    .title p{ margin:0; color:var(--muted); font-size:13px }
+
+    .toolbar{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin:14px 0 16px;
+    }
+    .input, .select{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:11px 12px;
+      outline:none;
+      color:var(--text);
+    }
+    .input{ flex:1; min-width:240px }
+    .input:focus, .select:focus{
+      border-color: rgba(56,189,248,.75);
+      box-shadow: 0 0 0 4px rgba(56,189,248,.18);
+    }
+    .btn2{
+      border:0; cursor:pointer;
+      padding:11px 12px;
+      border-radius:14px;
+      font-weight:1000;
+      background: var(--blue);
+      color:#fff;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+    .btn2.ghost{
+      background:#fff;
+      color:var(--blue);
+      border:1px solid rgba(37,99,235,.25);
+    }
+
+    /* Products grid */
+    .grid{
+      display:grid;
+      gap:14px;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+    }
+    .p-card{
+      position: relative;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius: 16px;
+      overflow:hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+      display:flex; flex-direction:column;
+    }
+    .p-card:hover{
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+      border-color: rgba(56,189,248,.35);
+    }
+/* ===== 태그 기본 숨김 ===== */
+.p-card .p-body .chips{
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: all .18s ease;
+}
+
+/* ===== 카드 hover 시 태그 표시 ===== */
+.p-card:hover .p-body .chips{
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ===== 모바일에서는 항상 표시 ===== */
+@media (max-width: 640px){
+  .p-card .p-body .chips{
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+  }
+}
+
+
+/* === 제품 목록 썸네일 (안 잘리고 전체 보이게) === */
+.p-thumb{
+  width: 100%;
+  height: 360px;                 /* 썸네일 세로 길이 */
+  background: #f8fafc;           /* 여백 생겨도 깔끔 */
+  border-bottom: 1px solid #e5e7eb;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+.p-thumb img{
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;           /* ⭐ 핵심: 안 잘리고 전체 보임 */
+}
+
+    .badge{
+      position:absolute; left:12px; top:12px;
+      background: var(--sky-soft);
+      border:1px solid rgba(56,189,248,.35);
+      color: #0369a1;
+      font-weight:1000;
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+    }
+    .p-body{
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  flex:1;              /* ✅ 남는 높이 먹기 */
+}
+
+    .p-name{ font-weight:1000; margin:0 0 6px; font-size:14px }
+    .p-sub{ margin:0; color:var(--muted); font-size:12px; line-height:1.45 }
+    .chips{ display:flex; gap:6px; flex-wrap:wrap; margin-top:10px }
+    .chip{
+      font-size:11px;
+      font-weight:900;
+      background:#f1f5f9;
+      border:1px solid #e2e8f0;
+      padding:5px 9px;
+      border-radius:999px;
+    }
+   .p-bottom{
+  margin-top:auto;     /* ✅ 항상 맨 아래로 */
+  padding-top:12px;    /* 기존 12px 간격 유지 */
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
+
+    .price{ font-weight:1000; font-size:13px }
+    .detail-btn{
+      border:0; cursor:pointer;
+      padding:9px 10px;
+      border-radius:12px;
+      font-weight:1000;
+      background: var(--sky);
+      color:#00202e;
+    }
+
+    /* Detail */
+    .detail{
+      display:grid; gap:14px;
+      grid-template-columns: 1.35fr .65fr;
+      align-items:start;
+    }
+    .panel{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow-sm);
+      padding:16px;
+    }
+
+    /* 왼쪽: 메인 이미지 + 갤러리 */
+    .detail-img{
+      height: 520px;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      background: #f8fafc;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .detail-img img{ width:100%; height:100%; object-fit:contain; display:block }
+
+    .gallery-strip{
+      display:flex;
+      gap:10px;
+      margin-top:10px;
+      overflow:auto;
+      padding-bottom:4px;
+    }
+    .gthumb{
+      border:1px solid #e5e7eb;
+      background:#fff;
+      border-radius:12px;
+      padding:0;
+      cursor:pointer;
+      width:90px;
+      height:68px;
+      overflow:hidden;
+      flex:0 0 auto;
+    }
+    .gthumb img{ width:100%; height:100%; object-fit:cover; display:block }
+    .gthumb.active{
+      border-color: rgba(56,189,248,.85);
+      box-shadow: 0 0 0 4px rgba(56,189,248,.18);
+    }
+
+    /* 오른쪽 스펙 */
+    .specs{ list-style:none; padding:0; margin:10px 0 0 }
+    .specs li{
+      display:flex; justify-content:space-between; gap:12px;
+      padding:10px 0;
+      border-bottom:1px solid #eef2f7;
+      color: var(--muted);
+      font-size:13px;
+    }
+    .specs b{ color:var(--text) }
+
+    /* 상세 하단 긴 이미지 섹션 */
+    .detail-stack{
+      margin-top:14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .detail-shot{
+      border:1px solid var(--border);
+      border-radius:16px;
+      overflow:hidden;
+      background:#fff;
+      box-shadow: var(--shadow-sm);
+    }
+    .detail-shot img{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+
+    /* 스펙 표 이미지(선택) */
+    .spec-image{
+      margin-top:12px;
+      border:1px solid var(--border);
+      border-radius:16px;
+      overflow:hidden;
+      background:#fff;
+      box-shadow: var(--shadow-sm);
+    }
+    .spec-image img{ width:100%; height:auto; display:block; }
+
+    footer{
+      padding:18px 0;
+      border-top:1px solid var(--border);
+      color:#94a3b8;
+      font-size:12px;
+      background:#fff;
+      margin-top:36px;
+    }
+
+    /* Responsive */
+    @media (max-width:1100px){
+      .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .slide .content{ grid-template-columns: 1fr; }
+      .headline h2{ font-size:34px; }
+      .slide{ height: 380px; }
+      .detail{ grid-template-columns: 1fr; }
+      .detail-img{ height: 480px; }
+    }
+@media (max-width:640px){
+
+  /* ===== 기존 코드 유지 ===== */
+  .icons{ display:none; }
+  .search{ min-width:0; }
+  .grid{ grid-template-columns:1fr; }
+  .headline h2{ font-size:28px; }
+  .slide{ height:360px; }
+  .nav-arrow{ display:none; }
+  .detail-img{ height:420px; }
+  .gthumb{ width:78px; height:58px; }
+
+  /* ===== 여기부터 추가 ===== */
+
+  .header-main{
+    display:flex;
+    flex-wrap: nowrap;      /* 🔥 줄바꿈 금지 */
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo{
+    flex: 0 0 auto;
+    text-decoration:none;  /* 밑줄 제거 */
+  }
+
+  .logo .small{
+    display:none;           /* 모바일에서 보조 문구 숨김 */
+  }
+
+  .search{
+    flex: 1 1 auto;
+    max-width: 100%;
+  }
+
+  .search input{
+    width:100%;
+    font-size:13px;
+    white-space:nowrap;
+  }
+}
+
+    .detail-images{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-images img{
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  border-radius: 12px;
+}
+/* 헤더 한 줄 고정 */
+.header-main{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:nowrap;     /* 줄바꿈 금지 */
+}
+
+/* 로고 줄바꿈 방지 + 밑줄 제거 */
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  white-space:nowrap;
+  text-decoration:none; /* 밑줄 제거 */
+  color:inherit;
+}
+
+/* 검색창이 가운데서 늘어나게 */
+.search{
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  max-width:720px;      /* 너무 길어지는 거 방지 */
+  min-width:240px;      /* 너무 작아져서 깨지는 거 방지 */
+}
+
+/* 검색 input이 flex에서 줄바꿈 유발하는 걸 막는 핵심 */
+.search input{
+  flex:1;
+  min-width:0;          /* ⭐이게 없으면 줄바꿈/깨짐 자주 생김 */
+  white-space:nowrap;
+}
+
+/* input 테두리/밑줄 느낌 제거(원하면) */
+.search input{
+  border:none;
+  outline:none;
+  box-shadow:none;
+  background:transparent;
+}
+
+/* 검색창 테두리는 search 컨테이너에 주는 게 깔끔 */
+.search{
+  border:2px solid #4c7dff;
+  border-radius:999px;
+  padding:10px 16px;
+}
+
+/* 오른쪽 아이콘 줄바꿈 방지 */
+.icons{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  flex-wrap:nowrap;
+  white-space:nowrap;
+}
+/* ===== 제품 슬라이더 ===== */
+.product-slider{
+  position: relative;
+}
+
+.grid.slider{
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px 40px;
+}
+@media (max-width: 1100px){
+  .grid.slider .p-card{ flex: 0 0 calc((100% - 20px) / 2); }
+}
+@media (max-width: 640px){
+  .grid.slider .p-card{ flex: 0 0 100%; }
+}
+
+/* 스크롤바 숨김 */
+.grid.slider::-webkit-scrollbar{
+  display: none;
+}
+.grid.slider{
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ✅ 한 화면에 4개 고정 */
+.grid.slider{
+  display:flex;
+  gap:20px;
+  overflow-x:auto;
+  scroll-behavior:smooth;
+  padding:10px 40px;
+  scroll-snap-type:x mandatory;   /* ✅ 스냅(딱딱 맞게 넘어가게) */
+}
+
+.grid.slider .p-card{
+  flex: 0 0 calc((100% - 20px*3) / 4);  /* ✅ 4개 */
+  min-width: calc((100% - 20px*3) / 4);
+  scroll-snap-align:start;
+}
+
+
+/* 화살표 */
+.slide-arrow{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  cursor: pointer;
+  font-size: 22px;
+  z-index: 10;
+}
+
+.slide-arrow.left{ left: 0; }
+.slide-arrow.right{ right: 0; }
+
+.slide-arrow:hover{
+  background: #f0f6ff;
+}
+
+
+
+.side-card{
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  padding: 14px;
+}
+
+.side-title{
+  font-weight: 1000;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.side-list{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.side-list li{
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.side-list a{
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 800;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.side-list a:hover{
+  color: var(--blue);
+}
+
+.side-date{
+  color: var(--muted);
+  font-size: 12px;
+  flex: 0 0 auto;
+}
+
+/* ✅ 화면이 좁으면 오른쪽 패널 숨김(모바일/작은 화면) */
+@media (max-width: 1300px){
+  .side-panel{ display: none; }
+}
+/* =========================
+   오른쪽 플로팅 퀵 메뉴
+========================= */
+.quick-menu{
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 개별 버튼 */
+.quick-item{
+  width: 64px;
+  height: 64px;
+  background: #ffffff;
+  border: 1px solid #e0f2fe;
+  border-radius: 18px;
+  box-shadow: 0 10px 22px rgba(56,189,248,.25);
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  gap: 6px;              /* 아이콘-텍스트 간격 */
+  padding-top: 2px;      /* 위로 쏠리는 느낌 보정 */
+
+  text-decoration:none;
+  color:#0369a1;
+  font-weight:900;
+  transition: all .18s ease;
+}
+    .quick-item .icon{
+  font-size: 22px;
+  line-height: 1;     /* ← 이게 없으면 위/아래 어긋나 보임 */
+  display: block;
+}
+
+.quick-item .label{
+  font-size: 11px;
+  line-height: 1;     /* ← 글자 높이 보정 */
+}
+
+
+
+/* 아이콘 */
+.quick-item .icon{
+  font-size: 20px;
+}
+
+/* 텍스트 */
+.quick-item .label{
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* hover 효과 */
+.quick-item:hover{
+  background: #e0f2fe;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(56,189,248,.35);
+}
+
+/* 맨 위로 버튼 */
+.quick-item.top{
+  background: #38bdf8;
+  color: #00202e;
+  font-size: 18px;
+}
+
+@media (max-width: 1100px){
+  .quick-menu{ display: none; }
+}
+
+
   </style>
 </head>
 
 <body>
+
 <header>
   <div class="container">
     <div class="header-main">
-      <a class="logo" href="#/">
+      <a href="#/" class="logo">
         <div class="logo-mark"></div>
         <div>
-          <div>Product Site</div>
-          <span class="sub">제품/공지/이벤트</span>
+          <div style="font-size:18px">이노크린텍</div>
+          <span class="small">에어컨 · 히터 · 제습기</span>
         </div>
       </a>
 
       <div class="search">
-        <input id="globalSearchInput" placeholder="검색 (예: HSC-1170D, 제습기, 인버터)" />
+        <input id="globalSearch" placeholder="검색어 입력 (예: 이동형, 저소음, 인버터)" />
         <button id="globalSearchBtn" aria-label="search">🔍</button>
       </div>
 
       <div class="icons">
+
         <a class="icon-btn" href="#/contact"><div class="icon">💬</div><div>1:1문의</div></a>
       </div>
     </div>
@@ -183,31 +900,45 @@
 </section>
 
 <main class="container">
+
+
+
   <div id="app"></div>
 
-  <footer>© <span id="year"></span> Product Site. All rights reserved.</footer>
-
+  <footer>
+    © <span id="year"></span> Product Site. All rights reserved.
+  </footer>
   <div class="quick-menu">
-    <a class="quick-item" href="#/notice"><span class="icon">📢</span><span class="label">공지</span></a>
-    <a class="quick-item" href="#/event"><span class="icon">🎉</span><span class="label">이벤트</span></a>
-    <a class="quick-item" href="#/contact"><span class="icon">💬</span><span class="label">문의</span></a>
-    <button class="quick-item top" id="goTop" type="button">⬆</button>
-  </div>
+  <a class="quick-item" href="#/notice">
+    <span class="icon">📢</span>
+    <span class="label">공지</span>
+  </a>
+
+  <a class="quick-item" href="#/event">
+    <span class="icon">🎉</span>
+    <span class="label">이벤트</span>
+  </a>
+
+  <a class="quick-item" href="#/contact">
+    <span class="icon">💬</span>
+    <span class="label">문의</span>
+  </a>
+<button class="quick-item top" id="goTop" type="button">⬆</button>
+
+
+</div>
+
 </main>
+
 
 <script>
   // =========================
-  // 데이터 (여기만 코딩으로 수정하면 됨)
+  // 1) 제품 데이터
+  // - thumb: 목록 썸네일 1장
+  // - gallery: 상세 왼쪽(메인+썸네일)
+  // - detailImages: 상세 하단에 긴 이미지들(세로 긴 이미지 포함)
+  // - specImage: 스펙 표를 이미지로도 보여주고 싶을 때
   // =========================
-
-  // 배너 데이터
-  const BANNERS = [
-    { title:"산업용 냉난방 솔루션", desc:"현장에 맞는 제품을 빠르게 찾고 상담받으세요.", cta:"#/", ctaText:"제품 보기", image:"" },
-    { title:"공지사항 확인", desc:"운영 소식/공지 확인", cta:"#/notice", ctaText:"공지 보기", image:"" },
-    { title:"이벤트 진행중", desc:"혜택/프로모션 확인", cta:"#/event", ctaText:"이벤트 보기", image:"" },
-  ];
-
-  // 제품 데이터 (샘플: 필요하면 원본 PRODUCTS를 여기에 그대로 붙여넣어도 됨)
   const PRODUCTS = [
     {
       id:"HSC-1170D",
@@ -216,507 +947,1295 @@
       short:"10평형 · 28~32㎡ · 이동식 에어컨",
       priceText:"상담문의",
       thumb:"HSC-1170D/썸네일.png",
-      gallery:["HSC-1170D/썸네일.png"],
-      detailImages:["HSC-1170D/상세페이지.jpg"],
-      description:"저소음 · 부분/집중 냉방",
-      specs:{ "냉방능력":"3,500 kcal/h", "냉방면적":"28~32 ㎡", "전원":"220Vac 60Hz", "제품가격":"상담문의" }
+
+      gallery:[
+        "HSC-1170D/썸네일.png",
+       
+      ],
+
+
+      // 상세 하단에 추가할 이미지들 (너가 올린 긴 이미지들을 여기 순서대로)
+      detailImages:[
+        "HSC-1170D/1.png",
+        "HSC-1170D/2.png",
+        "HSC-1170D/3.png",
+        "HSC-1170D/4.png",
+        "HSC-1170D/5.png",
+        "HSC-1170D/6.png",
+        "HSC-1170D/7.png"
+      ],
+
+      tags:["10평형","1구에어컨","이동식"],
+      description:"저소음 · 부분/집중 냉방 (현장/야외 작업에 적합)",
+      specs:{
+        "냉방능력":"3,400 kcal/h",
+        "냉방면적":"28~32 ㎡",
+        "전원":"220Vac 60Hz 단상",
+        "크기(W×D×H)":"420×620×1,020 mm",
+        "제품중량":"37 kg",
+        "제품가격":"1,540,000원"
+       
+      }
+    },
+
+    {
+      id:"HSC-1270R",
+      category:"에어컨",
+      name:"HSC-1270R",
+      short:"2구에어컨 · 32~35㎡ · 11평형",
+      priceText:"상담문의",
+      thumb:"HSC-1270R/썸네일.png",
+      gallery:["HSC-1270R/썸네일.png"],
+      detailImages:[ 
+        "HSC-1270R/1.png",
+        "HSC-1270R/2.png",
+        "HSC-1270R/3.png",
+        "HSC-1270R/4.png",
+        "HSC-1270R/5.png",
+        "HSC-1270R/6.png",
+        "HSC-1270R/7.png"],
+      tags:["강력냉방","2구에어컨","공냉식"],
+      description:"저소음 · 부분/집중 냉방 (현장/야외 작업에 적합).",
+      specs:{ 
+        "냉방능력":"4,000 kcal/h",
+        "냉방면적":"32~35 ㎡",
+        "전원":"220Vac 60Hz 단상",
+        "크기(W×D×H)":"490×600×1,227 mm",
+        "제품중량":"80 kg",
+        "제품가격":"1,650,000원" }
     },
     {
-      id:"DEH-1000",
-      category:"제습기",
-      name:"DEH-1000",
-      short:"산업용 제습기 · 강력 제습",
+      id:"HSC-2270N",
+      category:"에어컨",
+      name:"HSC-2270N",
+      short:"2구 에어컨 · 안전장치 · 이동형",
       priceText:"상담문의",
-      thumb:"",
-      gallery:[],
-      detailImages:[],
-      description:"창고/공장 습도 관리",
-      specs:{ "제습능력":"", "전원":"220Vac 60Hz", "제품가격":"상담문의" }
+      thumb:"HSC-2270N/썸네일.jpg",
+      gallery:["HSC-2270N/썸네일.jpg"],
+      detailImages:["HSC-2270N/상세페이지.jpg"],
+      tags:["2구에어컨","18평형","이동식에어컨"],
+      description:"저소음 · 부분/집중 냉방 (현장/야외 작업에 적합)",
+      specs:{ 
+        "냉방능력":"5,100 kcal/h",
+        "냉방면적":"52~59 ㎡",
+        "전원":"220Vac 60Hz 단상",
+        "크기(W×D×H)":"490×600×1,286 mm",
+        "제품중량":"86 kg",
+        "제품가격":"2,090,000원"}
     },
     {
-      id:"HTR-2000",
-      category:"히터",
-      name:"HTR-2000",
-      short:"산업용 히터 · 난방",
+      id:"HSC-2270R",
+      category:"에어컨",
+      name:"HSC-2270R",
+      short:"2구 에어컨 · 안전장치 · 이동형 · 공냉식",
       priceText:"상담문의",
-      thumb:"",
-      gallery:[],
-      detailImages:[],
-      description:"현장 난방 보조",
-      specs:{ "난방능력":"", "전원":"220Vac 60Hz", "제품가격":"상담문의" }
+      thumb:"HSC-2270R/썸네일.png",
+      gallery:["HSC-2270R/썸네일.png"],
+      detailImages:[
+        "HSC-2270R/1.png",
+        "HSC-2270R/2.png",
+        "HSC-2270R/3.png",
+        "HSC-2270R/4.png",
+        "HSC-2270R/5.png",
+        "HSC-2270R/6.png",
+        "HSC-2270R/7.png"
+      ],
+      tags:["2구에어컨","18평형","이동식에어컨"],
+      description:"저소음 · 부분/집중 냉방 (현장/야외 작업에 적합)",
+      specs:{ 
+        "냉방능력":"5,400 kcal/h",
+        "냉방면적":"52~59 ㎡",
+        "전원":"220Vac 60Hz 단상",
+        "크기(W×D×H)":"490×600×1,286 mm",
+        "제품중량":"86 kg",
+        "제품가격":"1,980,000원" }
+    },
+     {
+      id:"HSC-3270N",
+      category:"에어컨",
+      name:"HSC-3270N",
+      short:"3구 에어컨 · 안전장치 · 이동형",
+      priceText:"상담문의",
+      thumb:"HSC-2270N/썸네일.jpg",
+      gallery:["HSC-2270N/1.jpg"],
+      detailImages:["HSC-2270N/상세페이지.jpg"],
+      tags:["3구에어컨","25평형","이동식에어컨"],
+      description:"저소음 · 부분/집중 냉방 (현장/야외 작업에 적합)",
+      specs:{ 
+        "냉방능력":"6,150 kcal/h",
+        "냉방면적":"59~75 ㎡",
+        "전원":"220Vac 60Hz 단상",
+        "크기(W×D×H)":"490×600×1,286 mm",
+        "제품중량":"90 kg",
+        "제품가격":"2,310,000원"}
+    },
+    {
+      id:"HSC-3270R",
+      category:"에어컨",
+      name:"HSC-3270R",
+      short:"3구 에어컨 · 안전장치 · 이동형 · 공냉식",
+      priceText:"상담문의",
+      thumb:"HSC-3270R/썸네일.png",
+      gallery:["HSC-3270R/썸네일.png"],
+      detailImages:[
+        "HSC-3270R/1.png",
+        "HSC-3270R/2.png",
+        "HSC-3270R/3.png",
+        "HSC-3270R/4.png",
+        "HSC-3270R/5.png",
+        "HSC-3270R/6.png",
+        "HSC-3270R/7.png"
+      ],
+      tags:["3구에어컨","20평형","이동식에어컨"],
+      description:"저소음 · 부분/집중 냉방 (현장/야외 작업에 적합)",
+      specs:{ 
+        "냉방능력":"6,100 kcal/h",
+        "냉방면적":"59~75 ㎡",
+        "전원":"220Vac 60Hz 단상",
+        "크기(W×D×H)":"490×600×1,286 mm",
+        "제품중량":"90 kg",
+        "제품가격":"2,200,000원" }
+    },
+    {
+      id:"HWC-1470",
+      category:"에어컨",
+      name:"HWC-1470",
+      short:"1구 에어컨 · 안전장치 · 이동형 · 수냉식",
+      priceText:"상담문의",
+      thumb:"HWC-1470/썸네일.png",
+      gallery:["HWC-1470/썸네일.png"],
+      detailImages:[
+        "HWC-1470/0.png",
+        "HWC-1470/1.png",
+        "HWC-1470/2.png",
+        "HWC-1470/3.png",
+        "HWC-1470/4.png",
+        "HWC-1470/5.png",
+        "HWC-1470/6.png",
+        "HWC-1470/7.png",
+        "HWC-1470/8.png"
+      ],
+      tags:["1구에어컨","9평형","이동식에어컨","수냉식"],
+      description:"저소음 · 부분/집중 냉방 (현장/야외 작업에 적합)",
+      specs:{ 
+        "냉방능력":"3,400 kcal/h",
+        "냉방면적":"28~32 ㎡",
+        "전원":"220Vac 60Hz 단상",
+        "크기(W×D×H)":"420×620×1,020 mm",
+        "제품중량":"57 kg",
+        "제품가격":"1,705,000원" }
+    },
+     {
+      id:"HWC-2470R",
+      category:"에어컨",
+      name:"HWC-2470R",
+      short:"2구 에어컨 · 안전장치 · 이동형 · 수냉식",
+      priceText:"상담문의",
+      thumb:"HWC-2470R/썸네일.png",
+      gallery:["HWC-2470R/썸네일.png"],
+      detailImages:[
+        "HWC-2470R/2.png",
+        "HWC-2470R/3.png",
+        "HWC-2470R/4.png",
+        "HWC-2470R/5.png",
+        "HWC-2470R/6.png",
+        "HWC-2470R/7.png",
+        "HWC-2470R/8.png",
+        "HWC-2470R/9.png",
+        "HWC-2470R/10.png"
+      ],
+      tags:["1구에어컨","20평형","이동식에어컨","수냉식"],
+      description:"저소음 · 부분/집중 냉방 (현장/야외 작업에 적합)",
+      specs:{ 
+        "냉방능력":"6,100 kcal/h",
+        "냉방면적":"59~75 ㎡",
+        "전원":"220Vac 60Hz 단상",
+        "크기(W×D×H)":"445×570×1,065 mm",
+        "제품중량":"77 kg",
+        "제품가격":"2,255,000원" }
     }
   ];
 
-  // 공지/이벤트는 코딩으로 수정 (관리자 기능 없음)
-  const NOTICE_LIST = [
-    { id:"n1", title:"홈페이지 오픈 안내", date:"2026-02-01", body:"홈페이지가 오픈되었습니다.\n문의는 1:1문의 메뉴를 이용해주세요." },
-    { id:"n2", title:"설 연휴 배송/상담 안내", date:"2026-02-05", body:"연휴 기간 상담 응답이 지연될 수 있습니다." },
-  ];
-
-  const EVENT_LIST = [
-    { id:"e1", title:"2월 상담 이벤트", date:"2026-02-01", body:"2월 한정 상담 고객 혜택!\n자세한 내용은 문의해주세요." },
+  // =========================
+  // 2) 배너 데이터
+  // =========================
+  const BANNERS = [
+    {
+      title:"여름 설치 예약 접수",
+      sub:"성수기 대비 에어컨 설치/교체 문의가 빠르게 늘고 있어요. 일정 선점 추천!",
+      tag:"에어컨",
+      ctaText:"에어컨 보기",
+      ctaHref:"#/?cat=에어컨",
+      bannerImage:""
+    },
+    {
+      title:"공장/작업장 냉난방 솔루션",
+      sub:"대형 공간 냉방/난방 제품 라인업 + 현장 환경 맞춤 상담 가능",
+      tag:"냉난방",
+      ctaText:"상담 문의",
+      ctaHref:"#/contact",
+      bannerImage:""
+    },
+    {
+      title:"습도 관리가 품질을 좌우합니다",
+      sub:"제습기/건조/보관 환경 개선으로 불량률 감소에 도움",
+      tag:"제습기",
+      ctaText:"제습기 보기",
+      ctaHref:"#/?cat=제습기",
+      bannerImage:""
+    }
   ];
 
   // =========================
-  // 유틸
+  // 연락처(너가 쓰던 값으로 세팅)
+  // =========================
+  const CONTACT = {
+    email: "email@naver.com",
+    phoneText: "010-1234-5678",
+    phoneTel: "01012345678"
+  };
+  // =========================
+// Notice / Event (localStorage)
+// =========================
+const LS_NOTICE_KEY = "site_notices_v1";
+const LS_EVENT_KEY  = "site_events_v1";
+
+const DEFAULT_NOTICES = [
+  { id:"n1", title:"2026년 설치 일정 안내", date:"2026-02-01", body:"성수기 예약이 빨리 마감됩니다. 설치 희망일 기준 2~3주 전 문의 권장드립니다." },
+  { id:"n2", title:"A/S 접수 시간 변경", date:"2026-01-20", body:"평일 09:00~18:00 (점심 12:00~13:00) 운영합니다." },
+];
+
+const DEFAULT_EVENTS = [
+  { id:"e1", title:"2월 한정 현장 방문견적 혜택", date:"2026-02-01", body:"2월 한정으로 방문견적 시 설치비 할인 상담을 도와드립니다." },
+  { id:"e2", title:"대량 구매 상담 프로모션", date:"2026-01-15", body:"공장/작업장 대량 구매 시 납품 일정/설치 패키지 맞춤 제안 가능합니다." },
+];
+
+function loadList(key, fallback){
+  try{
+    const raw = localStorage.getItem(key);
+    if(!raw) return fallback.slice();
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : fallback.slice();
+  }catch{
+    return fallback.slice();
+  }
+}
+function saveList(key, list){
+  localStorage.setItem(key, JSON.stringify(list));
+}
+function uid(prefix){
+  return prefix + Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-4);
+}
+function sortByDateDesc(list){
+  return list.slice().sort((a,b)=> String(b.date||"").localeCompare(String(a.date||"")));
+}
+function findById(list, id){
+  return list.find(x => String(x.id) === String(id));
+}
+
+// in-memory state
+let NOTICE_LIST = loadList(LS_NOTICE_KEY, DEFAULT_NOTICES);
+let EVENT_LIST  = loadList(LS_EVENT_KEY,  DEFAULT_EVENTS);
+
+
+
+  // =========================
+  // Utils
   // =========================
   const app = document.getElementById("app");
+  const slidesEl = document.getElementById("slides");
+  const dotsEl = document.getElementById("dots");
+  const categoryNav = document.getElementById("categoryNav");
 
-  function escapeHtml(s){
-    return String(s ?? "")
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
+  function escapeHtml(str=""){
+    return String(str)
+      .replaceAll("&","&amp;").replaceAll("<","&lt;")
+      .replaceAll(">","&gt;").replaceAll('"',"&#34;")
       .replaceAll("'","&#039;");
   }
+  function qs(sel, root=document){ return root.querySelector(sel); }
+  function qsa(sel, root=document){ return [...root.querySelectorAll(sel)]; }
 
   function parseRoute(){
-    const h = location.hash.replace(/^#\/?/, "");
-    if(!h) return [];
-    const path = h.split("?")[0];
-    return path.split("/").filter(Boolean);
+    const h = location.hash || "#/";
+    return h.replace("#","").split("/").filter(Boolean);
   }
   function parseHashQuery(){
-    const hash = location.hash || "";
-    const q = hash.split("?")[1] || "";
+    const raw = location.hash || "#/";
+    const idx = raw.indexOf("?");
+    if(idx < 0) return {};
+    const qs = raw.slice(idx+1);
     const out = {};
-    q.split("&").filter(Boolean).forEach(kv=>{
-      const [k,v] = kv.split("=");
-      out[decodeURIComponent(k)] = decodeURIComponent(v||"");
+    qs.split("&").forEach(pair=>{
+      const [k,v] = pair.split("=");
+      out[decodeURIComponent(k)] = decodeURIComponent(v || "");
     });
     return out;
   }
+ function setHashQuery(basePath, queryObj){
+  const q = Object.entries(queryObj)
+    .filter(([,v])=>v !== "" && v != null)
+    .map(([k,v])=>`${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+    .join("&");
 
-  function sortByDateDesc(list){
-    return [...list].sort((a,b)=> String(b.date||"").localeCompare(String(a.date||"")));
-  }
-  function findById(list, id){
-    return (list||[]).find(x => String(x.id) === String(id));
-  }
+  const newHash = q ? `${basePath}?${q}` : basePath;
 
-  function categoryBadgeClass(cat){
-    if(cat==="에어컨") return "aircon";
-    if(cat==="제습기") return "dehumidifier";
-    if(cat==="히터") return "heater";
-    return "";
+  // ✅ hashchange를 발생시키지 않고 URL만 갱신
+  history.replaceState(null, "", "#" + newHash.replace(/^#/, ""));
+}
+
+
+  // =========================
+  // Category nav
+  // =========================
+  function renderCategoryNav(activeCat=""){
+    qsa("a.item", categoryNav).forEach(el => el.remove());
+    const cats = [...new Set(PRODUCTS.map(p=>p.category))];
+
+    cats.forEach(cat=>{
+      const a = document.createElement("a");
+      a.className = "item" + (cat === activeCat ? " active" : "");
+      a.href = `#/?cat=${encodeURIComponent(cat)}`;
+      a.textContent = cat;
+      categoryNav.appendChild(a);
+    });
   }
 
   // =========================
-  // 카테고리 네비
-  // =========================
-  function renderCategoryNav(activeCat){
-    const nav = document.getElementById("categoryNav");
-    const cats = ["에어컨","제습기","히터"];
-    nav.innerHTML = `<a class="allcat" href="#/">☰ 전체 카테고리</a>` + cats.map(c=>{
-      const on = (activeCat===c) ? "active" : "";
-      return `<a class="item ${on}" href="#/?cat=${encodeURIComponent(c)}">${escapeHtml(c)}</a>`;
-    }).join("")
-    + `<a class="item" href="#/notice">공지</a><a class="item" href="#/event">이벤트</a>`;
-  }
-
-  // =========================
-  // 배너
+  // Banner slider
   // =========================
   let bannerIndex = 0;
   let bannerTimer = null;
 
-  function renderBanner(){
-    const slidesEl = document.getElementById("slides");
-    const dotsEl = document.getElementById("dots");
+  function slideTemplate(b){
+    const img = b.bannerImage
+      ? `<img src="${escapeHtml(b.bannerImage)}" alt="${escapeHtml(b.title)}">`
+      : `<div class="ph">
+          <div style="font-size:15px">배너 이미지</div>
+          <div style="margin-top:6px;font-size:12px;opacity:.8">bannerImage 넣으면 실사로 표시</div>
+        </div>`;
 
-    slidesEl.innerHTML = BANNERS.map(b=>`
+    return `
       <div class="slide">
-        <div class="content">
+        <div class="content container">
           <div class="headline">
             <h2>${escapeHtml(b.title)}</h2>
-            <p>${escapeHtml(b.desc)}</p>
+            <p>${escapeHtml(b.sub)}</p>
             <div class="banner-cta">
-              <a class="btn" href="${b.cta}">${escapeHtml(b.ctaText)}</a>
-              <a class="btn ghost" href="#/contact">문의하기</a>
+              <a class="btn" href="${escapeHtml(b.ctaHref)}">${escapeHtml(b.ctaText)}</a>
+              <a class="btn ghost" href="#/contact">1:1 문의</a>
             </div>
           </div>
           <div class="hero-img">
-            ${b.image ? `<img src="${escapeHtml(b.image)}" alt="" />` : `<div class="ph">배너 이미지</div>`}
+            <div class="tag">${escapeHtml(b.tag)}</div>
+            ${img}
           </div>
         </div>
       </div>
-    `).join("");
+    `;
+  }
 
+  function renderBanner(){
+    slidesEl.innerHTML = BANNERS.map(slideTemplate).join("");
     dotsEl.innerHTML = BANNERS.map((_,i)=>`<div class="dot ${i===0?"active":""}" data-i="${i}"></div>`).join("");
+    goBanner(0, true);
 
-    function go(i){
-      bannerIndex = (i + BANNERS.length) % BANNERS.length;
-      slidesEl.style.transform = `translateX(${-bannerIndex*100}%)`;
-      [...dotsEl.children].forEach((d,idx)=>d.classList.toggle("active", idx===bannerIndex));
-    }
-    document.getElementById("prevBtn").onclick = ()=>go(bannerIndex-1);
-    document.getElementById("nextBtn").onclick = ()=>go(bannerIndex+1);
-    dotsEl.onclick = (e)=>{
-      const t = e.target.closest(".dot");
-      if(!t) return;
-      go(Number(t.dataset.i||0));
-    };
+    qsa(".dot", dotsEl).forEach(d=>{
+      d.addEventListener("click", ()=>{
+        goBanner(Number(d.dataset.i));
+        restartBannerAuto();
+      });
+    });
 
+    qs("#prevBtn").addEventListener("click", ()=>{ prevBanner(); restartBannerAuto(); });
+    qs("#nextBtn").addEventListener("click", ()=>{ nextBanner(); restartBannerAuto(); });
+
+    restartBannerAuto();
+  }
+
+  function goBanner(i, immediate=false){
+    bannerIndex = (i + BANNERS.length) % BANNERS.length;
+    slidesEl.style.transition = immediate ? "none" : "transform .45s ease";
+    slidesEl.style.transform = `translateX(-${bannerIndex*100}%)`;
+    qsa(".dot", dotsEl).forEach((d,idx)=> d.classList.toggle("active", idx===bannerIndex));
+  }
+  function nextBanner(){ goBanner(bannerIndex+1); }
+  function prevBanner(){ goBanner(bannerIndex-1); }
+  function restartBannerAuto(){
     if(bannerTimer) clearInterval(bannerTimer);
-    bannerTimer = setInterval(()=>go(bannerIndex+1), 4500);
+    bannerTimer = setInterval(nextBanner, 5000);
   }
 
   // =========================
-  // 제품 목록/상세
+  // List / Detail / Contact
   // =========================
   function renderList(){
     const q = parseHashQuery();
-    const cat = q.cat || "";
-    const kw = (q.q || "").trim().toLowerCase();
+    const activeCat = q.cat || "";
+    const searchQ = (q.q || "").trim();
 
-    renderCategoryNav(cat);
-
-    const filtered = PRODUCTS.filter(p=>{
-      const okCat = !cat || p.category===cat;
-      if(!okCat) return false;
-      if(!kw) return true;
-      const blob = `${p.id} ${p.name} ${p.short} ${p.category} ${p.description}`.toLowerCase();
-      return blob.includes(kw);
-    });
+    renderCategoryNav(activeCat);
 
     app.innerHTML = `
       <div class="card">
         <div class="title">
           <div>
-            <h1>${cat ? escapeHtml(cat) : "전체 제품"}</h1>
-            <p class="muted">가로로 넘겨서 제품을 확인하세요.</p>
+            <h1>제품 목록</h1>
+            <p>카테고리/검색으로 제품을 빠르게 찾아볼 수 있어요.</p>
           </div>
+        </div>
+
+        <div class="toolbar">
+          <input class="input" id="search" placeholder="제품명/키워드 검색 (예: 저소음, 인버터, 이동형)"
+            value="${escapeHtml(searchQ)}" />
+          <select class="select" id="category">
+            <option value="">전체 카테고리</option>
+            ${[...new Set(PRODUCTS.map(p=>p.category))]
+              .map(c=>`<option value="${escapeHtml(c)}" ${c===activeCat?"selected":""}>${escapeHtml(c)}</option>`).join("")}
+          </select>
+          <button class="btn2 ghost" id="reset">초기화</button>
         </div>
 
         <div class="product-slider">
-          <button class="slide-arrow left" id="slidePrev" type="button">‹</button>
-          <button class="slide-arrow right" id="slideNext" type="button">›</button>
+  <button class="slide-arrow left" id="slidePrev">‹</button>
 
-          <div class="grid slider" id="grid">
-            ${filtered.map(p=>`
-              <div class="p-card">
-                <div class="badge ${categoryBadgeClass(p.category)}">${escapeHtml(p.category)}</div>
-                <div class="p-thumb">
-                  ${p.thumb ? `<img src="${escapeHtml(p.thumb)}" alt="${escapeHtml(p.name)}"/>` : `<div class="muted">이미지 없음</div>`}
-                </div>
-                <div class="p-body">
-                  <p class="p-name">${escapeHtml(p.name)}</p>
-                  <p class="p-sub">${escapeHtml(p.short||"")}</p>
-                  <div class="p-bottom">
-                    <div class="price">${escapeHtml(p.priceText||"")}</div>
-                    <button class="detail-btn" data-id="${escapeHtml(p.id)}" type="button">상세</button>
-                  </div>
-                </div>
-              </div>
-            `).join("") || `<div class="muted" style="padding:18px">제품이 없습니다.</div>`}
-          </div>
-        </div>
+  <div class="grid slider" id="grid"></div>
+
+  <button class="slide-arrow right" id="slideNext">›</button>
+</div>
+
       </div>
     `;
 
-    // 상세 이동
-    app.querySelectorAll(".detail-btn").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        location.hash = `#/p/${encodeURIComponent(btn.dataset.id)}`;
+    const grid = qs("#grid");
+    const searchEl = qs("#search");
+    const catEl = qs("#category");
+    const resetEl = qs("#reset");
+
+ // ✅ 목록 화면이 렌더될 때마다 화살표 이벤트 다시 바인딩
+    const prevBtn = qs("#slidePrev");
+    const nextBtn = qs("#slideNext");
+
+    function getStep(){
+      const card = grid?.querySelector(".p-card");
+      if(!card) return 0;
+      const gap = 20; // CSS gap과 동일
+      return card.getBoundingClientRect().width + gap;
+    }
+
+    if(prevBtn && nextBtn && grid){
+      prevBtn.onclick = () => grid.scrollBy({ left: -getStep(), behavior: "smooth" });
+      nextBtn.onclick = () => grid.scrollBy({ left:  getStep(), behavior: "smooth" });
+    }
+
+
+    function thumbHtml(p){
+      // 목록 썸네일은 thumb만 사용 (원하는 “두번째 사진처럼 썸네일엔 지금 사진만”)
+      if(p.thumb){
+        return `<img src="${escapeHtml(p.thumb)}" alt="${escapeHtml(p.name)}"
+          onerror="this.style.display='none';">`;
+      }
+      return `<div style="text-align:center;color:#94a3b8;font-weight:900">
+                <div style="font-size:14px">제품 이미지</div>
+                <div style="margin-top:6px;font-size:12px;color:#cbd5e1">thumb 경로를 넣으면 표시</div>
+              </div>`;
+    }
+
+    function card(p){
+      return `
+        <article class="p-card">
+          <div class="p-thumb">
+            ${thumbHtml(p)}
+          </div>
+          <div class="p-body">
+
+  <h3 class="p-name">${escapeHtml(p.name)}</h3>
+  <p class="p-sub">${escapeHtml(p.short || "")}</p>
+
+  <!-- 🔹 태그 뱃지들 -->
+  <div class="chips">
+    ${(p.tags||[]).slice(0,3).map(t =>
+      `<span class="chip tag">${escapeHtml(t)}</span>`
+    ).join("")}
+  </div>
+
+  <div class="p-bottom">
+    <div class="price">${escapeHtml(p.priceText || "상담문의")}</div>
+    <button class="detail-btn" data-open="${escapeHtml(p.id)}">상세보기</button>
+  </div>
+</div>
+
+        </article>
+      `;
+    }
+
+    function apply(){
+      const qText = (searchEl.value||"").trim().toLowerCase();
+      const cat = catEl.value;
+
+      const filtered = PRODUCTS.filter(p=>{
+        const hay = `${p.name} ${p.short} ${p.description} ${(p.tags||[]).join(" ")} ${p.category}`.toLowerCase();
+        return (!qText || hay.includes(qText)) && (!cat || p.category === cat);
       });
+
+      grid.innerHTML = filtered.map(card).join("") || `
+        <div class="panel" style="grid-column:1/-1">
+          <b>검색 결과가 없습니다.</b><br>
+          <span style="color:#94a3b8">검색어/카테고리를 변경해 보세요.</span>
+        </div>
+      `;
+
+      qsa("[data-open]", grid).forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const id = btn.getAttribute("data-open");
+          location.hash = `#/p/${encodeURIComponent(id)}`;
+        });
+      });
+    }
+
+    function syncHash(){
+      setHashQuery("#/", { cat: catEl.value, q: searchEl.value.trim() });
+    }
+
+    let isComposing = false;
+
+// ✅ 한글 조합 시작/끝 감지
+searchEl.addEventListener("compositionstart", ()=>{ isComposing = true; });
+searchEl.addEventListener("compositionend", ()=>{
+  isComposing = false;
+  apply();
+  syncHash();
+});
+
+// ✅ 입력 중에는 조합 상태면 무시 (자음/모음 끊김 방지)
+searchEl.addEventListener("input", ()=>{
+  if(isComposing) return;
+  apply();
+  syncHash();
+});
+
+// 카테고리 변경은 기존 그대로
+catEl.addEventListener("change", ()=>{ apply(); syncHash(); });
+
+
+    resetEl.addEventListener("click", ()=>{
+      searchEl.value=""; catEl.value="";
+      apply(); setHashQuery("#/", {});
     });
 
-    // 좌우 스크롤
-    const gridEl = document.getElementById("grid");
-    document.getElementById("slidePrev").onclick = ()=> gridEl.scrollBy({left:-420, behavior:"smooth"});
-    document.getElementById("slideNext").onclick = ()=> gridEl.scrollBy({left: 420, behavior:"smooth"});
+    apply();
   }
 
   function renderDetail(id){
-    const p = findById(PRODUCTS, id);
-    renderCategoryNav("");
-
+    const p = PRODUCTS.find(x=>x.id === id);
     if(!p){
       app.innerHTML = `
         <div class="card">
-          <div class="title"><div><h1>제품</h1><p>해당 제품을 찾을 수 없습니다.</p></div></div>
-          <div class="toolbar"><a class="btn2 ghost" href="#/">목록으로</a></div>
-        </div>`;
+          <h1 style="margin:0 0 8px">제품을 찾을 수 없습니다</h1>
+          <p style="margin:0;color:var(--muted)">목록으로 돌아가 다시 선택해 주세요.</p>
+          <div class="toolbar">
+            <button class="btn2" id="goList">제품 목록</button>
+          </div>
+        </div>
+      `;
+      qs("#goList").addEventListener("click", ()=> location.hash = "#/");
       return;
     }
 
+    // 갤러리: 없으면 thumb라도 사용
     const gallery = (p.gallery && p.gallery.length) ? p.gallery : (p.thumb ? [p.thumb] : []);
-    let main = gallery[0] || "";
+    const main = gallery[0] || "";
+
+    const specRows = Object.entries(p.specs||{}).map(([k,v])=>`
+      <li><span>${escapeHtml(k)}</span><b>${escapeHtml(v)}</b></li>
+    `).join("");
+
+    const galleryStrip = (gallery.length > 1) ? `
+      <div class="gallery-strip" id="galleryStrip">
+        ${gallery.map((src,i)=>`
+          <button class="gthumb ${i===0?'active':''}" data-src="${escapeHtml(src)}" aria-label="thumb">
+            <img src="${escapeHtml(src)}" alt="">
+          </button>
+        `).join("")}
+      </div>
+    ` : "";
+
+    const specImgHtml = p.specImage ? `
+      <div class="spec-image">
+        <img src="${escapeHtml(p.specImage)}" alt="제품 사양"
+          onerror="this.closest('.spec-image').style.display='none';">
+      </div>
+    ` : "";
+
+    const detailStackHtml = (p.detailImages && p.detailImages.length) ? `
+      <div class="detail-stack">
+        ${p.detailImages.map(src=>`
+          <div class="detail-shot">
+            <img src="${escapeHtml(src)}" alt="상세 이미지"
+              onerror="this.closest('.detail-shot').style.display='none';">
+          </div>
+        `).join("")}
+      </div>
+    ` : "";
 
     app.innerHTML = `
       <div class="card">
-        <div class="title">
-          <div>
-            <h1>${escapeHtml(p.name)}</h1>
-            <p class="muted">${escapeHtml(p.short||"")}</p>
+        <div class="toolbar" style="justify-content:space-between">
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <button class="btn2 ghost" id="back">← 목록</button>
+            <span class="chip" style="background:var(--sky-soft);border-color:rgba(56,189,248,.35);color:#0369a1">
+              ${escapeHtml(p.category)}
+            </span>
           </div>
-          <div class="toolbar">
-            <a class="btn2 ghost" href="#/">목록</a>
-            <a class="btn2" href="#/contact">문의하기</a>
-          </div>
+          <button class="btn2" id="copyLink">이 제품 링크 복사</button>
         </div>
 
         <div class="detail">
+          <!-- LEFT -->
           <div class="panel">
-            <div class="detail-img" id="mainImg">
-              ${main ? `<img src="${escapeHtml(main)}" alt="main"/>` : `<div class="muted">이미지 없음</div>`}
-            </div>
-            <div class="thumbs">
-              ${gallery.map(src=>`
-                <div class="thumb" data-src="${escapeHtml(src)}">
-                  <img src="${escapeHtml(src)}" alt="thumb"/>
-                </div>
-              `).join("")}
+            <div class="detail-img">
+              ${
+                main
+                ? `<img id="mainImg" src="${escapeHtml(main)}" alt="${escapeHtml(p.name)}"
+                    onerror="this.style.display='none';">`
+                : `<div style="text-align:center;color:#94a3b8;font-weight:900">
+                     <div style="font-size:14px">제품 이미지</div>
+                     <div style="margin-top:6px;font-size:12px;color:#cbd5e1">gallery/ thumb 경로를 넣으면 표시</div>
+                   </div>`
+              }
             </div>
 
-            ${(p.detailImages && p.detailImages.length) ? `
-              <div style="margin-top:16px">
-                ${(p.detailImages||[]).map(src=>`
-                  <div style="border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:12px;background:#fff">
-                    <img src="${escapeHtml(src)}" alt="detail" style="width:100%;display:block"/>
-                  </div>
-                `).join("")}
+            ${galleryStrip}
+            <div id="detailImages" class="detail-images"></div>
+
+            <div style="margin-top:12px">
+              <h1 style="margin:0 0 8px;font-size:22px">${escapeHtml(p.name)}</h1>
+              <p style="margin:0;color:var(--muted)">${escapeHtml(p.description || "")}</p>
+
+              <div class="chips" style="margin-top:12px">
+                ${(p.tags||[]).map(t=>`<span class="chip">${escapeHtml(t)}</span>`).join("")}
               </div>
-            ` : ""}
+            </div>
+
+            <!-- 스펙 표 이미지(원하면) -->
+            ${specImgHtml}
+
+            <!-- 상세 하단 긴 이미지들 -->
+            ${detailStackHtml}
           </div>
 
+          <!-- RIGHT -->
           <div class="panel">
-            <div class="badge ${categoryBadgeClass(p.category)}" style="position:static;display:inline-block;margin-bottom:10px">${escapeHtml(p.category)}</div>
-            <div style="font-weight:1000;margin-bottom:8px">${escapeHtml(p.priceText||"")}</div>
-            <div class="muted" style="line-height:1.7;font-size:13px;margin-bottom:12px">${escapeHtml(p.description||"")}</div>
+            <div style="font-weight:1000;margin-bottom:8px">스펙</div>
+            <ul class="specs">${specRows || `<li><span>스펙</span><b>추가 필요</b></li>`}</ul>
 
-            <div style="font-weight:1000;margin:12px 0 10px">스펙</div>
-            <table>
-              ${Object.entries(p.specs||{}).map(([k,v])=>`
-                <tr><td>${escapeHtml(k)}</td><td><b>${escapeHtml(v)}</b></td></tr>
-              `).join("") || `<tr><td colspan="2" class="muted">스펙 정보 없음</td></tr>`}
-            </table>
+            <div style="margin-top:14px;font-weight:1000">가격/구매</div>
+            <div style="color:var(--muted);margin-top:6px">${escapeHtml(p.priceText || "상담문의")}</div>
+
+            <div class="toolbar" style="margin-top:12px">
+              <a class="btn2" href="mailto:${encodeURIComponent(CONTACT.email)}?subject=${encodeURIComponent("[제품문의] " + p.name)}">
+                ${escapeHtml(CONTACT.email)}
+              </a>
+              <a class="btn2 ghost" href="tel:${escapeHtml(CONTACT.phoneTel)}">
+                ${escapeHtml(CONTACT.phoneText)}
+              </a>
+            </div>
           </div>
         </div>
       </div>
     `;
+    const detailWrap = document.getElementById("detailImages");
+if (detailWrap && p.detailImages && p.detailImages.length) {
+  detailWrap.innerHTML = p.detailImages.map(src => `
+    <img src="${src}" alt="${escapeHtml(p.name)}" loading="lazy">
+  `).join("");
+}
 
-    // 썸네일 클릭
-    app.querySelectorAll(".thumb").forEach(t=>{
-      t.addEventListener("click", ()=>{
-        const src = t.dataset.src || "";
-        document.getElementById("mainImg").innerHTML = src
-          ? `<img src="${escapeHtml(src)}" alt="main"/>`
-          : `<div class="muted">이미지 없음</div>`;
-      });
+    qs("#back").addEventListener("click", ()=> location.hash = "#/");
+    qs("#copyLink").addEventListener("click", async ()=>{
+      try{ await navigator.clipboard.writeText(location.href); alert("링크가 복사되었습니다."); }
+      catch(e){ alert("복사 실패(브라우저 권한 확인)"); }
     });
-  }
 
-  // =========================
-  // 공지/이벤트 (관리자/수정 없음)
-  // =========================
-  function renderNoticeList(){
-    renderCategoryNav("");
-    const items = sortByDateDesc(NOTICE_LIST);
-
-    app.innerHTML = `
-      <div class="card">
-        <div class="title">
-          <div><h1>공지사항</h1><p>운영 소식과 안내를 확인하세요.</p></div>
-        </div>
-        <div class="panel">
-          ${items.map(n=>`
-            <a href="#/notice/${encodeURIComponent(n.id)}" style="display:block;padding:12px 0;border-bottom:1px solid #eef2f7;text-decoration:none;color:inherit">
-              <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
-                <b style="font-size:14px">${escapeHtml(n.title)}</b>
-                <span style="color:var(--muted);font-size:12px">${escapeHtml(n.date||"")}</span>
-              </div>
-              <div style="margin-top:6px;color:var(--muted);font-size:13px;line-height:1.6">
-                ${escapeHtml((n.body||"").slice(0, 90))}${(n.body||"").length>90 ? "…" : ""}
-              </div>
-            </a>
-          `).join("") || `<div class="muted">공지사항이 없습니다.</div>`}
-        </div>
-      </div>
-    `;
-  }
-
-  function renderNoticeDetail(id){
-    renderCategoryNav("");
-    const item = findById(NOTICE_LIST, id);
-
-    if(!item){
-      app.innerHTML = `
-        <div class="card">
-          <div class="title"><div><h1>공지사항</h1><p>해당 글을 찾을 수 없습니다.</p></div></div>
-          <div class="toolbar"><a class="btn2 ghost" href="#/notice">목록으로</a></div>
-        </div>`;
-      return;
+    // 갤러리 클릭 -> 메인 이미지 변경
+    const strip = qs("#galleryStrip");
+    const mainImg = qs("#mainImg");
+    if(strip && mainImg){
+      qsa(".gthumb", strip).forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const src = btn.getAttribute("data-src");
+          mainImg.src = src;
+          qsa(".gthumb", strip).forEach(b=>b.classList.remove("active"));
+          btn.classList.add("active");
+        });
+      });
     }
-
-    app.innerHTML = `
-      <div class="card">
-        <div class="title">
-          <div>
-            <h1>${escapeHtml(item.title)}</h1>
-            <p>${escapeHtml(item.date||"")}</p>
-          </div>
-          <div class="toolbar">
-            <a class="btn2 ghost" href="#/notice">목록</a>
-          </div>
-        </div>
-        <div class="panel" style="line-height:1.8;font-size:14px;white-space:pre-wrap">
-          ${escapeHtml(item.body||"")}
-        </div>
-      </div>
-    `;
   }
 
-  function renderEventList(){
-    renderCategoryNav("");
-    const items = sortByDateDesc(EVENT_LIST);
-
-    app.innerHTML = `
-      <div class="card">
-        <div class="title">
-          <div><h1>이벤트</h1><p>진행 중인 프로모션/혜택을 확인하세요.</p></div>
-        </div>
-        <div class="panel">
-          ${items.map(e=>`
-            <a href="#/event/${encodeURIComponent(e.id)}" style="display:block;padding:12px 0;border-bottom:1px solid #eef2f7;text-decoration:none;color:inherit">
-              <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
-                <b style="font-size:14px">${escapeHtml(e.title)}</b>
-                <span style="color:var(--muted);font-size:12px">${escapeHtml(e.date||"")}</span>
-              </div>
-              <div style="margin-top:6px;color:var(--muted);font-size:13px;line-height:1.6">
-                ${escapeHtml((e.body||"").slice(0, 90))}${(e.body||"").length>90 ? "…" : ""}
-              </div>
-            </a>
-          `).join("") || `<div class="muted">이벤트가 없습니다.</div>`}
-        </div>
-      </div>
-    `;
-  }
-
-  function renderEventDetail(id){
-    renderCategoryNav("");
-    const item = findById(EVENT_LIST, id);
-
-    if(!item){
-      app.innerHTML = `
-        <div class="card">
-          <div class="title"><div><h1>이벤트</h1><p>해당 글을 찾을 수 없습니다.</p></div></div>
-          <div class="toolbar"><a class="btn2 ghost" href="#/event">목록으로</a></div>
-        </div>`;
-      return;
-    }
-
-    app.innerHTML = `
-      <div class="card">
-        <div class="title">
-          <div>
-            <h1>${escapeHtml(item.title)}</h1>
-            <p>${escapeHtml(item.date||"")}</p>
-          </div>
-          <div class="toolbar">
-            <a class="btn2 ghost" href="#/event">목록</a>
-          </div>
-        </div>
-        <div class="panel" style="line-height:1.8;font-size:14px;white-space:pre-wrap">
-          ${escapeHtml(item.body||"")}
-        </div>
-      </div>
-    `;
-  }
-
-  // =========================
-  // 문의
-  // =========================
-  function renderContact(){
-    renderCategoryNav("");
-    app.innerHTML = `
-      <div class="card">
-        <div class="title"><div><h1>1:1 문의</h1><p>연락처/문의내용을 남겨주세요.</p></div></div>
-        <div class="panel">
-          <div class="muted" style="line-height:1.8">
-            • 전화: 010-0000-0000<br/>
-            • 이메일: hello@example.com<br/><br/>
-            문의 채널을 실제 정보로 바꿔주세요.
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  // =========================
-  // 검색 바인딩
   // =========================
   function bindGlobalSearch(){
-    const input = document.getElementById("globalSearchInput");
-    const btn = document.getElementById("globalSearchBtn");
+    const input = qs("#globalSearch");
+    const btn = qs("#globalSearchBtn");
+    const run = ()=>{
+      const q = (input.value||"").trim();
+      setHashQuery("#/", { q });
+      render();
+      const listSearch = qs("#search");
+      if(listSearch) listSearch.focus();
+    };
+    btn.addEventListener("click", run);
+    input.addEventListener("keydown", (e)=>{ if(e.key==="Enter") run(); });
+  }
+// =========================
+// Notice / Event Pages
+// =========================
+function renderNoticeList(){
+  renderCategoryNav("");
+  const items = sortByDateDesc(NOTICE_LIST);
 
-    function apply(){
-      const q = input.value.trim();
-      const now = parseHashQuery();
-      const cat = now.cat ? `cat=${encodeURIComponent(now.cat)}&` : "";
-      location.hash = `#/?${cat}q=${encodeURIComponent(q)}`;
-    }
+  app.innerHTML = `
+    <div class="card">
+      <div class="title">
+        <div>
+          <h1>공지사항</h1>
+          <p>운영/일정/정책 변경 사항을 확인하세요.</p>
+        </div>
+        <div class="toolbar">
+          <a class="btn2 ghost" href="#/admin?tab=notice">관리자</a>
+        </div>
+      </div>
 
-    btn.addEventListener("click", apply);
-    input.addEventListener("keydown", (e)=>{
-      if(e.key==="Enter") apply();
-    });
+      <div class="panel">
+        ${items.map(n=>`
+          <a href="#/notice/${encodeURIComponent(n.id)}" style="display:block;padding:12px 0;border-bottom:1px solid #eef2f7;text-decoration:none;color:inherit">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
+              <b style="font-size:14px">${escapeHtml(n.title)}</b>
+              <span style="color:var(--muted);font-size:12px">${escapeHtml(n.date||"")}</span>
+            </div>
+            <div style="margin-top:6px;color:var(--muted);font-size:13px;line-height:1.6">
+              ${escapeHtml((n.body||"").slice(0, 90))}${(n.body||"").length>90 ? "..." : ""}
+            </div>
+          </a>
+        `).join("") || `<div style="color:var(--muted)">공지사항이 없습니다.</div>`}
+      </div>
+    </div>
+  `;
+}
 
-    // 해시에서 q가 바뀌면 input도 동기화
-    function sync(){
-      const hq = parseHashQuery();
-      input.value = hq.q || "";
-    }
-    window.addEventListener("hashchange", sync);
-    sync();
+function renderNoticeDetail(id){
+  renderCategoryNav("");
+  const item = findById(NOTICE_LIST, id);
+  if(!item){
+    app.innerHTML = `
+      <div class="card">
+        <div class="title">
+          <div><h1>공지사항</h1><p>해당 글을 찾을 수 없습니다.</p></div>
+        </div>
+        <div class="toolbar">
+          <a class="btn2 ghost" href="#/notice">목록으로</a>
+        </div>
+      </div>
+    `;
+    return;
   }
 
+  app.innerHTML = `
+    <div class="card">
+      <div class="title">
+        <div>
+          <h1>${escapeHtml(item.title)}</h1>
+          <p>${escapeHtml(item.date||"")}</p>
+        </div>
+        <div class="toolbar">
+          <a class="btn2 ghost" href="#/notice">목록</a>
+          ${isAdminUnlocked() ? `<button class="btn2 ghost" id="noticeEditBtn" type="button">수정</button>` : ``}
+
+        </div>
+      </div>
+
+      <div class="panel" style="line-height:1.8;font-size:14px;white-space:pre-wrap">
+        ${escapeHtml(item.body||"")}
+      </div>
+    </div>
+  `;
+    // 관리자일 때만 "수정" 버튼 동작
+  document.getElementById("noticeEditBtn")?.addEventListener("click", () => {
+    if (!requireAdmin()) return;   // 비번 취소/실패 시 아무 이동도 안 함
+    setHashQuery("#/admin", { tab: "notice", edit: item.id });
+    render();
+  });
+
+}
+// =========================
   // =========================
-  // Router (admin 분기 없음)
+// Admin PIN (simple)
+// =========================
+const LS_ADMIN_PIN_KEY = "site_admin_pin_v1";
+const SS_ADMIN_UNLOCK_KEY = "site_admin_unlocked_v1";
+
+function isAdminUnlocked(){
+  return sessionStorage.getItem(SS_ADMIN_UNLOCK_KEY) === "1";
+}
+function lockAdmin(){
+  sessionStorage.removeItem(SS_ADMIN_UNLOCK_KEY);
+}
+function unlockAdmin(){
+  sessionStorage.setItem(SS_ADMIN_UNLOCK_KEY, "1");
+}
+
+function ensureAdminPin(){
+  // PIN이 없으면 최초 1회 설정
+  const existing = localStorage.getItem(LS_ADMIN_PIN_KEY);
+  if(existing) return true;
+
+  const pin1 = prompt("관리자 PIN을 설정하세요 (예: 1234)");
+  if(pin1 === null) return false;
+
+  const pin = String(pin1).trim();
+  if(pin.length < 4){
+    alert("PIN은 최소 4자리로 설정하세요.");
+    return false;
+  }
+
+  const pin2 = prompt("PIN을 한 번 더 입력하세요");
+  if(pin2 === null) return false;
+
+  if(String(pin2).trim() !== pin){
+    alert("PIN이 일치하지 않습니다.");
+    return false;
+  }
+
+  localStorage.setItem(LS_ADMIN_PIN_KEY, pin);
+  alert("관리자 PIN이 설정되었습니다.");
+  return true;
+}
+
+function requireAdmin(){
+  // 이미 풀려있으면 통과
+  if(isAdminUnlocked()) return true;
+
+  // PIN 없으면 설정부터
+  if(!ensureAdminPin()) return false;
+
+  const saved = localStorage.getItem(LS_ADMIN_PIN_KEY) || "";
+  const input = prompt("관리자 PIN을 입력하세요");
+  if(input === null) return false;
+
+  if(String(input).trim() !== saved){
+    alert("PIN이 틀렸습니다.");
+    return false;
+  }
+
+  unlockAdmin();
+  return true;
+}
+
+function changeAdminPin(){
+  if(!requireAdmin()) return;
+  localStorage.removeItem(LS_ADMIN_PIN_KEY);
+  lockAdmin();
+  ensureAdminPin();
+  unlockAdmin();
+}
+
+// Admin Page
+// =========================
+function renderAdmin(){
+  renderCategoryNav("");
+  const q = parseHashQuery();
+  const tab = (q.tab === "event") ? "event" : "notice";
+  const editId = q.edit ? String(q.edit) : "";
+
+  const isNotice = tab === "notice";
+  const list = isNotice ? NOTICE_LIST : EVENT_LIST;
+  const key  = isNotice ? LS_NOTICE_KEY : LS_EVENT_KEY;
+
+  const editing = editId ? findById(list, editId) : null;
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="title">
+        <div>
+          <h1>관리자</h1>
+          <p>공지사항/이벤트 글을 추가·수정·삭제할 수 있어요. (이 브라우저에 저장됨)</p>
+        </div>
+        <div class="toolbar">
+          <a class="btn2 ${tab==="notice" ? "" : "ghost"}" href="#/admin?tab=notice">공지</a>
+          <a class="btn2 ${tab==="event" ? "" : "ghost"}" href="#/admin?tab=event">이벤트</a>
+          <a class="btn2 ghost" href="#/${tab}">페이지로</a>
+          <button class="btn2 ghost" id="pinChange" type="button">PIN 변경</button>
+           <button class="btn2 ghost" id="pinLock" type="button">잠금</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div style="font-weight:900;margin-bottom:10px">${editing ? "글 수정" : "글 추가"}</div>
+
+        <div class="toolbar" style="margin-bottom:10px">
+          <input class="input" id="adTitle" placeholder="제목" value="${escapeHtml(editing?.title || "")}" />
+          <input class="input" id="adDate" placeholder="날짜 (YYYY-MM-DD)" value="${escapeHtml(editing?.date || new Date().toISOString().slice(0,10))}" />
+        </div>
+
+        <div class="toolbar" style="align-items:stretch">
+          <textarea class="input" id="adBody" placeholder="내용" style="min-height:140px;white-space:pre-wrap">${escapeHtml(editing?.body || "")}</textarea>
+        </div>
+
+        <div class="toolbar" style="margin-top:10px">
+          <button class="btn2" id="adSave">${editing ? "수정 저장" : "추가"}</button>
+          ${editing ? `<button class="btn2 ghost" id="adCancel">취소</button>` : ``}
+          ${editing ? `<button class="btn2 ghost" id="adDelete">삭제</button>` : ``}
+          <div style="margin-left:auto;color:var(--muted);font-size:12px">
+            * 저장 위치: localStorage (${escapeHtml(key)})
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:12px">
+        <div style="font-weight:900;margin-bottom:10px">전체 글</div>
+        ${sortByDateDesc(list).map(item=>`
+          <div style="padding:10px 0;border-bottom:1px solid #eef2f7">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
+              <b>${escapeHtml(item.title)}</b>
+              <span style="color:var(--muted);font-size:12px">${escapeHtml(item.date||"")}</span>
+            </div>
+            <div class="toolbar" style="margin-top:8px">
+              <a class="btn2 ghost" href="#/${tab}/${encodeURIComponent(item.id)}">보기</a>
+              <a class="btn2 ghost" href="#/admin?tab=${tab}&edit=${encodeURIComponent(item.id)}">수정</a>
+            </div>
+          </div>
+        `).join("") || `<div style="color:var(--muted)">글이 없습니다.</div>`}
+      </div>
+    </div>
+  `;
+
+  // bind admin actions
+  const elTitle = document.getElementById("adTitle");
+  const elDate  = document.getElementById("adDate");
+  const elBody  = document.getElementById("adBody");
+
+  document.getElementById("adSave")?.addEventListener("click", ()=>{
+    const title = (elTitle?.value || "").trim();
+    const date  = (elDate?.value || "").trim();
+    const body  = (elBody?.value || "").trim();
+
+    if(!title){ alert("제목을 입력하세요"); return; }
+    if(!date){ alert("날짜를 입력하세요"); return; }
+    if(!body){ alert("내용을 입력하세요"); return; }
+
+    if(editing){
+      editing.title = title;
+      editing.date = date;
+      editing.body = body;
+    }else{
+      list.push({ id: uid(isNotice ? "n" : "e"), title, date, body });
+    }
+
+    // persist + refresh
+    if(isNotice){
+      NOTICE_LIST = list;
+      saveList(LS_NOTICE_KEY, NOTICE_LIST);
+      setHashQuery("#/admin", { tab: "notice" });
+    }else{
+      EVENT_LIST = list;
+      saveList(LS_EVENT_KEY, EVENT_LIST);
+      setHashQuery("#/admin", { tab: "event" });
+    }
+    render();
+  });
+document.getElementById("pinChange")?.addEventListener("click", ()=>{
+  changeAdminPin();
+});
+
+document.getElementById("pinLock")?.addEventListener("click", ()=>{
+  lockAdmin();
+  alert("잠금되었습니다.");
+  location.hash = "#/";
+});
+
+  document.getElementById("adCancel")?.addEventListener("click", ()=>{
+    setHashQuery("#/admin", { tab });
+    render();
+  });
+
+  document.getElementById("adDelete")?.addEventListener("click", ()=>{
+    if(!editing) return;
+    if(!confirm("정말 삭제할까요?")) return;
+
+    const idx = list.findIndex(x=>String(x.id)===String(editing.id));
+    if(idx >= 0) list.splice(idx, 1);
+
+    if(isNotice){
+      NOTICE_LIST = list;
+      saveList(LS_NOTICE_KEY, NOTICE_LIST);
+      setHashQuery("#/admin", { tab: "notice" });
+    }else{
+      EVENT_LIST = list;
+      saveList(LS_EVENT_KEY, EVENT_LIST);
+      setHashQuery("#/admin", { tab: "event" });
+    }
+    render();
+  });
+}
+
+function renderEventList(){
+  renderCategoryNav("");
+  const items = sortByDateDesc(EVENT_LIST);
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="title">
+        <div>
+          <h1>이벤트</h1>
+          <p>진행 중인 프로모션/혜택을 확인하세요.</p>
+        </div>
+       <div class="toolbar">
+  <button class="btn2 ghost" id="adminBtn" type="button">관리자</button>
+</div>
+
+      </div>
+
+      <div class="panel">
+        ${items.map(e=>`
+          <a href="#/event/${encodeURIComponent(e.id)}" style="display:block;padding:12px 0;border-bottom:1px solid #eef2f7;text-decoration:none;color:inherit">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
+              <b style="font-size:14px">${escapeHtml(e.title)}</b>
+              <span style="color:var(--muted);font-size:12px">${escapeHtml(e.date||"")}</span>
+            </div>
+            <div style="margin-top:6px;color:var(--muted);font-size:13px;line-height:1.6">
+              ${escapeHtml((e.body||"").slice(0, 90))}${(e.body||"").length>90 ? "..." : ""}
+            </div>
+          </a>
+        `).join("") || `<div style="color:var(--muted)">이벤트가 없습니다.</div>`}
+      </div>
+    </div>
+  `;
+}
+
+function renderEventDetail(id){
+  renderCategoryNav("");
+  const item = findById(EVENT_LIST, id);
+  if(!item){
+    app.innerHTML = `
+      <div class="card">
+        <div class="title">
+          <div><h1>이벤트</h1><p>해당 글을 찾을 수 없습니다.</p></div>
+        </div>
+        <div class="toolbar">
+          <a class="btn2 ghost" href="#/event">목록으로</a>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="title">
+        <div>
+          <h1>${escapeHtml(item.title)}</h1>
+          <p>${escapeHtml(item.date||"")}</p>
+        </div>
+        <div class="toolbar">
+          <a class="btn2 ghost" href="#/event">목록</a>
+          <a class="btn2 ghost" href="#/admin?tab=event&edit=${encodeURIComponent(item.id)}">수정</a>
+        </div>
+      </div>
+
+      <div class="panel" style="line-height:1.8;font-size:14px;white-space:pre-wrap">
+        ${escapeHtml(item.body||"")}
+      </div>
+    </div>
+  `;
+}
+
+  // =========================
+  // Router
   // =========================
   function render(){
     const parts = parseRoute();
 
-    if(parts.length === 0){
-      return renderList();
-    }
-    if(parts[0] === "p" && parts[1]){
-      return renderDetail(decodeURIComponent(parts[1]));
-    }
-    if(parts[0] === "contact"){
-      return renderContact();
-    }
-    if(parts[0] === "notice"){
-      if(parts[1]) return renderNoticeDetail(decodeURIComponent(parts[1]));
-      return renderNoticeList();
-    }
-    if(parts[0] === "event"){
-      if(parts[1]) return renderEventDetail(decodeURIComponent(parts[1]));
-      return renderEventList();
-    }
+     // 목록
+  if(parts.length === 0){
     return renderList();
   }
+
+  // 제품 상세
+  if(parts[0] === "p" && parts[1]){
+    return renderDetail(decodeURIComponent(parts[1]));
+  }
+
+  // 문의
+  if(parts[0] === "contact"){
+    return renderContact();
+  }
+
+  // 공지 목록/상세
+  if(parts[0] === "notice"){
+    if(parts[1]) return renderNoticeDetail(decodeURIComponent(parts[1]));
+    return renderNoticeList();
+  }
+
+  // 이벤트 목록/상세
+  if(parts[0] === "event"){
+    if(parts[1]) return renderEventDetail(decodeURIComponent(parts[1]));
+    return renderEventList();
+  }
+
+  // 관리자
+ if(parts[0] === "admin"){
+  if(!requireAdmin()){
+    location.hash = "#/"; // 취소/실패 시 홈으로
+    return;
+  }
+  return renderAdmin();
+}
+
+  return renderList();
+}
 
   // =========================
   // Init
   // =========================
   document.getElementById("year").textContent = new Date().getFullYear();
+
   renderBanner();
   bindGlobalSearch();
   window.addEventListener("hashchange", render);
   render();
 
-  // 카테고리 네비 동기화
   window.addEventListener("hashchange", ()=>{
     const q = parseHashQuery();
     renderCategoryNav(q.cat || "");
   });
+const gridEl = document.getElementById("grid");
+const prevBtn = document.getElementById("slidePrev");
+const nextBtn = document.getElementById("slideNext");
 
-  // Top 버튼
-  document.getElementById("goTop").addEventListener("click", ()=>{
-    window.scrollTo({top:0, behavior:"smooth"});
+function getStep(){
+  const card = gridEl?.querySelector(".p-card");
+  if(!card) return 0;
+  const gap = 20; // CSS gap이 20px이니까 동일하게
+  return card.getBoundingClientRect().width + gap;
+}
+
+if(prevBtn && nextBtn && gridEl){
+  prevBtn.addEventListener("click", ()=>{
+    gridEl.scrollBy({ left: -getStep(), behavior: "smooth" });
   });
+
+  nextBtn.addEventListener("click", ()=>{
+    gridEl.scrollBy({ left: getStep(), behavior: "smooth" });
+  });
+}
+
+
+window.addEventListener("DOMContentLoaded", ()=>{
+  document.getElementById("goTop")?.addEventListener("click", ()=>{
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+});
+window.addEventListener("DOMContentLoaded", ()=>{
+  document.getElementById("goTop")?.addEventListener("click", ()=>{
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+});
+  
+// ===== 맨 위로 버튼 =====
+(function bindGoTop(){
+  const btn = document.getElementById("goTop");
+  if(!btn) return;
+
+  btn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+})();
+// ===== 관리자 권한 =====
+let isAdmin = false;
+
+document.getElementById("adminBtn")?.addEventListener("click", () => {
+  const pw = prompt("관리자 비밀번호를 입력하세요");
+
+  if (pw === "1234") {   // 비밀번호 원하는 걸로 변경 가능
+    isAdmin = true;
+    alert("관리자 권한이 활성화되었습니다.");
+  } else {
+    alert("비밀번호가 틀렸습니다.");
+  }
+});
+
+  
 </script>
+<!-- ✅ 오른쪽 플로팅 퀵 메뉴 -->
+<div class="quick-menu">
+  <a href="#/notice" class="quick-item">
+    <span class="icon">📢</span>
+    <span class="label">공지사항</span>
+  </a>
+
+  <a href="#/event" class="quick-item">
+    <span class="icon">🎉</span>
+    <span class="label">이벤트</span>
+  </a>
+
+  <a href="#/contact" class="quick-item">
+    <span class="icon">💬</span>
+    <span class="label">문의하기</span>
+  </a>
+
+<button class="quick-item top" id="goTop" type="button">⬆</button>
+
+</div>
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
