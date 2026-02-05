@@ -482,6 +482,13 @@
     }
     .specs b{ color:var(--text) }
 
+    /* 자부담금 가격만 빨간색 */
+.specs li.self-pay b{
+  color: #dc2626;     /* 빨간색 */
+  font-weight: 1000;
+}
+
+
     /* 상세 하단 긴 이미지 섹션 */
     .detail-stack{
       margin-top:14px;
@@ -1599,9 +1606,16 @@ catEl.addEventListener("change", ()=>{ apply(); syncHash(); });
     const gallery = (p.gallery && p.gallery.length) ? p.gallery : (p.thumb ? [p.thumb] : []);
     const main = gallery[0] || "";
 
-    const specRows = Object.entries(p.specs||{}).map(([k,v])=>`
-      <li><span>${escapeHtml(k)}</span><b>${escapeHtml(v)}</b></li>
-    `).join("");
+    const specRows = Object.entries(p.specs||{}).map(([k,v])=>{
+  const isSelfPay = k.includes("자부담");
+  return `
+    <li class="${isSelfPay ? "self-pay" : ""}">
+      <span>${escapeHtml(k)}</span>
+      <b>${escapeHtml(v)}</b>
+    </li>
+  `;
+}).join("");
+
 
     const galleryStrip = (gallery.length > 1) ? `
       <div class="gallery-strip" id="galleryStrip">
@@ -1912,6 +1926,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
 </body>
 </html>
+
 
 
 
