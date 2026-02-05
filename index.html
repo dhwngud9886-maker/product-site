@@ -1194,53 +1194,7 @@
     phoneText: "010-1234-5678",
     phoneTel: "01012345678"
   };
-  // =========================
-// Notice / Event (localStorage)
-// =========================
-const LS_NOTICE_KEY = "site_notices_v1";
-const LS_EVENT_KEY  = "site_events_v1";
 
-const DEFAULT_NOTICES = [
-  { id:"n1", title:"2026년 설치 일정 안내", date:"2026-02-01", body:"성수기 예약이 빨리 마감됩니다. 설치 희망일 기준 2~3주 전 문의 권장드립니다." },
-  { id:"n2", title:"A/S 접수 시간 변경", date:"2026-01-20", body:"평일 09:00~18:00 (점심 12:00~13:00) 운영합니다." },
-];
-
-const DEFAULT_EVENTS = [
-  { id:"e1", title:"2월 한정 현장 방문견적 혜택", date:"2026-02-01", body:"2월 한정으로 방문견적 시 설치비 할인 상담을 도와드립니다." },
-  { id:"e2", title:"대량 구매 상담 프로모션", date:"2026-01-15", body:"공장/작업장 대량 구매 시 납품 일정/설치 패키지 맞춤 제안 가능합니다." },
-];
-
-function loadList(key, fallback){
-  try{
-    const raw = localStorage.getItem(key);
-    if(!raw) return fallback.slice();
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : fallback.slice();
-  }catch{
-    return fallback.slice();
-  }
-}
-function saveList(key, list){
-  localStorage.setItem(key, JSON.stringify(list));
-}
-function uid(prefix){
-  return prefix + Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-4);
-}
-function sortByDateDesc(list){
-  return list.slice().sort((a,b)=> String(b.date||"").localeCompare(String(a.date||"")));
-}
-function findById(list, id){
-  return list.find(x => String(x.id) === String(id));
-}
-
-// in-memory state
-let NOTICE_LIST = loadList(LS_NOTICE_KEY, DEFAULT_NOTICES);
-let EVENT_LIST  = loadList(LS_EVENT_KEY,  DEFAULT_EVENTS);
-
-
-
-  // =========================
-  // Utils
   // =========================
   const app = document.getElementById("app");
   const slidesEl = document.getElementById("slides");
@@ -1687,368 +1641,60 @@ if (detailWrap && p.detailImages && p.detailImages.length) {
     input.addEventListener("keydown", (e)=>{ if(e.key==="Enter") run(); });
   }
 // =========================
-// Notice / Event Pages
 // =========================
-function renderNoticeList(){
+// Notice / Event Pages (이미지로만 관리)
+// =========================
+const NOTICE_IMAGES = [
+  "notice/notice-1.jpg",
+  // "notice/notice-2.jpg",
+];
+
+const EVENT_IMAGES = [
+  "event/event-1.jpg",
+  // "event/event-2.jpg",
+];
+
+function renderImagePage(title, images){
   renderCategoryNav("");
-  const items = sortByDateDesc(NOTICE_LIST);
 
   app.innerHTML = `
     <div class="card">
       <div class="title">
         <div>
-          <h1>공지사항</h1>
-          <p>운영/일정/정책 변경 사항을 확인하세요.</p>
+          <h1>${escapeHtml(title)}</h1>
+          <p>이미지를 교체하면 내용이 바뀝니다.</p>
         </div>
         <div class="toolbar">
-          <a class="btn2 ghost" href="#/admin?tab=notice">관리자</a>
+          <a class="btn2 ghost" href="#/">홈</a>
         </div>
       </div>
 
-      <div class="panel">
-        ${items.map(n=>`
-          <a href="#/notice/${encodeURIComponent(n.id)}" style="display:block;padding:12px 0;border-bottom:1px solid #eef2f7;text-decoration:none;color:inherit">
-            <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
-              <b style="font-size:14px">${escapeHtml(n.title)}</b>
-              <span style="color:var(--muted);font-size:12px">${escapeHtml(n.date||"")}</span>
-            </div>
-            <div style="margin-top:6px;color:var(--muted);font-size:13px;line-height:1.6">
-              ${escapeHtml((n.body||"").slice(0, 90))}${(n.body||"").length>90 ? "..." : ""}
-            </div>
-          </a>
-        `).join("") || `<div style="color:var(--muted)">공지사항이 없습니다.</div>`}
-      </div>
-    </div>
-  `;
-}
-
-function renderNoticeDetail(id){
-  renderCategoryNav("");
-  const item = findById(NOTICE_LIST, id);
-  if(!item){
-    app.innerHTML = `
-      <div class="card">
-        <div class="title">
-          <div><h1>공지사항</h1><p>해당 글을 찾을 수 없습니다.</p></div>
-        </div>
-        <div class="toolbar">
-          <a class="btn2 ghost" href="#/notice">목록으로</a>
-        </div>
-      </div>
-    `;
-    return;
-  }
-
-  app.innerHTML = `
-    <div class="card">
-      <div class="title">
-        <div>
-          <h1>${escapeHtml(item.title)}</h1>
-          <p>${escapeHtml(item.date||"")}</p>
-        </div>
-        <div class="toolbar">
-          <a class="btn2 ghost" href="#/notice">목록</a>
-          ${isAdminUnlocked() ? `<button class="btn2 ghost" id="noticeEditBtn" type="button">수정</button>` : ``}
-
-        </div>
-      </div>
-
-      <div class="panel" style="line-height:1.8;font-size:14px;white-space:pre-wrap">
-        ${escapeHtml(item.body||"")}
-      </div>
-    </div>
-  `;
-    // 관리자일 때만 "수정" 버튼 동작
-  document.getElementById("noticeEditBtn")?.addEventListener("click", () => {
-    if (!requireAdmin()) return;   // 비번 취소/실패 시 아무 이동도 안 함
-    setHashQuery("#/admin", { tab: "notice", edit: item.id });
-    render();
-  });
-
-}
-// =========================
-  // =========================
-// Admin PIN (simple)
-// =========================
-const LS_ADMIN_PIN_KEY = "site_admin_pin_v1";
-const SS_ADMIN_UNLOCK_KEY = "site_admin_unlocked_v1";
-
-function isAdminUnlocked(){
-  return sessionStorage.getItem(SS_ADMIN_UNLOCK_KEY) === "1";
-}
-function lockAdmin(){
-  sessionStorage.removeItem(SS_ADMIN_UNLOCK_KEY);
-}
-function unlockAdmin(){
-  sessionStorage.setItem(SS_ADMIN_UNLOCK_KEY, "1");
-}
-
-function ensureAdminPin(){
-  // PIN이 없으면 최초 1회 설정
-  const existing = localStorage.getItem(LS_ADMIN_PIN_KEY);
-  if(existing) return true;
-
-  const pin1 = prompt("관리자 PIN을 설정하세요 (예: 1234)");
-  if(pin1 === null) return false;
-
-  const pin = String(pin1).trim();
-  if(pin.length < 4){
-    alert("PIN은 최소 4자리로 설정하세요.");
-    return false;
-  }
-
-  const pin2 = prompt("PIN을 한 번 더 입력하세요");
-  if(pin2 === null) return false;
-
-  if(String(pin2).trim() !== pin){
-    alert("PIN이 일치하지 않습니다.");
-    return false;
-  }
-
-  localStorage.setItem(LS_ADMIN_PIN_KEY, pin);
-  alert("관리자 PIN이 설정되었습니다.");
-  return true;
-}
-
-function requireAdmin(){
-  // 이미 풀려있으면 통과
-  if(isAdminUnlocked()) return true;
-
-  // PIN 없으면 설정부터
-  if(!ensureAdminPin()) return false;
-
-  const saved = localStorage.getItem(LS_ADMIN_PIN_KEY) || "";
-  const input = prompt("관리자 PIN을 입력하세요");
-  if(input === null) return false;
-
-  if(String(input).trim() !== saved){
-    alert("PIN이 틀렸습니다.");
-    return false;
-  }
-
-  unlockAdmin();
-  return true;
-}
-
-function changeAdminPin(){
-  if(!requireAdmin()) return;
-  localStorage.removeItem(LS_ADMIN_PIN_KEY);
-  lockAdmin();
-  ensureAdminPin();
-  unlockAdmin();
-}
-
-// Admin Page
-// =========================
-function renderAdmin(){
-  renderCategoryNav("");
-  const q = parseHashQuery();
-  const tab = (q.tab === "event") ? "event" : "notice";
-  const editId = q.edit ? String(q.edit) : "";
-
-  const isNotice = tab === "notice";
-  const list = isNotice ? NOTICE_LIST : EVENT_LIST;
-  const key  = isNotice ? LS_NOTICE_KEY : LS_EVENT_KEY;
-
-  const editing = editId ? findById(list, editId) : null;
-
-  app.innerHTML = `
-    <div class="card">
-      <div class="title">
-        <div>
-          <h1>관리자</h1>
-          <p>공지사항/이벤트 글을 추가·수정·삭제할 수 있어요. (이 브라우저에 저장됨)</p>
-        </div>
-        <div class="toolbar">
-          <a class="btn2 ${tab==="notice" ? "" : "ghost"}" href="#/admin?tab=notice">공지</a>
-          <a class="btn2 ${tab==="event" ? "" : "ghost"}" href="#/admin?tab=event">이벤트</a>
-          <a class="btn2 ghost" href="#/${tab}">페이지로</a>
-          <button class="btn2 ghost" id="pinChange" type="button">PIN 변경</button>
-           <button class="btn2 ghost" id="pinLock" type="button">잠금</button>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div style="font-weight:900;margin-bottom:10px">${editing ? "글 수정" : "글 추가"}</div>
-
-        <div class="toolbar" style="margin-bottom:10px">
-          <input class="input" id="adTitle" placeholder="제목" value="${escapeHtml(editing?.title || "")}" />
-          <input class="input" id="adDate" placeholder="날짜 (YYYY-MM-DD)" value="${escapeHtml(editing?.date || new Date().toISOString().slice(0,10))}" />
-        </div>
-
-        <div class="toolbar" style="align-items:stretch">
-          <textarea class="input" id="adBody" placeholder="내용" style="min-height:140px;white-space:pre-wrap">${escapeHtml(editing?.body || "")}</textarea>
-        </div>
-
-        <div class="toolbar" style="margin-top:10px">
-          <button class="btn2" id="adSave">${editing ? "수정 저장" : "추가"}</button>
-          ${editing ? `<button class="btn2 ghost" id="adCancel">취소</button>` : ``}
-          ${editing ? `<button class="btn2 ghost" id="adDelete">삭제</button>` : ``}
-          <div style="margin-left:auto;color:var(--muted);font-size:12px">
-            * 저장 위치: localStorage (${escapeHtml(key)})
+      <div class="detail-stack">
+        ${(images && images.length ? images : []).map(src => `
+          <div class="detail-shot">
+            <img src="${escapeHtml(src)}" alt="${escapeHtml(title)}"
+                 onerror="this.closest('.detail-shot').style.display='none';">
           </div>
-        </div>
-      </div>
+        `).join("")}
 
-      <div class="panel" style="margin-top:12px">
-        <div style="font-weight:900;margin-bottom:10px">전체 글</div>
-        ${sortByDateDesc(list).map(item=>`
-          <div style="padding:10px 0;border-bottom:1px solid #eef2f7">
-            <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
-              <b>${escapeHtml(item.title)}</b>
-              <span style="color:var(--muted);font-size:12px">${escapeHtml(item.date||"")}</span>
-            </div>
-            <div class="toolbar" style="margin-top:8px">
-              <a class="btn2 ghost" href="#/${tab}/${encodeURIComponent(item.id)}">보기</a>
-              <a class="btn2 ghost" href="#/admin?tab=${tab}&edit=${encodeURIComponent(item.id)}">수정</a>
-            </div>
+        ${(!images || !images.length) ? `
+          <div class="panel" style="color:var(--muted)">
+            NOTICE_IMAGES / EVENT_IMAGES 배열에 이미지 경로를 넣어주세요.
           </div>
-        `).join("") || `<div style="color:var(--muted)">글이 없습니다.</div>`}
-      </div>
-    </div>
-  `;
-
-  // bind admin actions
-  const elTitle = document.getElementById("adTitle");
-  const elDate  = document.getElementById("adDate");
-  const elBody  = document.getElementById("adBody");
-
-  document.getElementById("adSave")?.addEventListener("click", ()=>{
-    const title = (elTitle?.value || "").trim();
-    const date  = (elDate?.value || "").trim();
-    const body  = (elBody?.value || "").trim();
-
-    if(!title){ alert("제목을 입력하세요"); return; }
-    if(!date){ alert("날짜를 입력하세요"); return; }
-    if(!body){ alert("내용을 입력하세요"); return; }
-
-    if(editing){
-      editing.title = title;
-      editing.date = date;
-      editing.body = body;
-    }else{
-      list.push({ id: uid(isNotice ? "n" : "e"), title, date, body });
-    }
-
-    // persist + refresh
-    if(isNotice){
-      NOTICE_LIST = list;
-      saveList(LS_NOTICE_KEY, NOTICE_LIST);
-      setHashQuery("#/admin", { tab: "notice" });
-    }else{
-      EVENT_LIST = list;
-      saveList(LS_EVENT_KEY, EVENT_LIST);
-      setHashQuery("#/admin", { tab: "event" });
-    }
-    render();
-  });
-document.getElementById("pinChange")?.addEventListener("click", ()=>{
-  changeAdminPin();
-});
-
-document.getElementById("pinLock")?.addEventListener("click", ()=>{
-  lockAdmin();
-  alert("잠금되었습니다.");
-  location.hash = "#/";
-});
-
-  document.getElementById("adCancel")?.addEventListener("click", ()=>{
-    setHashQuery("#/admin", { tab });
-    render();
-  });
-
-  document.getElementById("adDelete")?.addEventListener("click", ()=>{
-    if(!editing) return;
-    if(!confirm("정말 삭제할까요?")) return;
-
-    const idx = list.findIndex(x=>String(x.id)===String(editing.id));
-    if(idx >= 0) list.splice(idx, 1);
-
-    if(isNotice){
-      NOTICE_LIST = list;
-      saveList(LS_NOTICE_KEY, NOTICE_LIST);
-      setHashQuery("#/admin", { tab: "notice" });
-    }else{
-      EVENT_LIST = list;
-      saveList(LS_EVENT_KEY, EVENT_LIST);
-      setHashQuery("#/admin", { tab: "event" });
-    }
-    render();
-  });
-}
-
-function renderEventList(){
-  renderCategoryNav("");
-  const items = sortByDateDesc(EVENT_LIST);
-
-  app.innerHTML = `
-    <div class="card">
-      <div class="title">
-        <div>
-          <h1>이벤트</h1>
-          <p>진행 중인 프로모션/혜택을 확인하세요.</p>
-        </div>
-       <div class="toolbar">
-  <button class="btn2 ghost" id="adminBtn" type="button">관리자</button>
-</div>
-
-      </div>
-
-      <div class="panel">
-        ${items.map(e=>`
-          <a href="#/event/${encodeURIComponent(e.id)}" style="display:block;padding:12px 0;border-bottom:1px solid #eef2f7;text-decoration:none;color:inherit">
-            <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
-              <b style="font-size:14px">${escapeHtml(e.title)}</b>
-              <span style="color:var(--muted);font-size:12px">${escapeHtml(e.date||"")}</span>
-            </div>
-            <div style="margin-top:6px;color:var(--muted);font-size:13px;line-height:1.6">
-              ${escapeHtml((e.body||"").slice(0, 90))}${(e.body||"").length>90 ? "..." : ""}
-            </div>
-          </a>
-        `).join("") || `<div style="color:var(--muted)">이벤트가 없습니다.</div>`}
+        ` : ""}
       </div>
     </div>
   `;
 }
 
-function renderEventDetail(id){
-  renderCategoryNav("");
-  const item = findById(EVENT_LIST, id);
-  if(!item){
-    app.innerHTML = `
-      <div class="card">
-        <div class="title">
-          <div><h1>이벤트</h1><p>해당 글을 찾을 수 없습니다.</p></div>
-        </div>
-        <div class="toolbar">
-          <a class="btn2 ghost" href="#/event">목록으로</a>
-        </div>
-      </div>
-    `;
-    return;
-  }
-
-  app.innerHTML = `
-    <div class="card">
-      <div class="title">
-        <div>
-          <h1>${escapeHtml(item.title)}</h1>
-          <p>${escapeHtml(item.date||"")}</p>
-        </div>
-        <div class="toolbar">
-          <a class="btn2 ghost" href="#/event">목록</a>
-          <a class="btn2 ghost" href="#/admin?tab=event&edit=${encodeURIComponent(item.id)}">수정</a>
-        </div>
-      </div>
-
-      <div class="panel" style="line-height:1.8;font-size:14px;white-space:pre-wrap">
-        ${escapeHtml(item.body||"")}
-      </div>
-    </div>
-  `;
+function renderNoticePage(){
+  return renderImagePage("공지사항", NOTICE_IMAGES);
 }
 
-  // =========================
+function renderEventPage(){
+  return renderImagePage("이벤트", EVENT_IMAGES);
+}
+
   // Router
   // =========================
   function render(){
@@ -2069,26 +1715,18 @@ function renderEventDetail(id){
     return renderContact();
   }
 
-  // 공지 목록/상세
-  if(parts[0] === "notice"){
-    if(parts[1]) return renderNoticeDetail(decodeURIComponent(parts[1]));
-    return renderNoticeList();
-  }
-
-  // 이벤트 목록/상세
-  if(parts[0] === "event"){
-    if(parts[1]) return renderEventDetail(decodeURIComponent(parts[1]));
-    return renderEventList();
-  }
-
-  // 관리자
- if(parts[0] === "admin"){
-  if(!requireAdmin()){
-    location.hash = "#/"; // 취소/실패 시 홈으로
-    return;
-  }
-  return renderAdmin();
+// 공지(이미지 페이지)
+if(parts[0] === "notice"){
+  return renderNoticePage();
 }
+
+// 이벤트(이미지 페이지)
+if(parts[0] === "event"){
+  return renderEventPage();
+}
+
+
+
 
   return renderList();
 }
@@ -2149,21 +1787,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 })();
-// ===== 관리자 권한 =====
-let isAdmin = false;
 
-document.getElementById("adminBtn")?.addEventListener("click", () => {
-  const pw = prompt("관리자 비밀번호를 입력하세요");
-
-  if (pw === "1234") {   // 비밀번호 원하는 걸로 변경 가능
-    isAdmin = true;
-    alert("관리자 권한이 활성화되었습니다.");
-  } else {
-    alert("비밀번호가 틀렸습니다.");
-  }
-});
-
-  
 </script>
 <!-- ✅ 오른쪽 플로팅 퀵 메뉴 -->
 <div class="quick-menu">
@@ -2188,6 +1812,7 @@ document.getElementById("adminBtn")?.addEventListener("click", () => {
 
 </body>
 </html>
+
 
 
 
