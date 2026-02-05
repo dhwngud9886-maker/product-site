@@ -794,16 +794,32 @@
   border: 1px solid #e0f2fe;
   border-radius: 18px;
   box-shadow: 0 10px 22px rgba(56,189,248,.25);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  text-decoration: none;
-  color: #0369a1;
-  font-weight: 900;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  gap: 6px;              /* 아이콘-텍스트 간격 */
+  padding-top: 2px;      /* 위로 쏠리는 느낌 보정 */
+
+  text-decoration:none;
+  color:#0369a1;
+  font-weight:900;
   transition: all .18s ease;
 }
+    .quick-item .icon{
+  font-size: 22px;
+  line-height: 1;     /* ← 이게 없으면 위/아래 어긋나 보임 */
+  display: block;
+}
+
+.quick-item .label{
+  font-size: 11px;
+  line-height: 1;     /* ← 글자 높이 보정 */
+}
+
+
 
 /* 아이콘 */
 .quick-item .icon{
@@ -1733,6 +1749,7 @@ if(prevBtn && nextBtn && gridEl){
 
 </body>
 </html>
+
 
 
 
