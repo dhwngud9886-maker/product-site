@@ -846,11 +846,9 @@
   font-size: 18px;
 }
 
-/* 모바일에서는 숨김 */
 @media (max-width: 1100px){
   .quick-menu{ display: none; }
 }
-<button class="quick-item top" id="goTop" type="button">⬆</button>
 
 
   </style>
@@ -910,6 +908,25 @@
   <footer>
     © <span id="year"></span> Product Site. All rights reserved.
   </footer>
+  <div class="quick-menu">
+  <a class="quick-item" href="#/notice">
+    <span class="icon">📢</span>
+    <span class="label">공지</span>
+  </a>
+
+  <a class="quick-item" href="#/event">
+    <span class="icon">🎉</span>
+    <span class="label">이벤트</span>
+  </a>
+
+  <a class="quick-item" href="#/contact">
+    <span class="icon">💬</span>
+    <span class="label">문의</span>
+  </a>
+
+
+</div>
+
 </main>
 
 
@@ -1176,15 +1193,50 @@
     phoneText: "010-1234-5678",
     phoneTel: "01012345678"
   };
-const NOTICES = [
-  { id:"n1", title:"2026년 설치 일정 안내", date:"2026-02-01", body:"성수기 예약이 빨리 마감됩니다." },
-  { id:"n2", title:"A/S 접수 시간 변경", date:"2026-01-20", body:"평일 09:00~18:00 운영합니다." },
+  // =========================
+// Notice / Event (localStorage)
+// =========================
+const LS_NOTICE_KEY = "site_notices_v1";
+const LS_EVENT_KEY  = "site_events_v1";
+
+const DEFAULT_NOTICES = [
+  { id:"n1", title:"2026년 설치 일정 안내", date:"2026-02-01", body:"성수기 예약이 빨리 마감됩니다. 설치 희망일 기준 2~3주 전 문의 권장드립니다." },
+  { id:"n2", title:"A/S 접수 시간 변경", date:"2026-01-20", body:"평일 09:00~18:00 (점심 12:00~13:00) 운영합니다." },
 ];
 
-const EVENTS = [
-  { id:"e1", title:"2월 한정 설치 혜택", date:"2026-02-01", body:"2월 한정 프로모션 진행 중입니다." },
-  { id:"e2", title:"대량 구매 할인", date:"2026-01-15", body:"공장/현장 대량 구매 시 상담 가능" },
+const DEFAULT_EVENTS = [
+  { id:"e1", title:"2월 한정 현장 방문견적 혜택", date:"2026-02-01", body:"2월 한정으로 방문견적 시 설치비 할인 상담을 도와드립니다." },
+  { id:"e2", title:"대량 구매 상담 프로모션", date:"2026-01-15", body:"공장/작업장 대량 구매 시 납품 일정/설치 패키지 맞춤 제안 가능합니다." },
 ];
+
+function loadList(key, fallback){
+  try{
+    const raw = localStorage.getItem(key);
+    if(!raw) return fallback.slice();
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : fallback.slice();
+  }catch{
+    return fallback.slice();
+  }
+}
+function saveList(key, list){
+  localStorage.setItem(key, JSON.stringify(list));
+}
+function uid(prefix){
+  return prefix + Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-4);
+}
+function sortByDateDesc(list){
+  return list.slice().sort((a,b)=> String(b.date||"").localeCompare(String(a.date||"")));
+}
+function findById(list, id){
+  return list.find(x => String(x.id) === String(id));
+}
+
+// in-memory state
+let NOTICE_LIST = loadList(LS_NOTICE_KEY, DEFAULT_NOTICES);
+let EVENT_LIST  = loadList(LS_EVENT_KEY,  DEFAULT_EVENTS);
+
+
 
   // =========================
   // Utils
@@ -1619,76 +1671,6 @@ if (detailWrap && p.detailImages && p.detailImages.length) {
     }
   }
 
-  function renderContact(){
-    function renderNotice(){
-  renderCategoryNav("");
-  app.innerHTML = `
-    <div class="card">
-      <h1>공지사항</h1>
-      ${NOTICES.map(n=>`
-        <div class="panel">
-          <b>${escapeHtml(n.title)}</b>
-          <div>${escapeHtml(n.date)}</div>
-          <p>${escapeHtml(n.body)}</p>
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-
-function renderEvent(){
-  renderCategoryNav("");
-  app.innerHTML = `
-    <div class="card">
-      <h1>이벤트</h1>
-      ${EVENTS.map(e=>`
-        <div class="panel">
-          <b>${escapeHtml(e.title)}</b>
-          <div>${escapeHtml(e.date)}</div>
-          <p>${escapeHtml(e.body)}</p>
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-
-    renderCategoryNav("");
-
-    app.innerHTML = `
-      <div class="card">
-        <div class="title">
-          <div>
-            <h1>문의</h1>
-            <p>전화/이메일 등 원하는 방식으로 연결 가능합니다.</p>
-          </div>
-        </div>
-
-        <div class="toolbar">
-          <a class="btn2" href="mailto:${encodeURIComponent(CONTACT.email)}?subject=제품문의">이메일 보내기</a>
-          <a class="btn2 ghost" href="tel:${escapeHtml(CONTACT.phoneTel)}">전화하기</a>
-        </div>
-
-        <div class="panel" style="margin-top:12px">
-          <div style="font-weight:1000;margin-bottom:6px">간단 문의 폼</div>
-          <div style="color:var(--muted);font-size:13px">
-            실제 전송은 구글폼/서버 연동이 필요해요. 원하면 연결 코드까지 붙여줄게요.
-          </div>
-
-          <div class="toolbar" style="margin-top:12px">
-            <input class="input" placeholder="이름" />
-            <input class="input" placeholder="연락처" />
-          </div>
-          <div class="toolbar">
-            <input class="input" placeholder="문의내용" />
-            <button class="btn2">보내기</button>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  // =========================
-  // Global search
   // =========================
   function bindGlobalSearch(){
     const input = qs("#globalSearch");
@@ -1703,6 +1685,276 @@ function renderEvent(){
     btn.addEventListener("click", run);
     input.addEventListener("keydown", (e)=>{ if(e.key==="Enter") run(); });
   }
+// =========================
+// Notice / Event Pages
+// =========================
+function renderNoticeList(){
+  renderCategoryNav("");
+  const items = sortByDateDesc(NOTICE_LIST);
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="title">
+        <div>
+          <h1>공지사항</h1>
+          <p>운영/일정/정책 변경 사항을 확인하세요.</p>
+        </div>
+        <div class="toolbar">
+          <a class="btn2 ghost" href="#/admin?tab=notice">관리자</a>
+        </div>
+      </div>
+
+      <div class="panel">
+        ${items.map(n=>`
+          <a href="#/notice/${encodeURIComponent(n.id)}" style="display:block;padding:12px 0;border-bottom:1px solid #eef2f7;text-decoration:none;color:inherit">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
+              <b style="font-size:14px">${escapeHtml(n.title)}</b>
+              <span style="color:var(--muted);font-size:12px">${escapeHtml(n.date||"")}</span>
+            </div>
+            <div style="margin-top:6px;color:var(--muted);font-size:13px;line-height:1.6">
+              ${escapeHtml((n.body||"").slice(0, 90))}${(n.body||"").length>90 ? "..." : ""}
+            </div>
+          </a>
+        `).join("") || `<div style="color:var(--muted)">공지사항이 없습니다.</div>`}
+      </div>
+    </div>
+  `;
+}
+
+function renderNoticeDetail(id){
+  renderCategoryNav("");
+  const item = findById(NOTICE_LIST, id);
+  if(!item){
+    app.innerHTML = `
+      <div class="card">
+        <div class="title">
+          <div><h1>공지사항</h1><p>해당 글을 찾을 수 없습니다.</p></div>
+        </div>
+        <div class="toolbar">
+          <a class="btn2 ghost" href="#/notice">목록으로</a>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="title">
+        <div>
+          <h1>${escapeHtml(item.title)}</h1>
+          <p>${escapeHtml(item.date||"")}</p>
+        </div>
+        <div class="toolbar">
+          <a class="btn2 ghost" href="#/notice">목록</a>
+          <a class="btn2 ghost" href="#/admin?tab=notice&edit=${encodeURIComponent(item.id)}">수정</a>
+        </div>
+      </div>
+
+      <div class="panel" style="line-height:1.8;font-size:14px;white-space:pre-wrap">
+        ${escapeHtml(item.body||"")}
+      </div>
+    </div>
+  `;
+}
+// =========================
+// Admin Page
+// =========================
+function renderAdmin(){
+  renderCategoryNav("");
+  const q = parseHashQuery();
+  const tab = (q.tab === "event") ? "event" : "notice";
+  const editId = q.edit ? String(q.edit) : "";
+
+  const isNotice = tab === "notice";
+  const list = isNotice ? NOTICE_LIST : EVENT_LIST;
+  const key  = isNotice ? LS_NOTICE_KEY : LS_EVENT_KEY;
+
+  const editing = editId ? findById(list, editId) : null;
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="title">
+        <div>
+          <h1>관리자</h1>
+          <p>공지사항/이벤트 글을 추가·수정·삭제할 수 있어요. (이 브라우저에 저장됨)</p>
+        </div>
+        <div class="toolbar">
+          <a class="btn2 ${tab==="notice" ? "" : "ghost"}" href="#/admin?tab=notice">공지</a>
+          <a class="btn2 ${tab==="event" ? "" : "ghost"}" href="#/admin?tab=event">이벤트</a>
+          <a class="btn2 ghost" href="#/${tab}">페이지로</a>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div style="font-weight:900;margin-bottom:10px">${editing ? "글 수정" : "글 추가"}</div>
+
+        <div class="toolbar" style="margin-bottom:10px">
+          <input class="input" id="adTitle" placeholder="제목" value="${escapeHtml(editing?.title || "")}" />
+          <input class="input" id="adDate" placeholder="날짜 (YYYY-MM-DD)" value="${escapeHtml(editing?.date || new Date().toISOString().slice(0,10))}" />
+        </div>
+
+        <div class="toolbar" style="align-items:stretch">
+          <textarea class="input" id="adBody" placeholder="내용" style="min-height:140px;white-space:pre-wrap">${escapeHtml(editing?.body || "")}</textarea>
+        </div>
+
+        <div class="toolbar" style="margin-top:10px">
+          <button class="btn2" id="adSave">${editing ? "수정 저장" : "추가"}</button>
+          ${editing ? `<button class="btn2 ghost" id="adCancel">취소</button>` : ``}
+          ${editing ? `<button class="btn2 ghost" id="adDelete">삭제</button>` : ``}
+          <div style="margin-left:auto;color:var(--muted);font-size:12px">
+            * 저장 위치: localStorage (${escapeHtml(key)})
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:12px">
+        <div style="font-weight:900;margin-bottom:10px">전체 글</div>
+        ${sortByDateDesc(list).map(item=>`
+          <div style="padding:10px 0;border-bottom:1px solid #eef2f7">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
+              <b>${escapeHtml(item.title)}</b>
+              <span style="color:var(--muted);font-size:12px">${escapeHtml(item.date||"")}</span>
+            </div>
+            <div class="toolbar" style="margin-top:8px">
+              <a class="btn2 ghost" href="#/${tab}/${encodeURIComponent(item.id)}">보기</a>
+              <a class="btn2 ghost" href="#/admin?tab=${tab}&edit=${encodeURIComponent(item.id)}">수정</a>
+            </div>
+          </div>
+        `).join("") || `<div style="color:var(--muted)">글이 없습니다.</div>`}
+      </div>
+    </div>
+  `;
+
+  // bind admin actions
+  const elTitle = document.getElementById("adTitle");
+  const elDate  = document.getElementById("adDate");
+  const elBody  = document.getElementById("adBody");
+
+  document.getElementById("adSave")?.addEventListener("click", ()=>{
+    const title = (elTitle?.value || "").trim();
+    const date  = (elDate?.value || "").trim();
+    const body  = (elBody?.value || "").trim();
+
+    if(!title){ alert("제목을 입력하세요"); return; }
+    if(!date){ alert("날짜를 입력하세요"); return; }
+    if(!body){ alert("내용을 입력하세요"); return; }
+
+    if(editing){
+      editing.title = title;
+      editing.date = date;
+      editing.body = body;
+    }else{
+      list.push({ id: uid(isNotice ? "n" : "e"), title, date, body });
+    }
+
+    // persist + refresh
+    if(isNotice){
+      NOTICE_LIST = list;
+      saveList(LS_NOTICE_KEY, NOTICE_LIST);
+      setHashQuery("#/admin", { tab: "notice" });
+    }else{
+      EVENT_LIST = list;
+      saveList(LS_EVENT_KEY, EVENT_LIST);
+      setHashQuery("#/admin", { tab: "event" });
+    }
+    render();
+  });
+
+  document.getElementById("adCancel")?.addEventListener("click", ()=>{
+    setHashQuery("#/admin", { tab });
+    render();
+  });
+
+  document.getElementById("adDelete")?.addEventListener("click", ()=>{
+    if(!editing) return;
+    if(!confirm("정말 삭제할까요?")) return;
+
+    const idx = list.findIndex(x=>String(x.id)===String(editing.id));
+    if(idx >= 0) list.splice(idx, 1);
+
+    if(isNotice){
+      NOTICE_LIST = list;
+      saveList(LS_NOTICE_KEY, NOTICE_LIST);
+      setHashQuery("#/admin", { tab: "notice" });
+    }else{
+      EVENT_LIST = list;
+      saveList(LS_EVENT_KEY, EVENT_LIST);
+      setHashQuery("#/admin", { tab: "event" });
+    }
+    render();
+  });
+}
+
+function renderEventList(){
+  renderCategoryNav("");
+  const items = sortByDateDesc(EVENT_LIST);
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="title">
+        <div>
+          <h1>이벤트</h1>
+          <p>진행 중인 프로모션/혜택을 확인하세요.</p>
+        </div>
+        <div class="toolbar">
+          <a class="btn2 ghost" href="#/admin?tab=event">관리자</a>
+        </div>
+      </div>
+
+      <div class="panel">
+        ${items.map(e=>`
+          <a href="#/event/${encodeURIComponent(e.id)}" style="display:block;padding:12px 0;border-bottom:1px solid #eef2f7;text-decoration:none;color:inherit">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
+              <b style="font-size:14px">${escapeHtml(e.title)}</b>
+              <span style="color:var(--muted);font-size:12px">${escapeHtml(e.date||"")}</span>
+            </div>
+            <div style="margin-top:6px;color:var(--muted);font-size:13px;line-height:1.6">
+              ${escapeHtml((e.body||"").slice(0, 90))}${(e.body||"").length>90 ? "..." : ""}
+            </div>
+          </a>
+        `).join("") || `<div style="color:var(--muted)">이벤트가 없습니다.</div>`}
+      </div>
+    </div>
+  `;
+}
+
+function renderEventDetail(id){
+  renderCategoryNav("");
+  const item = findById(EVENT_LIST, id);
+  if(!item){
+    app.innerHTML = `
+      <div class="card">
+        <div class="title">
+          <div><h1>이벤트</h1><p>해당 글을 찾을 수 없습니다.</p></div>
+        </div>
+        <div class="toolbar">
+          <a class="btn2 ghost" href="#/event">목록으로</a>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="title">
+        <div>
+          <h1>${escapeHtml(item.title)}</h1>
+          <p>${escapeHtml(item.date||"")}</p>
+        </div>
+        <div class="toolbar">
+          <a class="btn2 ghost" href="#/event">목록</a>
+          <a class="btn2 ghost" href="#/admin?tab=event&edit=${encodeURIComponent(item.id)}">수정</a>
+        </div>
+      </div>
+
+      <div class="panel" style="line-height:1.8;font-size:14px;white-space:pre-wrap">
+        ${escapeHtml(item.body||"")}
+      </div>
+    </div>
+  `;
+}
 
   // =========================
   // Router
@@ -1710,28 +1962,40 @@ function renderEvent(){
   function render(){
     const parts = parseRoute();
 
-    // 목록
-    if(parts.length === 0){
-      return renderList();
-    }
-    // 제품 상세
-    if(parts[0] === "p" && parts[1]){
-      return renderDetail(decodeURIComponent(parts[1]));
-    }
-    // 문의
-   if(parts[0] === "contact"){
-  return renderContact();
-}
-
-if(parts[0] === "notice"){
-  return renderNotice();
-}
-
-if(parts[0] === "event"){
-  return renderEvent();
-}
+     // 목록
+  if(parts.length === 0){
     return renderList();
   }
+
+  // 제품 상세
+  if(parts[0] === "p" && parts[1]){
+    return renderDetail(decodeURIComponent(parts[1]));
+  }
+
+  // 문의
+  if(parts[0] === "contact"){
+    return renderContact();
+  }
+
+  // 공지 목록/상세
+  if(parts[0] === "notice"){
+    if(parts[1]) return renderNoticeDetail(decodeURIComponent(parts[1]));
+    return renderNoticeList();
+  }
+
+  // 이벤트 목록/상세
+  if(parts[0] === "event"){
+    if(parts[1]) return renderEventDetail(decodeURIComponent(parts[1]));
+    return renderEventList();
+  }
+
+  // 관리자
+  if(parts[0] === "admin"){
+    return renderAdmin();
+  }
+
+  return renderList();
+}
 
   // =========================
   // Init
@@ -1767,9 +2031,13 @@ if(prevBtn && nextBtn && gridEl){
     gridEl.scrollBy({ left: getStep(), behavior: "smooth" });
   });
 }
+
+
+window.addEventListener("DOMContentLoaded", ()=>{
   document.getElementById("goTop")?.addEventListener("click", ()=>{
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
+});
 
 </script>
 <!-- ✅ 오른쪽 플로팅 퀵 메뉴 -->
@@ -1789,13 +2057,13 @@ if(prevBtn && nextBtn && gridEl){
     <span class="label">문의하기</span>
   </a>
 
-  <a href="#/" class="quick-item top">
-    ⬆
-  </a>
+<button class="quick-item top" id="goTop" type="button">⬆</button>
+
 </div>
 
 </body>
 </html>
+
 
 
 
