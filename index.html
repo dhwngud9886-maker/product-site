@@ -1748,7 +1748,8 @@ function renderNoticeDetail(id){
         </div>
         <div class="toolbar">
           <a class="btn2 ghost" href="#/notice">목록</a>
-          <a class="btn2 ghost" href="#/admin?tab=notice&edit=${encodeURIComponent(item.id)}">수정</a>
+          ${isAdminUnlocked() ? `<button class="btn2 ghost" id="noticeEditBtn" type="button">수정</button>` : ``}
+
         </div>
       </div>
 
@@ -1757,6 +1758,13 @@ function renderNoticeDetail(id){
       </div>
     </div>
   `;
+    // 관리자일 때만 "수정" 버튼 동작
+  document.getElementById("noticeEditBtn")?.addEventListener("click", () => {
+    if (!requireAdmin()) return;   // 비번 취소/실패 시 아무 이동도 안 함
+    setHashQuery("#/admin", { tab: "notice", edit: item.id });
+    render();
+  });
+
 }
 // =========================
   // =========================
@@ -1980,9 +1988,10 @@ function renderEventList(){
           <h1>이벤트</h1>
           <p>진행 중인 프로모션/혜택을 확인하세요.</p>
         </div>
-        <div class="toolbar">
-          <a class="btn2 ghost" href="#/admin?tab=event">관리자</a>
-        </div>
+       <div class="toolbar">
+  <button class="btn2 ghost" id="adminBtn" type="button">관리자</button>
+</div>
+
       </div>
 
       <div class="panel">
@@ -2130,6 +2139,29 @@ window.addEventListener("DOMContentLoaded", ()=>{
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 });
+  
+// ===== 맨 위로 버튼 =====
+(function bindGoTop(){
+  const btn = document.getElementById("goTop");
+  if(!btn) return;
+
+  btn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+})();
+// ===== 관리자 권한 =====
+let isAdmin = false;
+
+document.getElementById("adminBtn")?.addEventListener("click", () => {
+  const pw = prompt("관리자 비밀번호를 입력하세요");
+
+  if (pw === "1234") {   // 비밀번호 원하는 걸로 변경 가능
+    isAdmin = true;
+    alert("관리자 권한이 활성화되었습니다.");
+  } else {
+    alert("비밀번호가 틀렸습니다.");
+  }
+});
 
   
 </script>
@@ -2156,6 +2188,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
 </body>
 </html>
+
 
 
 
