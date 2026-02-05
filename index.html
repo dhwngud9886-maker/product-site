@@ -1074,17 +1074,9 @@
       return `
         <article class="p-card">
           <div class="p-thumb">
-            <span class="badge">${escapeHtml(p.category)}</span>
             ${thumbHtml(p)}
           </div>
           <div class="p-body">
-  <!-- 🔹 카테고리 뱃지 (1개, 색상 자동) -->
-  <span class="chip category
-    ${p.category === "에어컨" ? "aircon" :
-      p.category === "제습기" ? "dehumidifier" :
-      p.category === "히터" ? "heater" : ""}">
-    ${escapeHtml(p.category)}
-  </span>
 
   <h3 class="p-name">${escapeHtml(p.name)}</h3>
   <p class="p-sub">${escapeHtml(p.short || "")}</p>
@@ -1399,6 +1391,7 @@ if(prevBtn && nextBtn && gridEl){
 
 </body>
 </html>
+
 
 
 
