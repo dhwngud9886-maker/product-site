@@ -923,6 +923,7 @@
     <span class="icon">💬</span>
     <span class="label">문의</span>
   </a>
+<button class="quick-item top" id="goTop" type="button">⬆</button>
 
 
 </div>
@@ -2038,7 +2039,13 @@ window.addEventListener("DOMContentLoaded", ()=>{
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 });
+window.addEventListener("DOMContentLoaded", ()=>{
+  document.getElementById("goTop")?.addEventListener("click", ()=>{
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+});
 
+  
 </script>
 <!-- ✅ 오른쪽 플로팅 퀵 메뉴 -->
 <div class="quick-menu">
@@ -2063,6 +2070,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
 </body>
 </html>
+
 
 
 
