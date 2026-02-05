@@ -850,11 +850,7 @@
 @media (max-width: 1100px){
   .quick-menu{ display: none; }
 }
-    <button class="quick-item top" id="goTop">⬆</button>
-
-document.getElementById("goTop")?.addEventListener("click", ()=>{
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
+<button class="quick-item top" id="goTop" type="button">⬆</button>
 
 
   </style>
@@ -1180,6 +1176,15 @@ document.getElementById("goTop")?.addEventListener("click", ()=>{
     phoneText: "010-1234-5678",
     phoneTel: "01012345678"
   };
+const NOTICES = [
+  { id:"n1", title:"2026년 설치 일정 안내", date:"2026-02-01", body:"성수기 예약이 빨리 마감됩니다." },
+  { id:"n2", title:"A/S 접수 시간 변경", date:"2026-01-20", body:"평일 09:00~18:00 운영합니다." },
+];
+
+const EVENTS = [
+  { id:"e1", title:"2월 한정 설치 혜택", date:"2026-02-01", body:"2월 한정 프로모션 진행 중입니다." },
+  { id:"e2", title:"대량 구매 할인", date:"2026-01-15", body:"공장/현장 대량 구매 시 상담 가능" },
+];
 
   // =========================
   // Utils
@@ -1615,6 +1620,38 @@ if (detailWrap && p.detailImages && p.detailImages.length) {
   }
 
   function renderContact(){
+    function renderNotice(){
+  renderCategoryNav("");
+  app.innerHTML = `
+    <div class="card">
+      <h1>공지사항</h1>
+      ${NOTICES.map(n=>`
+        <div class="panel">
+          <b>${escapeHtml(n.title)}</b>
+          <div>${escapeHtml(n.date)}</div>
+          <p>${escapeHtml(n.body)}</p>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderEvent(){
+  renderCategoryNav("");
+  app.innerHTML = `
+    <div class="card">
+      <h1>이벤트</h1>
+      ${EVENTS.map(e=>`
+        <div class="panel">
+          <b>${escapeHtml(e.title)}</b>
+          <div>${escapeHtml(e.date)}</div>
+          <p>${escapeHtml(e.body)}</p>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
     renderCategoryNav("");
 
     app.innerHTML = `
@@ -1682,9 +1719,17 @@ if (detailWrap && p.detailImages && p.detailImages.length) {
       return renderDetail(decodeURIComponent(parts[1]));
     }
     // 문의
-    if(parts[0] === "contact"){
-      return renderContact();
-    }
+   if(parts[0] === "contact"){
+  return renderContact();
+}
+
+if(parts[0] === "notice"){
+  return renderNotice();
+}
+
+if(parts[0] === "event"){
+  return renderEvent();
+}
     return renderList();
   }
 
@@ -1722,7 +1767,9 @@ if(prevBtn && nextBtn && gridEl){
     gridEl.scrollBy({ left: getStep(), behavior: "smooth" });
   });
 }
-
+  document.getElementById("goTop")?.addEventListener("click", ()=>{
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 
 </script>
 <!-- ✅ 오른쪽 플로팅 퀵 메뉴 -->
@@ -1749,6 +1796,7 @@ if(prevBtn && nextBtn && gridEl){
 
 </body>
 </html>
+
 
 
 
