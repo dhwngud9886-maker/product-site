@@ -1194,6 +1194,23 @@
     const catEl = qs("#category");
     const resetEl = qs("#reset");
 
+ // ✅ 목록 화면이 렌더될 때마다 화살표 이벤트 다시 바인딩
+    const prevBtn = qs("#slidePrev");
+    const nextBtn = qs("#slideNext");
+
+    function getStep(){
+      const card = grid?.querySelector(".p-card");
+      if(!card) return 0;
+      const gap = 20; // CSS gap과 동일
+      return card.getBoundingClientRect().width + gap;
+    }
+
+    if(prevBtn && nextBtn && grid){
+      prevBtn.onclick = () => grid.scrollBy({ left: -getStep(), behavior: "smooth" });
+      nextBtn.onclick = () => grid.scrollBy({ left:  getStep(), behavior: "smooth" });
+    }
+
+
     function thumbHtml(p){
       // 목록 썸네일은 thumb만 사용 (원하는 “두번째 사진처럼 썸네일엔 지금 사진만”)
       if(p.thumb){
@@ -1533,6 +1550,7 @@ if(prevBtn && nextBtn && gridEl){
 
 </body>
 </html>
+
 
 
 
