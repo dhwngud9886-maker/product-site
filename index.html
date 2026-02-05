@@ -1287,8 +1287,26 @@
       setHashQuery("#/", { cat: catEl.value, q: searchEl.value.trim() });
     }
 
-    searchEl.addEventListener("input", ()=>{ apply(); syncHash(); });
-    catEl.addEventListener("change", ()=>{ apply(); syncHash(); });
+    let isComposing = false;
+
+// ✅ 한글 조합 시작/끝 감지
+searchEl.addEventListener("compositionstart", ()=>{ isComposing = true; });
+searchEl.addEventListener("compositionend", ()=>{
+  isComposing = false;
+  apply();
+  syncHash();
+});
+
+// ✅ 입력 중에는 조합 상태면 무시 (자음/모음 끊김 방지)
+searchEl.addEventListener("input", ()=>{
+  if(isComposing) return;
+  apply();
+  syncHash();
+});
+
+// 카테고리 변경은 기존 그대로
+catEl.addEventListener("change", ()=>{ apply(); syncHash(); });
+
 
     resetEl.addEventListener("click", ()=>{
       searchEl.value=""; catEl.value="";
@@ -1558,6 +1576,7 @@ if(prevBtn && nextBtn && gridEl){
 
 </body>
 </html>
+
 
 
 
