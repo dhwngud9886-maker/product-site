@@ -1328,6 +1328,8 @@
     const q = parseHashQuery();
     const activeCat = q.cat || "";
     const searchQ = (q.q || "").trim();
+    
+    const isHomeSlider = !activeCat && !searchQ;
 
     renderCategoryNav(activeCat);
 
@@ -1351,13 +1353,15 @@
           <button class="btn2 ghost" id="reset">초기화</button>
         </div>
 
-        <div class="product-slider">
-  <button class="slide-arrow left" id="slidePrev">‹</button>
-
-  <div class="grid slider" id="grid"></div>
-
-  <button class="slide-arrow right" id="slideNext">›</button>
-</div>
+                ${isHomeSlider ? `
+          <div class="product-slider">
+            <button class="slide-arrow left" id="slidePrev">‹</button>
+            <div class="grid slider" id="grid"></div>
+            <button class="slide-arrow right" id="slideNext">›</button>
+          </div>
+        ` : `
+          <div class="grid" id="grid"></div>
+        `}
 
       </div>
     `;
@@ -1367,20 +1371,22 @@
     const catEl = qs("#category");
     const resetEl = qs("#reset");
 
- // ✅ 목록 화면이 렌더될 때마다 화살표 이벤트 다시 바인딩
-    const prevBtn = qs("#slidePrev");
-    const nextBtn = qs("#slideNext");
+    // ✅ 홈(슬라이더)일 때만 화살표 이벤트 바인딩
+    if(isHomeSlider){
+      const prevBtn = qs("#slidePrev");
+      const nextBtn = qs("#slideNext");
 
-    function getStep(){
-      const card = grid?.querySelector(".p-card");
-      if(!card) return 0;
-      const gap = 20; // CSS gap과 동일
-      return card.getBoundingClientRect().width + gap;
-    }
+      function getStep(){
+        const card = grid?.querySelector(".p-card");
+        if(!card) return 0;
+        const gap = 20; // CSS gap과 동일
+        return card.getBoundingClientRect().width + gap;
+      }
 
-    if(prevBtn && nextBtn && grid){
-      prevBtn.onclick = () => grid.scrollBy({ left: -getStep(), behavior: "smooth" });
-      nextBtn.onclick = () => grid.scrollBy({ left:  getStep(), behavior: "smooth" });
+      if(prevBtn && nextBtn && grid){
+        prevBtn.onclick = () => grid.scrollBy({ left: -getStep(), behavior: "smooth" });
+        nextBtn.onclick = () => grid.scrollBy({ left:  getStep(), behavior: "smooth" });
+      }
     }
 
 
@@ -1786,26 +1792,6 @@ if(parts[0] === "event"){
     const q = parseHashQuery();
     renderCategoryNav(q.cat || "");
   });
-const gridEl = document.getElementById("grid");
-const prevBtn = document.getElementById("slidePrev");
-const nextBtn = document.getElementById("slideNext");
-
-function getStep(){
-  const card = gridEl?.querySelector(".p-card");
-  if(!card) return 0;
-  const gap = 20; // CSS gap이 20px이니까 동일하게
-  return card.getBoundingClientRect().width + gap;
-}
-
-if(prevBtn && nextBtn && gridEl){
-  prevBtn.addEventListener("click", ()=>{
-    gridEl.scrollBy({ left: -getStep(), behavior: "smooth" });
-  });
-
-  nextBtn.addEventListener("click", ()=>{
-    gridEl.scrollBy({ left: getStep(), behavior: "smooth" });
-  });
-}
 
 
 window.addEventListener("DOMContentLoaded", ()=>{
@@ -1853,6 +1839,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
 </body>
 </html>
+
 
 
 
