@@ -713,6 +713,99 @@
 .slide-arrow:hover{
   background: #f0f6ff;
 }
+    /* ✅ 오른쪽 공지/이벤트 고정 패널 */
+/* ✅ 2컬럼 레이아웃 */
+.layout{
+  display: grid;
+  grid-template-columns: 1fr 280px; /* 왼쪽=본문, 오른쪽=사이드 */
+  gap: 18px;
+  align-items: start;
+}
+
+/* ✅ 사이드는 컨테이너 안에서만 따라오게(sticky) */
+.side-panel{
+  position: sticky;
+  top: 110px;            /* 헤더 높이에 맞춰 조절 */
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ✅ 본문 컬럼이 잘 늘어나게 */
+.main-col{
+  min-width: 0;
+}
+
+/* ✅ 화면 좁아지면 1컬럼으로 */
+@media (max-width: 1100px){
+  .layout{
+    grid-template-columns: 1fr;
+  }
+  .side-panel{
+    position: static;
+    width: 100%;
+  }
+}
+
+
+.side-card{
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  padding: 14px;
+}
+
+.side-title{
+  font-weight: 1000;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.side-list{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.side-list li{
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.side-list a{
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 800;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.side-list a:hover{
+  color: var(--blue);
+}
+
+.side-date{
+  color: var(--muted);
+  font-size: 12px;
+  flex: 0 0 auto;
+}
+
+/* ✅ 화면이 좁으면 오른쪽 패널 숨김(모바일/작은 화면) */
+@media (max-width: 1300px){
+  .side-panel{ display: none; }
+}
+
 
   </style>
 </head>
@@ -763,12 +856,34 @@
 </section>
 
 <main class="container">
+
+  <!-- ✅ 오른쪽 고정 공지/이벤트 패널 -->
+  <aside class="side-panel">
+    <div class="side-card">
+      <div class="side-title">공지사항</div>
+      <ul class="side-list">
+        <li><a href="#/notice/1">[공지] 여름 성수기 설치 예약 안내</a><span class="side-date">06/10</span></li>
+        <li><a href="#/notice/2">[공지] 방문 상담 가능 지역 안내</a><span class="side-date">06/03</span></li>
+        <li><a href="#/notice/3">[공지] 카탈로그 PDF 업데이트</a><span class="side-date">05/28</span></li>
+      </ul>
+    </div>
+
+    <div class="side-card">
+      <div class="side-title">이벤트</div>
+      <ul class="side-list">
+        <li><a href="#/event/1">[이벤트] 설치비 지원 프로모션</a><span class="side-date">~06/30</span></li>
+        <li><a href="#/event/2">[이벤트] 대량 구매 견적 할인</a><span class="side-date">상시</span></li>
+      </ul>
+    </div>
+  </aside>
+
   <div id="app"></div>
 
   <footer>
     © <span id="year"></span> Product Site. All rights reserved.
   </footer>
 </main>
+
 
 <script>
   // =========================
@@ -1581,6 +1696,7 @@ if(prevBtn && nextBtn && gridEl){
 
 </body>
 </html>
+
 
 
 
