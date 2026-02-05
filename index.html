@@ -713,40 +713,7 @@
 .slide-arrow:hover{
   background: #f0f6ff;
 }
-    /* ✅ 오른쪽 공지/이벤트 고정 패널 */
-/* ✅ 2컬럼 레이아웃 */
-.layout{
-  display: grid;
-  grid-template-columns: 1fr 280px; /* 왼쪽=본문, 오른쪽=사이드 */
-  gap: 18px;
-  align-items: start;
-}
 
-/* ✅ 사이드는 컨테이너 안에서만 따라오게(sticky) */
-.side-panel{
-  position: sticky;
-  top: 110px;            /* 헤더 높이에 맞춰 조절 */
-  width: 280px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* ✅ 본문 컬럼이 잘 늘어나게 */
-.main-col{
-  min-width: 0;
-}
-
-/* ✅ 화면 좁아지면 1컬럼으로 */
-@media (max-width: 1100px){
-  .layout{
-    grid-template-columns: 1fr;
-  }
-  .side-panel{
-    position: static;
-    width: 100%;
-  }
-}
 
 
 .side-card{
@@ -805,6 +772,73 @@
 @media (max-width: 1300px){
   .side-panel{ display: none; }
 }
+/* =========================
+   오른쪽 플로팅 퀵 메뉴
+========================= */
+.quick-menu{
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 개별 버튼 */
+.quick-item{
+  width: 64px;
+  height: 64px;
+  background: #ffffff;
+  border: 1px solid #e0f2fe;
+  border-radius: 18px;
+  box-shadow: 0 10px 22px rgba(56,189,248,.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-decoration: none;
+  color: #0369a1;
+  font-weight: 900;
+  transition: all .18s ease;
+}
+
+/* 아이콘 */
+.quick-item .icon{
+  font-size: 20px;
+}
+
+/* 텍스트 */
+.quick-item .label{
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* hover 효과 */
+.quick-item:hover{
+  background: #e0f2fe;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(56,189,248,.35);
+}
+
+/* 맨 위로 버튼 */
+.quick-item.top{
+  background: #38bdf8;
+  color: #00202e;
+  font-size: 18px;
+}
+
+/* 모바일에서는 숨김 */
+@media (max-width: 1100px){
+  .quick-menu{ display: none; }
+}
+    <button class="quick-item top" id="goTop">⬆</button>
+
+document.getElementById("goTop")?.addEventListener("click", ()=>{
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
 
   </style>
@@ -857,25 +891,7 @@
 
 <main class="container">
 
-  <!-- ✅ 오른쪽 고정 공지/이벤트 패널 -->
-  <aside class="side-panel">
-    <div class="side-card">
-      <div class="side-title">공지사항</div>
-      <ul class="side-list">
-        <li><a href="#/notice/1">[공지] 여름 성수기 설치 예약 안내</a><span class="side-date">06/10</span></li>
-        <li><a href="#/notice/2">[공지] 방문 상담 가능 지역 안내</a><span class="side-date">06/03</span></li>
-        <li><a href="#/notice/3">[공지] 카탈로그 PDF 업데이트</a><span class="side-date">05/28</span></li>
-      </ul>
-    </div>
 
-    <div class="side-card">
-      <div class="side-title">이벤트</div>
-      <ul class="side-list">
-        <li><a href="#/event/1">[이벤트] 설치비 지원 프로모션</a><span class="side-date">~06/30</span></li>
-        <li><a href="#/event/2">[이벤트] 대량 구매 견적 할인</a><span class="side-date">상시</span></li>
-      </ul>
-    </div>
-  </aside>
 
   <div id="app"></div>
 
@@ -1693,9 +1709,31 @@ if(prevBtn && nextBtn && gridEl){
 
 
 </script>
+<!-- ✅ 오른쪽 플로팅 퀵 메뉴 -->
+<div class="quick-menu">
+  <a href="#/notice" class="quick-item">
+    <span class="icon">📢</span>
+    <span class="label">공지사항</span>
+  </a>
+
+  <a href="#/event" class="quick-item">
+    <span class="icon">🎉</span>
+    <span class="label">이벤트</span>
+  </a>
+
+  <a href="#/contact" class="quick-item">
+    <span class="icon">💬</span>
+    <span class="label">문의하기</span>
+  </a>
+
+  <a href="#/" class="quick-item top">
+    ⬆
+  </a>
+</div>
 
 </body>
 </html>
+
 
 
 
