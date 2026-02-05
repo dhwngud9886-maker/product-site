@@ -1067,13 +1067,18 @@
     });
     return out;
   }
-  function setHashQuery(basePath, queryObj){
-    const q = Object.entries(queryObj)
-      .filter(([,v])=>v !== "" && v != null)
-      .map(([k,v])=>`${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
-      .join("&");
-    location.hash = q ? `${basePath}?${q}` : basePath;
-  }
+ function setHashQuery(basePath, queryObj){
+  const q = Object.entries(queryObj)
+    .filter(([,v])=>v !== "" && v != null)
+    .map(([k,v])=>`${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+    .join("&");
+
+  const newHash = q ? `${basePath}?${q}` : basePath;
+
+  // ✅ hashchange를 발생시키지 않고 URL만 갱신
+  history.replaceState(null, "", "#" + newHash.replace(/^#/, ""));
+}
+
 
   // =========================
   // Category nav
@@ -1576,6 +1581,7 @@ if(prevBtn && nextBtn && gridEl){
 
 </body>
 </html>
+
 
 
 
