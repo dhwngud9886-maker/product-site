@@ -508,6 +508,30 @@
       height:auto;
       display:block;
     }
+  /* ===== 공지/이벤트(이미지 페이지) : 1장씩 화면에 맞춰 보기 ===== */
+.image-page .detail-shot{
+  /* 헤더/패딩 고려해서 화면 높이에서 약간 빼줌 */
+  height: calc(100vh - 220px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.image-page .detail-shot img{
+  width: auto;          /* 가로 꽉 채우기 대신 */
+  height: 100%;         /* 박스 높이에 맞추고 */
+  max-width: 100%;
+  object-fit: contain;  /* ✅ 안 잘리고 전체 보이게 */
+  display: block;
+}
+
+/* 모바일에선 상단 UI가 더 커서 조금 더 빼줌 */
+@media (max-width: 640px){
+  .image-page .detail-shot{
+    height: calc(100vh - 170px);
+  }
+}
 
     /* 스펙 표 이미지(선택) */
     .spec-image{
@@ -1433,7 +1457,7 @@
     renderCategoryNav(activeCat);
 
     app.innerHTML = `
-      <div class="card">
+     <div class="card image-page">
         <div class="title">
           <div>
             <h1>제품 목록</h1>
@@ -1926,6 +1950,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
 </body>
 </html>
+
 
 
 
