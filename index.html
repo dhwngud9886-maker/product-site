@@ -686,8 +686,7 @@
   display:flex;
   align-items:center;
   gap:10px;
-  max-width:720px;      /* 너무 길어지는 거 방지 */
-  min-width:240px;      /* 너무 작아져서 깨지는 거 방지 */
+
 }
 
 /* 검색 input이 flex에서 줄바꿈 유발하는 걸 막는 핵심 */
@@ -967,6 +966,19 @@
   .slide.photo-only .banner-actions{
     left: 16px;
     bottom: 14px;
+  }
+}
+/* ===== 모바일 검색창 삐져나옴 방지 (최종 패치) ===== */
+@media (max-width:640px){
+  .search{
+    flex: 1 1 auto;
+    min-width: 0;        /* 🔥 핵심 */
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .search input{
+    min-width: 0;        /* 🔥 핵심 */
   }
 }
 
@@ -1992,6 +2004,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
 </body>
 </html>
+
 
 
 
