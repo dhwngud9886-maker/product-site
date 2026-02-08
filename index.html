@@ -924,6 +924,44 @@
   .quick-menu{ display: none; }
 }
 
+/* ===== 배너: 사진만(full) + 버튼만 ===== */
+.slide.photo-only{
+  height: 360px;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* 버튼 가독성용 살짝 어둡게(선택이지만 강추) */
+.slide.photo-only::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,.35) 100%);
+  z-index:0;
+}
+
+/* 버튼 박스: 왼쪽 하단 고정 */
+.slide.photo-only .banner-actions{
+  position:absolute;
+  left: 24px;
+  bottom: 18px;
+  display:flex;
+  gap:10px;
+  z-index:1;
+}
+
+/* 모바일에서 살짝 줄이기 */
+@media (max-width:640px){
+  .slide.photo-only{
+    height: 320px;
+  }
+  .slide.photo-only .banner-actions{
+    left: 16px;
+    bottom: 14px;
+  }
+}
 
   </style>
 </head>
@@ -1303,9 +1341,6 @@
   // =========================
   const BANNERS = [
     {
-      title:"70% 정부지원 에어컨 접수중",
-      sub:"2026년 3월부터 정부지원자금 소진시까지 선착순/ 30%의 금액으로 에어컨 구매!",
-      tag:"에어컨",
       ctaText:"상세보기",
       ctaHref:"#/notice",
       bannerImage:"정부지원/정부지원 배너.png"
@@ -1404,33 +1439,19 @@
   let bannerIndex = 0;
   let bannerTimer = null;
 
-  function slideTemplate(b){
-    const img = b.bannerImage
-      ? `<img src="${escapeHtml(b.bannerImage)}" alt="${escapeHtml(b.title)}">`
-      : `<div class="ph">
-          <div style="font-size:15px">배너 이미지</div>
-          <div style="margin-top:6px;font-size:12px;opacity:.8">bannerImage 넣으면 실사로 표시</div>
-        </div>`;
+function slideTemplate(b){
+  const bg = b.bgImage ? `style="background-image:url('${escapeHtml(b.bgImage)}')"` : "";
 
-    return `
-      <div class="slide">
-        <div class="content container">
-          <div class="headline">
-            <h2>${escapeHtml(b.title)}</h2>
-            <p>${escapeHtml(b.sub)}</p>
-            <div class="banner-cta">
-              <a class="btn" href="${escapeHtml(b.ctaHref)}">${escapeHtml(b.ctaText)}</a>
-              <a class="btn ghost" href="#/contact">1:1 문의</a>
-            </div>
-          </div>
-          <div class="hero-img">
-            <div class="tag">${escapeHtml(b.tag)}</div>
-            ${img}
-          </div>
-        </div>
+  return `
+    <div class="slide photo-only" ${bg}>
+      <div class="banner-actions">
+        <a class="btn" href="${escapeHtml(b.ctaHref || "#/")}">${escapeHtml(b.ctaText || "상세보기")}</a>
+        <a class="btn ghost" href="#/contact">1:1 문의</a>
       </div>
-    `;
-  }
+    </div>
+  `;
+}
+
 
   function renderBanner(){
     slidesEl.innerHTML = BANNERS.map(slideTemplate).join("");
@@ -1970,6 +1991,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
 </body>
 </html>
+
 
 
 
