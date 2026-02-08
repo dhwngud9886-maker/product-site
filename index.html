@@ -926,21 +926,28 @@
 
 /* ===== 배너: 사진만(full) + 버튼만 ===== */
 .slide.photo-only{
-  height: 360px;
   position: relative;
-  background-size: cover;
+
+  /* ✅ 원본 전체 보이게 */
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+
+  /* ✅ 원본 비율(1600:600 = 8:3) 유지하면서 반응형 */
+  aspect-ratio: 1600 / 600;
+  height: auto;
+
+  /* 선택: 배너 주변이 비지 않게 깔아줄 배경색 */
+  background-color: #fff;
 }
 
-/* 버튼 가독성용 살짝 어둡게(선택이지만 강추) */
-.slide.photo-only::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background: linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,.35) 100%);
-  z-index:0;
+.slide.photo-only .banner-actions{
+  background: rgba(255,255,255,.7);
+  backdrop-filter: blur(6px);
+  padding: 10px;
+  border-radius: 14px;
 }
+
 
 /* 버튼 박스: 왼쪽 하단 고정 */
 .slide.photo-only .banner-actions{
@@ -1985,6 +1992,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
 </body>
 </html>
+
 
 
 
