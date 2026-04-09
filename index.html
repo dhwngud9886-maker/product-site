@@ -48,11 +48,12 @@
       font-weight:1000; letter-spacing:.2px;
       white-space:nowrap;
     }
-    .logo-mark{
-      width:34px; height:34px; border-radius:12px;
-      background: linear-gradient(135deg, var(--blue), var(--sky));
-      box-shadow: 0 10px 18px rgba(37,99,235,.25);
-    }
+.logo-mark{
+  width:34px;
+  height:34px;
+  object-fit: contain;
+  border-radius:8px;   /* 원하면 50%로 바꾸면 원형 */
+}
     .logo span.small{font-weight:900; color:var(--muted); font-size:12px; display:block; margin-top:2px}
 
     .search{
@@ -996,13 +997,13 @@
 <header>
   <div class="container">
     <div class="header-main">
-      <a href="#/" class="logo">
-        <div class="logo-mark"></div>
-        <div>
-          <div style="font-size:18px">에어렉스 비잔티움</div>
-          <span class="small">에어컨 · 히터 · 제습기</span>
-        </div>
-      </a>
+<a href="#/" class="logo">
+  <img src="기타파일/로고.png" class="logo-mark">
+  <div>
+    <div style="font-size:18px">에어렉스 비잔티움</div>
+    <span class="small">에어컨 · 히터 · 제습기</span>
+  </div>
+</a>
 
       <div class="search">
         <input id="globalSearch" placeholder="검색어 입력 (예: 이동형, 저소음, 인버터)" />
