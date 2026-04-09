@@ -846,6 +846,12 @@
 @media (max-width: 1300px){
   .side-panel{ display: none; }
 }
+    
+  /*스토어링크배너*/
+    
+    <a class="left-floating-banner" href="https://smartstore.naver.com/kohj1125" target="_blank" rel="noopener noreferrer">
+  <img src="기타파일/로고.png" alt="스토어 바로가기">
+</a>
 /* =========================
    오른쪽 플로팅 퀵 메뉴
 ========================= */
@@ -988,7 +994,42 @@
     min-width:280px;
   }
 }
+/* ===== 왼쪽 고정 스토어 배너 ===== */
+.left-floating-banner{
+  position: fixed;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 90;
 
+  display: block;
+  width: 180px;
+
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(0,0,0,.18);
+  text-decoration: none;
+  background: #fff;
+
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.left-floating-banner:hover{
+  transform: translateY(-50%) translateX(4px);
+  box-shadow: 0 16px 34px rgba(0,0,0,.24);
+}
+
+.left-floating-banner img{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 1500px){
+  .left-floating-banner{
+    display: none;
+  }
+}
   </style>
 </head>
 
