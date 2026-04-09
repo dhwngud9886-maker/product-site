@@ -1359,7 +1359,43 @@
         "크기(W×D×H)":"445×570×1,065 mm",
         "제품중량":"77 kg",
         "제품가격":"2,255,000원" }
-    }
+    },
+    {
+  id: "AL-N35K",
+  category: "제빙기",
+  name: "AL-N35K",
+  short: "제빙기 · 35kg",
+  priceText: "상담문의",
+  thumb: "AL-N35K/썸네일.jpg",
+
+  gallery: [
+    "AL-N35K/썸네일.png"
+  ],
+
+  detailImages: [
+    // AL-N35K(1)_01 ~ 14
+    ...[
+      "jpg", "jpg", "gif", "jpg", "gif", "jpg", "gif",
+      "jpg", "gif", "jpg", "gif", "jpg", "gif", "jpg"
+    ].map((ext, i) =>
+      `AL-N35K/상세페이지/AL-N35K(1)_${String(i + 1).padStart(2, "0")}.${ext}`
+    ),
+
+    // AL-N35K(2)_01 ~ 11
+    ...[
+      "jpg", "gif", "jpg", "jpg", "jpg", "jpg",
+      "jpg", "gif", "jpg", "jpg", "jpg"
+    ].map((ext, i) =>
+      `AL-N35K/상세페이지/AL-N35K(2)_${String(i + 1).padStart(2, "0")}.${ext}`
+    )
+  ],
+
+  tags: ["제습기", "산업용"],
+  description: "산업 현장용 제습기",
+  specs: {
+    "제품가격": "상담문의"
+  }
+}
   ];
 
   // =========================
